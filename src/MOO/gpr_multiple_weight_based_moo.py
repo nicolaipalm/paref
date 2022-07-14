@@ -12,7 +12,6 @@ from src.surrogates.gpr import GPR
 class GPRMultipleWeightsBasedMOO:
     def __init__(self, weight_functions: List[WeightFunction]):
         self._weight_functions = weight_functions
-        self._gpr = None
 
     def __call__(self,
                  function: Function,
@@ -21,7 +20,7 @@ class GPRMultipleWeightsBasedMOO:
                  lower_bounds: np.ndarray,
                  number_designs_LH: int,
                  max_evaluations_per_weight: int,
-                 max_iter_minimizer: 1000,
+                 max_iter_minimizer: int = 1000,
                  training_iter: int = 1000,
                  learning_rate=0.1,
                  ) -> List[np.ndarray]:

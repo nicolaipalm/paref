@@ -8,7 +8,7 @@ from src.interfaces.function import Function
 from src.minimizers.differential_evolution import DifferentialEvolution
 from src.weight_functions.scalar_potency import ScalarPotency
 
-input_dimensions = 10
+input_dimensions = 20
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -17,7 +17,7 @@ upper_bounds_x = np.ones(input_dimensions)
 minimizer = DifferentialEvolution()
 
 max_iter_minimizer = 100
-max_evaluations_per_weight = 10
+max_evaluations_per_weight = 5
 
 problem = get_problem("dtlz2",
                       n_var=input_dimensions,
@@ -41,13 +41,16 @@ weight_function_1 = ScalarPotency(potency=2 * np.ones(output_dimensions), scalar
 
 weight_function_2 = ScalarPotency(potency=2 * np.ones(output_dimensions), scalar=np.array([0.2, 1]))
 
-MOO = GPRMultipleWeightsBasedMOO(weight_functions=[weight_function_1, weight_function_2])
+weight_function_3 = ScalarPotency(potency=2 * np.ones(output_dimensions), scalar=np.array([1, 1]))
+
+
+MOO = GPRMultipleWeightsBasedMOO(weight_functions=[weight_function_1, weight_function_2, weight_function_3])
 
 result = MOO(function=function,
              minimizer=minimizer,
              upper_bounds=upper_bounds_x,
              lower_bounds=lower_bounds_x,
-             number_designs_LH=3*max_evaluations_per_weight,
+             number_designs_LH=7*max_evaluations_per_weight,
              max_evaluations_per_weight=max_evaluations_per_weight,
              max_iter_minimizer=1000,
              training_iter=100

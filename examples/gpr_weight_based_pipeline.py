@@ -8,7 +8,7 @@ from src.interfaces.function import Function
 from src.minimizers.differential_evolution import DifferentialEvolution
 from src.weight_functions.scalar_potency import ScalarPotency
 
-input_dimensions = 10
+input_dimensions = 20
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -52,6 +52,7 @@ result = MOO(function=function,
              )
 
 print(result, function(result), weight_function(function(result)))
+print(function.evaluations)
 
 real_PF = problem.pareto_front()
 
