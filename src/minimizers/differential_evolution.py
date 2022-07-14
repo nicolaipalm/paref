@@ -7,10 +7,6 @@ from src.interfaces.minimizer import Minimizer
 
 
 class DifferentialEvolution(Minimizer):
-    """
-    ...for harder to minimize functions. Needs more maximum_likelihood_estimations though.
-    """
-
     def __init__(self, display=False):
         self.display = display
         self._number_evaluations_last_call = None

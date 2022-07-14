@@ -35,12 +35,12 @@ class GPRMultipleWeightsBasedMOO:
         evaluations = np.array([function(x) for x in train_x])
 
         index_min_weights = []
-
+        gpr = GPR(training_iter=training_iter, learning_rate=learning_rate)
         for j, weight_function in enumerate(self._weight_functions):
             for i in range(max_evaluations_per_weight):
                 print(
                     f"{i + 1}/{max_evaluations_per_weight} for weight {j + 1}/{len(self._weight_functions)} Training of the GPR...\n")
-                gpr = GPR(training_iter=training_iter, learning_rate=learning_rate)
+
                 gpr.train(train_x=train_x, train_y=evaluations)
                 print(f"\n finished!\n")
                 print(f"Starting minimization...")

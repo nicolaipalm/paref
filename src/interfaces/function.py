@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import numpy as np
 
 
@@ -9,6 +11,7 @@ class Function:
     def __init__(self):
         self._evaluations = []
 
+    @abstractmethod
     def __call__(self, x: np.ndarray) -> np.ndarray:
         """
         Append [x,f(x)] for self._evaluations
@@ -19,13 +22,6 @@ class Function:
 
         both, x and output are 2 dimensional arrays
         """
-        pass
-
-    def partial_derivative(self, x: np.ndarray, partial_derivative_index: int) -> np.ndarray:
-        pass
-
-    def second_partial_derivative(self, x: np.ndarray, partial_derivative_index_1: int,
-                                  partial_derivative_index_2: int) -> np.ndarray:
         pass
 
     @property

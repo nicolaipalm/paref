@@ -9,10 +9,3 @@ class WeightFunction:
 
     def __call__(self, x: np.ndarray) -> float:
         pass
-
-    def partial_derivative(self, x: np.ndarray, partial_derivative_index: int) -> float:
-        pass
-
-    def second_partial_derivative(self, x: np.ndarray, partial_derivative_index_1: int,
-                                  partial_derivative_index_2: int) -> float:
-        pass

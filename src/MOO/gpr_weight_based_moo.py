@@ -31,10 +31,9 @@ class GPRWeightBasedMOO:
             upper_bounds,
         )
         evaluations = np.array([function(x) for x in train_x])
-
+        gpr = GPR(training_iter=training_iter, learning_rate=learning_rate)
         for i in range(max_evaluations-number_designs_LH):
             print(f"{i + 1}/{max_evaluations-number_designs_LH} Training of the GPR...\n")
-            gpr = GPR(training_iter=training_iter, learning_rate=learning_rate)
             gpr.train(train_x=train_x, train_y=evaluations)
             print(f"\n finished!\n")
             print(f"Starting minimization...")
