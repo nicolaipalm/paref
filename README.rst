@@ -1,1 +1,0 @@
-WEIght based Multi-Objective Optimization

@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.interfaces.weight_function import WeightFunction
+from src.weimoo.interfaces.weight_function import WeightFunction
 
 
 class ScalarPotency(WeightFunction):

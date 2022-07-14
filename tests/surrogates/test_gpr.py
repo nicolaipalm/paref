@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.surrogates.gpr import GPR
+from src.weimoo.surrogates.gpr import GPR
 
 
 class TestGPR(unittest.TestCase):

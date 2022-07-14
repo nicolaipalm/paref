@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.weight_functions.scalar_potency import ScalarPotency
+from src.weimoo.weight_functions import ScalarPotency
 
 
 class TestScalarPotency(unittest.TestCase):
