@@ -4,16 +4,16 @@ benchmarked_function_name: ZDT-2
 minimizer_name: Differential evolution
 # Changeable
 input_dimensions:
-- 2
-- 5
-- 15
-- 25
-- 30
+  - 2
+  - 5
+  - 15
+  - 25
+  - 30
 output_dimension: 2
 number_designs_LH: 30
 max_iter_minimizer: 10
 max_evaluations_blackbox_function: 50
 reference_point:
-- 2
-- 2
+  - 2
+  - 2
 training_iter_gpr: 1000
