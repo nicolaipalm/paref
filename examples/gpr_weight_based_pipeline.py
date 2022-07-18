@@ -2,13 +2,13 @@ import numpy as np
 import plotly.graph_objects as go
 from pymoo.factory import get_problem
 
-from src.weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
 from src.weimoo.interfaces.function import Function
 from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
+from src.weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
+from src.weimoo.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
 from src.weimoo.weight_functions.scalar_potency import ScalarPotency
 
-input_dimensions = 20
+input_dimensions = 10
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -16,7 +16,7 @@ upper_bounds_x = np.ones(input_dimensions)
 
 minimizer = DifferentialEvolution()
 
-max_iter_minimizer = 100
+max_iter_minimizer = 1000
 max_evaluations = 50
 
 problem = get_problem("dtlz2",
@@ -47,8 +47,8 @@ result = MOO(function=function,
              lower_bounds=lower_bounds_x,
              number_designs_LH=int(max_evaluations / 2),
              max_evaluations=max_evaluations,
-             max_iter_minimizer=1000,
-             training_iter=100
+             max_iter_minimizer=max_iter_minimizer,
+             training_iter=5000
              )
 
 print(result, function(result), weight_function(function(result)))
@@ -65,7 +65,7 @@ data = [
 ]
 
 fig = go.Figure(data=data)
-#fig.show()
+# fig.show()
 
 from pymoo.indicators.hv import Hypervolume
 
@@ -94,7 +94,7 @@ fig1.update_layout(
     width=800,
     height=600,
     plot_bgcolor="rgba(0,0,0,0)",
-    title=f"GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
+    title=f"({input_dimensions}-dim) GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
 )
 
 fig1.show()

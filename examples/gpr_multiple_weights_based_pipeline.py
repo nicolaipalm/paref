@@ -52,8 +52,8 @@ result = MOO(function=function,
              lower_bounds=lower_bounds_x,
              number_designs_LH=7*max_evaluations_per_weight,
              max_evaluations_per_weight=max_evaluations_per_weight,
-             max_iter_minimizer=1000,
-             training_iter=100
+             max_iter_minimizer=max_iter_minimizer,
+             training_iter=5000
              )
 
 real_PF = problem.pareto_front()
