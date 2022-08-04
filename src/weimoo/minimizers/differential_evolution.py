@@ -12,7 +12,11 @@ class DifferentialEvolution(Minimizer):
         self._number_evaluations_last_call = None
 
     def __call__(
-            self, function: Callable, upper_bounds: np.ndarray, lower_bounds: np.ndarray, max_iter: int = 1000
+        self,
+        function: Callable,
+        upper_bounds: np.ndarray,
+        lower_bounds: np.ndarray,
+        max_iter: int = 1000,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
 

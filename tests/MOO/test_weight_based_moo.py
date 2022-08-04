@@ -25,12 +25,22 @@ class TestWeightBasedMOO(unittest.TestCase):
 
         function = TestFunction()
 
-        self.assertEqual(0, np.round(np.sum(minimum * np.ones(2) - moo(lower_bounds=lower_bounds,
-                                                                       upper_bounds=upper_bounds,
-                                                                       minimizer=minimizer,
-                                                                       function=function,
-                                                                       max_evaluations=20))))
+        self.assertEqual(
+            0,
+            np.round(
+                np.sum(
+                    minimum * np.ones(2)
+                    - moo(
+                        lower_bounds=lower_bounds,
+                        upper_bounds=upper_bounds,
+                        minimizer=minimizer,
+                        function=function,
+                        max_evaluations=20,
+                    )
+                )
+            ),
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

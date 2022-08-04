@@ -20,10 +20,14 @@ class MyTestCase(unittest.TestCase):
 
         function = TestFunction()
 
-        self.assertAlmostEqual(minimum,
-                               minimizer(function=function, upper_bounds=upper_bounds, lower_bounds=lower_bounds),
-                               delta=0.1)
+        self.assertAlmostEqual(
+            minimum,
+            minimizer(
+                function=function, upper_bounds=upper_bounds, lower_bounds=lower_bounds
+            ),
+            delta=0.1,
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

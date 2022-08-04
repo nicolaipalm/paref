@@ -6,7 +6,9 @@ import plotly.graph_objects as go
 import yaml
 from pymoo.indicators.hv import Hypervolume
 
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
+from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+    return_pareto_front_2d,
+)
 
 
 class EvaluationMOOSingleRun:
@@ -28,18 +30,39 @@ class EvaluationMOOSingleRun:
 
         if pareto_front is None:
             data = [
-                go.Scatter(x=self.y.T[0], y=self.y.T[1], mode="markers", name="Dominated valuations"),
-                go.Scatter(x=self.pareto_front_evaluations.T[0], y=self.pareto_front_evaluations.T[1], mode="markers",
-                           name="Pareto front of evaluations"),
-
+                go.Scatter(
+                    x=self.y.T[0],
+                    y=self.y.T[1],
+                    mode="markers",
+                    name="Dominated valuations",
+                ),
+                go.Scatter(
+                    x=self.pareto_front_evaluations.T[0],
+                    y=self.pareto_front_evaluations.T[1],
+                    mode="markers",
+                    name="Pareto front of evaluations",
+                ),
             ]
         else:
             data = [
-                go.Scatter(x=pareto_front.T[0], y=pareto_front.T[1], mode="markers", name="Real pareto front"),
-                go.Scatter(x=self.y.T[0], y=self.y.T[1], mode="markers", name="Dominated evaluations"),
-                go.Scatter(x=self.pareto_front_evaluations.T[0], y=self.pareto_front_evaluations.T[1], mode="markers",
-                           name="Pareto front of evaluations"),
-
+                go.Scatter(
+                    x=pareto_front.T[0],
+                    y=pareto_front.T[1],
+                    mode="markers",
+                    name="Real pareto front",
+                ),
+                go.Scatter(
+                    x=self.y.T[0],
+                    y=self.y.T[1],
+                    mode="markers",
+                    name="Dominated evaluations",
+                ),
+                go.Scatter(
+                    x=self.pareto_front_evaluations.T[0],
+                    y=self.pareto_front_evaluations.T[1],
+                    mode="markers",
+                    name="Pareto front of evaluations",
+                ),
             ]
 
         fig1 = go.Figure(data=data)
@@ -48,7 +71,7 @@ class EvaluationMOOSingleRun:
             width=800,
             height=600,
             plot_bgcolor="rgba(0,0,0,0)",
-            # title=f"({input_dimensions}-dim) GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
+            title=f"{self.meta_data.get('MOO_name')} ({self.input_dimension}-dim) evaluations",
         )
 
         fig1.show()
@@ -57,7 +80,9 @@ class EvaluationMOOSingleRun:
         metric = Hypervolume(ref_point=reference_point, normalize=False)
         return metric.do(self.pareto_front_evaluations)
 
-    def calculate_relative_hyper_volume_2d(self, reference_point: np.ndarray, pareto_front: np.ndarray):
+    def calculate_relative_hyper_volume_2d(
+        self, reference_point: np.ndarray, pareto_front: np.ndarray
+    ):
         metric = Hypervolume(ref_point=reference_point, normalize=False)
         hypervolume_max = metric.do(pareto_front)
         hypervolume_evaluations = metric.do(self.pareto_front_evaluations)
@@ -68,13 +93,23 @@ class EvaluationMOOSingleRun:
 class EvaluationMOO:
     def __init__(self, paths: List[Path]):
         self.evaluations_moos = [EvaluationMOOSingleRun(path=path) for path in paths]
+        self.input_dimensions = [
+            evaluation_moo.input_dimension for evaluation_moo in self.evaluations_moos
+        ]
 
     def plot_hyper_volumes_against_dimension(self, reference_point: np.ndarray):
         data = [
-            go.Scatter(x=[evaluation_moo.input_dimension for evaluation_moo in self.evaluations_moos],
-                       y=[evaluation_moo.calculate_hyper_volume_2d(reference_point=reference_point) for evaluation_moo
-                          in self.evaluations_moos],
-                       mode="markers", name="Hypervolumes"),
+            go.Scatter(
+                x=self.input_dimensions,
+                y=[
+                    evaluation_moo.calculate_hyper_volume_2d(
+                        reference_point=reference_point
+                    )
+                    for evaluation_moo in self.evaluations_moos
+                ],
+                mode="markers",
+                name="Hypervolumes",
+            ),
         ]
 
         fig1 = go.Figure(data=data)
@@ -83,19 +118,29 @@ class EvaluationMOO:
             width=800,
             height=600,
             plot_bgcolor="rgba(0,0,0,0)",
-            # title=f"({input_dimensions}-dim) GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
+            title=f"{self.evaluations_moos[0].meta_data.get('MOO_name')} hypervolumes with reference point {reference_point.tolist()}",
         )
 
         fig1.show()
 
-    def plot_relative_hyper_volumes_against_dimension(self, reference_point: np.ndarray, pareto_front: np.ndarray):
+    def plot_relative_hyper_volumes_against_dimension(
+        self, reference_point: np.ndarray, pareto_front: np.ndarray
+    ):
         data = [
-            go.Scatter(x=[evaluation_moo.input_dimension for evaluation_moo in self.evaluations_moos],
-                       y=[evaluation_moo.calculate_relative_hyper_volume_2d(reference_point=reference_point,
-                                                                            pareto_front=pareto_front) for
-                          evaluation_moo
-                          in self.evaluations_moos],
-                       mode="markers", name="Hypervolumes"),
+            go.Scatter(
+                x=[
+                    evaluation_moo.input_dimension
+                    for evaluation_moo in self.evaluations_moos
+                ],
+                y=[
+                    evaluation_moo.calculate_relative_hyper_volume_2d(
+                        reference_point=reference_point, pareto_front=pareto_front
+                    )
+                    for evaluation_moo in self.evaluations_moos
+                ],
+                mode="markers",
+                name="Hypervolumes",
+            ),
         ]
 
         fig1 = go.Figure(data=data)
@@ -104,7 +149,158 @@ class EvaluationMOO:
             width=800,
             height=600,
             plot_bgcolor="rgba(0,0,0,0)",
-            # title=f"({input_dimensions}-dim) GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
+            title=f"{self.evaluations_moos[0].meta_data.get('MOO_name')} relative hypervolumes with reference point {reference_point.tolist()}",
+        )
+
+        fig1.show()
+
+    def plot_dots_2d(self):
+        data = []
+        for evaluation in self.evaluations_moos:
+            data.append(
+                go.Scatter(
+                    x=evaluation.y.T[0],
+                    y=evaluation.y.T[1],
+                    mode="markers",
+                    name="Dominated evaluations",
+                    visible=False,
+                )
+            )
+            data.append(
+                go.Scatter(
+                    x=evaluation.pareto_front_evaluations.T[0],
+                    y=evaluation.pareto_front_evaluations.T[1],
+                    mode="markers",
+                    name="Pareto front of evaluations",
+                    visible=False,
+                )
+            )
+
+        fig1 = go.Figure(data=data)
+
+        fig1.update_layout(
+            width=800,
+            height=600,
+            plot_bgcolor="rgba(0,0,0,0)",
+            title=f"{self.evaluations_moos[0].meta_data.get('MOO_name')} evaluations",
+        )
+
+        fig1.data[0].visible = True
+        fig1.data[1].visible = True
+
+        # Add dropdown
+        fig1.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=list(
+                        [
+                            dict(
+                                method="update",
+                                label=f"Input dimension: {input_dimension: .0f}",
+                                args=[
+                                    {
+                                        "visible": [
+                                            (j == 2 * i or j == 2 * i + 1)
+                                            for j, _ in enumerate(fig1.data)
+                                        ]
+                                    }
+                                ],
+                            )
+                            for i, input_dimension in enumerate(self.input_dimensions)
+                        ]
+                    ),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.1,
+                    xanchor="left",
+                    y=1.1,
+                    yanchor="top",
+                ),
+            ]
+        )
+
+        fig1.show()
+
+    def plot_dots_2d_with_pareto_front(self, pareto_front: np.ndarray):
+        data = []
+        for evaluation in self.evaluations_moos:
+            data.append(
+                go.Scatter(
+                    x=pareto_front.T[0],
+                    y=pareto_front.T[1],
+                    mode="markers",
+                    name="Real pareto front",
+                    visible=False,
+                )
+            )
+
+            data.append(
+                go.Scatter(
+                    x=evaluation.y.T[0],
+                    y=evaluation.y.T[1],
+                    mode="markers",
+                    name="Dominated evaluations",
+                    visible=False,
+                )
+            )
+            data.append(
+                go.Scatter(
+                    x=evaluation.pareto_front_evaluations.T[0],
+                    y=evaluation.pareto_front_evaluations.T[1],
+                    mode="markers",
+                    name="Pareto front of evaluations",
+                    visible=False,
+                )
+            )
+
+        fig1 = go.Figure(data=data)
+
+        fig1.update_layout(
+            width=800,
+            height=600,
+            plot_bgcolor="rgba(0,0,0,0)",
+            title=f"{self.evaluations_moos[0].meta_data.get('MOO_name')} evaluations",
+        )
+
+        fig1.data[0].visible = True
+        fig1.data[1].visible = True
+        fig1.data[2].visible = True
+
+        # Add dropdown
+        fig1.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=list(
+                        [
+                            dict(
+                                method="update",
+                                label=f"Input dimension: {input_dimension: .0f}",
+                                args=[
+                                    {
+                                        "visible": [
+                                            (
+                                                j == 3 * i
+                                                or j == 3 * i + 1
+                                                or j == 3 * i + 2
+                                            )
+                                            for j, _ in enumerate(fig1.data)
+                                        ]
+                                    }
+                                ],
+                            )
+                            for i, input_dimension in enumerate(self.input_dimensions)
+                        ]
+                    ),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.1,
+                    xanchor="left",
+                    y=1.1,
+                    yanchor="top",
+                ),
+            ]
         )
 
         fig1.show()

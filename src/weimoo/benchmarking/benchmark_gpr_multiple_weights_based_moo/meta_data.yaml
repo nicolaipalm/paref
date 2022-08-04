@@ -1,6 +1,6 @@
 # Fixed
-MOO_name: GPR_weight_based_MOO
-benchmarked_function_name: ZDT-2
+MOO_name: GPR_multiple_weights_based_MOO
+benchmarked_function_name: zdt1
 minimizer_name: Differential evolution
 # Changeable
 input_dimensions:
@@ -10,10 +10,28 @@ input_dimensions:
   - 25
   - 30
 output_dimension: 2
-number_designs_LH: 30
+number_designs_LH: 40
 max_iter_minimizer: 100
-max_evaluations_per_weight: 5
+max_evaluations_per_weight: 2
 weights:
+  - potency_weights:
+      - 2.0
+      - 2.0
+    scalar_weights:
+      - 1.0
+      - 1.0
+  - potency_weights:
+      - 2.0
+      - 2.0
+    scalar_weights:
+      - 0.1
+      - 1.0
+  - potency_weights:
+      - 2.0
+      - 2.0
+    scalar_weights:
+      - 1.0
+      - 0.1
   - potency_weights:
       - 2.0
       - 2.0

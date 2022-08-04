@@ -4,10 +4,9 @@ import numpy as np
 import yaml
 from pymoo.factory import get_problem
 
-from src.weimoo.interfaces.function import Function
-from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
-from src.weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
-from src.weimoo.weight_functions.scalar_potency import ScalarPotency
+from pymoo.algorithms.moo.nsga2 import NSGA2
+from pymoo.optimize import minimize
+
 
 # MULTIPROCESSING!
 #####################
@@ -18,7 +17,7 @@ from src.weimoo.weight_functions.scalar_potency import ScalarPotency
 # ONLY change the values in the meta_data.yaml file under changeable
 
 # determine how often the moo should be performed
-number_runs_moo = 9
+number_runs_moo = 5
 
 path = "data/"
 
@@ -35,19 +34,11 @@ with open("meta_data.yaml") as f:
 input_dimensions = meta_data.get("input_dimensions")
 output_dimension = int(meta_data.get("output_dimension"))
 
-max_iter_minimizer = int(meta_data.get("max_iter_minimizer"))
 max_evaluations = int(meta_data.get("max_evaluations_blackbox_function"))
-
-training_iter = int(meta_data.get("training_iter_gpr"))
-
-potency = np.array(meta_data.get("potency_weights"))
-scalar = np.array(meta_data.get("scalar_weights"))
-
-number_designs_LH = int(meta_data.get("number_designs_LH"))
 
 problem_name = meta_data.get("benchmarked_function_name")
 
-for j in range(4, number_runs_moo):
+for j in range(1, number_runs_moo):
     for i, input_dimension in enumerate(input_dimensions):
         print(f"Dimension {input_dimension} ({i + 1}/{len(input_dimensions)})\n")
         input_dimension = int(input_dimension)
@@ -55,33 +46,16 @@ for j in range(4, number_runs_moo):
         lower_bounds_x = np.zeros(input_dimension)
         upper_bounds_x = np.ones(input_dimension)
 
-        minimizer = DifferentialEvolution()
-
         problem = get_problem(problem_name, n_var=input_dimension)
 
-        # Initialize weight function
-        weight_function = ScalarPotency(potency=potency, scalar=scalar)
+        algorithm = NSGA2(pop_size=5)
 
-        ####################
-        class ExampleFunction(Function):
-            def __call__(self, x):
-                self._evaluations.append([x, problem.evaluate(x)])
-                return problem.evaluate(x)
-
-        # Initialize the function
-        function = ExampleFunction()
-
-        MOO = GPRWeightBasedMOO(weight_function=weight_function)
-
-        result = MOO(
-            function=function,
-            minimizer=minimizer,
-            upper_bounds=upper_bounds_x,
-            lower_bounds=lower_bounds_x,
-            number_designs_LH=number_designs_LH,
-            max_evaluations=max_evaluations,
-            max_iter_minimizer=max_iter_minimizer,
-            training_iter=training_iter,
+        res = minimize(
+            problem,
+            algorithm,
+            termination=("n_evals", max_evaluations),
+            seed=10,
+            verbose=True,
         )
 
         # save data to yaml
@@ -89,8 +63,8 @@ for j in range(4, number_runs_moo):
             "meta_data": meta_data,
             "input_dimension": input_dimension,
             "data": [
-                {"x": evaluation[0].tolist(), "y": evaluation[1].tolist()}
-                for evaluation in function.evaluations
+                {"x": res.X[i].tolist(), "y": res.F[i].tolist()}
+                for i, _ in enumerate(res.X)
             ],
         }
 

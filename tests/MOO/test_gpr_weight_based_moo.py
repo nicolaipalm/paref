@@ -24,17 +24,19 @@ class TestGPRWeightBasedMOO(unittest.TestCase):
                 return np.array([(x[0] - minimum) ** 2, (x[1] - minimum) ** 2])
 
         function = TestFunction()
-        result = moo(lower_bounds=lower_bounds,
-                     upper_bounds=upper_bounds,
-                     number_designs_LH=20,
-                     max_evaluations=25,
-                     minimizer=minimizer,
-                     function=function,
-                     max_iter_minimizer=1000)
+        result = moo(
+            lower_bounds=lower_bounds,
+            upper_bounds=upper_bounds,
+            number_designs_LH=20,
+            max_evaluations=25,
+            minimizer=minimizer,
+            function=function,
+            max_iter_minimizer=1000,
+        )
 
         print(result)
 
         self.assertEqual(0, np.round(np.sum(minimum - result)))
 
-    if __name__ == '__main__':
+    if __name__ == "__main__":
         unittest.main()

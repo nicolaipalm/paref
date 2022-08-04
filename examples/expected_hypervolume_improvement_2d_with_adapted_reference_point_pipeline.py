@@ -1,14 +1,18 @@
 import numpy as np
 import plotly.graph_objects as go
 from pymoo.factory import get_problem
+from pymoo.indicators.hv import Hypervolume
 
-from src.weimoo.moos.helper_functions import return_pareto_front_2d
-from src.weimoo.moos.weight_based_moo import WeightBasedMOO
+from src.weimoo.moos.expected_hypervolume_improvement_2d_with_adapted_reference_point_moo import (
+    EHVI2dAdaptedReferencePointMOO,
+)
+from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+    return_pareto_front_2d,
+)
 from src.weimoo.interfaces.function import Function
 from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
-from src.weimoo.weight_functions.scalar_potency import ScalarPotency
 
-input_dimensions = 10
+input_dimensions = 5
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -16,59 +20,43 @@ upper_bounds_x = np.ones(input_dimensions)
 
 minimizer = DifferentialEvolution()
 
-max_iter = 50
+max_iter_minimizer = 100
+max_evaluations = 50
 
-problem = get_problem("dtlz2", n_var=input_dimensions, n_obj=output_dimensions)
+problem = get_problem("zdt1", n_var=input_dimensions)
 
 
 class ExampleFunction(Function):
     def __call__(self, x):
-        if len(self._evaluations) < max_iter:
-            self._evaluations.append([x, problem.evaluate(x)])
+        self._evaluations.append([x, problem.evaluate(x)])
         return problem.evaluate(x)
 
 
 # Initialiaze the function
 function = ExampleFunction()
 
-# Initialize weight function
-weight_function = ScalarPotency(
-    potency=2 * np.ones(output_dimensions), scalar=np.ones(output_dimensions)
-)
 
-MOO = WeightBasedMOO(weight_function=weight_function)
+MOO = EHVI2dAdaptedReferencePointMOO()
 
 result = MOO(
     function=function,
     minimizer=minimizer,
     upper_bounds=upper_bounds_x,
     lower_bounds=lower_bounds_x,
-    max_evaluations=max_iter,
+    number_designs_LH=40,
+    max_evaluations=max_evaluations,
+    max_iter_minimizer=100,
+    training_iter=5000,
 )
 
-print(result, function(result), weight_function(function(result)))
 
 real_PF = problem.pareto_front()
 
 PF = return_pareto_front_2d([point[1] for point in function.evaluations])
 
-data = [
-    go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers"),
-    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], mode="markers"),
-    go.Scatter(
-        x=np.array([function(result)[0]]),
-        y=np.array([function(result)[1]]),
-        mode="markers",
-    ),
-]
 
-fig = go.Figure(data=data)
-# fig.show()
-
-from pymoo.indicators.hv import Hypervolume
-
-reference_point = np.array([2, 2])
-real_PF = problem.pareto_front()
+# reference point according to paper
+reference_point = np.array([10, 10])
 
 metric = Hypervolume(ref_point=reference_point, normalize=False)
 
@@ -91,7 +79,7 @@ fig1.update_layout(
     width=800,
     height=600,
     plot_bgcolor="rgba(0,0,0,0)",
-    title=f"({input_dimensions}-dim) Weight based MOO:relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%",
+    title=f"({input_dimensions}-dim) EHVI w/ adapted ref point GPR MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%",
 )
 
 fig1.show()

@@ -4,11 +4,13 @@ from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
 
 from src.weimoo.moos.expected_hypervolume_improvement_2d_moo import EHVI2dMOO
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
+from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+    return_pareto_front_2d,
+)
 from src.weimoo.interfaces.function import Function
 from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
 
-input_dimensions = 10
+input_dimensions = 5
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -16,48 +18,40 @@ upper_bounds_x = np.ones(input_dimensions)
 
 minimizer = DifferentialEvolution()
 
-max_iter_minimizer = 100
 max_evaluations = 50
 
-problem = get_problem("dtlz2",
-                      n_var=input_dimensions,
-                      n_obj=output_dimensions)
+problem = get_problem("zdt1", n_var=input_dimensions)
 
 
 class ExampleFunction(Function):
     def __call__(self, x):
-        self._evaluations.append([
-            x,
-            problem.evaluate(x)
-        ])
+        self._evaluations.append([x, problem.evaluate(x)])
         return problem.evaluate(x)
 
 
 # Initialiaze the function
 function = ExampleFunction()
 
-
 MOO = EHVI2dMOO()
 
-result = MOO(function=function,
-             minimizer=minimizer,
-             upper_bounds=upper_bounds_x,
-             lower_bounds=lower_bounds_x,
-             number_designs_LH=40,
-             max_evaluations=max_evaluations,
-             reference_point=np.array([2, 2]),
-             max_iter_minimizer=20,
-             training_iter=5000,
-             )
+reference_point = np.array([10, 10])
 
+result = MOO(
+    function=function,
+    minimizer=minimizer,
+    upper_bounds=upper_bounds_x,
+    lower_bounds=lower_bounds_x,
+    number_designs_LH=40,
+    max_evaluations=max_evaluations,
+    reference_point=reference_point,
+    max_iter_minimizer=100,
+    training_iter=5000,
+)
 
 real_PF = problem.pareto_front()
 
 PF = return_pareto_front_2d([point[1] for point in function.evaluations])
 
-
-reference_point = np.array([2, 2])
-real_PF = problem.pareto_front()
 
 metric = Hypervolume(ref_point=reference_point, normalize=False)
 
@@ -72,7 +66,6 @@ data = [
     go.Scatter(x=real_PF.T[0], y=real_PF.T[1], mode="markers"),
     go.Scatter(x=y.T[0], y=y.T[1], mode="markers"),
     go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers"),
-
 ]
 
 fig1 = go.Figure(data=data)
@@ -81,7 +74,7 @@ fig1.update_layout(
     width=800,
     height=600,
     plot_bgcolor="rgba(0,0,0,0)",
-    title=f"({input_dimensions}-dim) EHVI GPR MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
+    title=f"({input_dimensions}-dim) EHVI GPR MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%",
 )
 
 fig1.show()

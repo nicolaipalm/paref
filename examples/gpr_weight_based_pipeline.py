@@ -5,7 +5,9 @@ from pymoo.factory import get_problem
 from src.weimoo.interfaces.function import Function
 from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
 from src.weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
+from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+    return_pareto_front_2d,
+)
 from src.weimoo.weight_functions.scalar_potency import ScalarPotency
 
 input_dimensions = 10
@@ -19,17 +21,12 @@ minimizer = DifferentialEvolution()
 max_iter_minimizer = 1000
 max_evaluations = 50
 
-problem = get_problem("dtlz2",
-                      n_var=input_dimensions,
-                      n_obj=output_dimensions)
+problem = get_problem("dtlz2", n_var=input_dimensions, n_obj=output_dimensions)
 
 
 class ExampleFunction(Function):
     def __call__(self, x):
-        self._evaluations.append([
-            x,
-            problem.evaluate(x)
-        ])
+        self._evaluations.append([x, problem.evaluate(x)])
         return problem.evaluate(x)
 
 
@@ -37,19 +34,22 @@ class ExampleFunction(Function):
 function = ExampleFunction()
 
 # Initialize weight function
-weight_function = ScalarPotency(potency=2 * np.ones(output_dimensions), scalar=np.ones(output_dimensions))
+weight_function = ScalarPotency(
+    potency=2 * np.ones(output_dimensions), scalar=np.ones(output_dimensions)
+)
 
 MOO = GPRWeightBasedMOO(weight_function=weight_function)
 
-result = MOO(function=function,
-             minimizer=minimizer,
-             upper_bounds=upper_bounds_x,
-             lower_bounds=lower_bounds_x,
-             number_designs_LH=int(max_evaluations / 2),
-             max_evaluations=max_evaluations,
-             max_iter_minimizer=max_iter_minimizer,
-             training_iter=5000
-             )
+result = MOO(
+    function=function,
+    minimizer=minimizer,
+    upper_bounds=upper_bounds_x,
+    lower_bounds=lower_bounds_x,
+    number_designs_LH=int(max_evaluations / 2),
+    max_evaluations=max_evaluations,
+    max_iter_minimizer=max_iter_minimizer,
+    training_iter=5000,
+)
 
 print(result, function(result), weight_function(function(result)))
 print(function.evaluations)
@@ -61,7 +61,11 @@ PF = return_pareto_front_2d([point[1] for point in function.evaluations])
 data = [
     go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers"),
     go.Scatter(x=real_PF.T[0], y=real_PF.T[1], mode="markers"),
-    go.Scatter(x=np.array([function(result)[0]]), y=np.array([function(result)[1]]), mode="markers"),
+    go.Scatter(
+        x=np.array([function(result)[0]]),
+        y=np.array([function(result)[1]]),
+        mode="markers",
+    ),
 ]
 
 fig = go.Figure(data=data)
@@ -85,7 +89,6 @@ data = [
     go.Scatter(x=real_PF.T[0], y=real_PF.T[1], mode="markers"),
     go.Scatter(x=y.T[0], y=y.T[1], mode="markers"),
     go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers"),
-
 ]
 
 fig1 = go.Figure(data=data)
@@ -94,7 +97,7 @@ fig1.update_layout(
     width=800,
     height=600,
     plot_bgcolor="rgba(0,0,0,0)",
-    title=f"({input_dimensions}-dim) GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%"
+    title=f"({input_dimensions}-dim) GPR weight based MOO: relative Hypervolume: {hypervolume_weight / hypervolume_max * 100}%",
 )
 
 fig1.show()

@@ -1,6 +1,6 @@
 # Fixed
 MOO_name: expected_hypervolume_improvement_moo
-benchmarked_function_name: ZDT-2
+benchmarked_function_name: zdt1
 minimizer_name: Differential evolution
 # Changeable
 input_dimensions:
@@ -10,10 +10,10 @@ input_dimensions:
   - 25
   - 30
 output_dimension: 2
-number_designs_LH: 30
-max_iter_minimizer: 10
+number_designs_LH: 40
+max_iter_minimizer: 100
 max_evaluations_blackbox_function: 50
 reference_point:
   - 2
-  - 2
-training_iter_gpr: 1000
+  - 8
+training_iter_gpr: 5000

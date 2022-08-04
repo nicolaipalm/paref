@@ -2,7 +2,7 @@ import numpy as np
 from pymoo.factory import get_problem
 from scipy.stats import qmc
 
-from src.weimoo.interfaces import Function
+from src.weimoo.interfaces.function import Function
 from src.weimoo.surrogates.gpr import GPR
 
 max_iter = 20
@@ -18,18 +18,13 @@ initial_LH = qmc.scale(
     lower_bounds_design,
     upper_bounds_design,
 )
-problem = get_problem("dtlz2",
-                      n_var=input_dimensions,
-                      n_obj=output_dimensions)
+problem = get_problem("dtlz2", n_var=input_dimensions, n_obj=output_dimensions)
 
 
 class ExampleFunction(Function):
     def __call__(self, x):
         if len(self._evaluations) < max_iter:
-            self._evaluations.append([
-                x,
-                problem.evaluate(x)
-            ])
+            self._evaluations.append([x, problem.evaluate(x)])
         return problem.evaluate(x)
 
 
@@ -46,5 +41,4 @@ print(function(initial_LH))
 
 surrogate.train(train_x=input_parameters, train_y=output_parameters)
 
-print(output_parameters-surrogate(initial_LH))
-
+print(output_parameters - surrogate(initial_LH))
