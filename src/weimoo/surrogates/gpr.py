@@ -10,8 +10,6 @@ class ExactGP0(gpytorch.models.ExactGP):
     This class provides the base of the GPR.
     """
 
-    # An __init__ method that takes the training data and a likelihood,
-    # and constructs whatever objects are necessary for the _model’s forward method
     def __init__(self, train_x: torch.Tensor, train_y: torch.Tensor, likelihood):
         super(ExactGP0, self).__init__(train_x, train_y, likelihood)
         self.mean_module = gpytorch.means.ConstantMean()
@@ -39,7 +37,8 @@ class Gpr0Torch:
         self, pred_x: torch.Tensor
     ) -> gpytorch.distributions.MultivariateNormal:
         """
-        Doing predictions based on the models and the prediction data. Input and output need to be tensors.
+        Doing predictions based on the models and the prediction data.
+        Input and output need to be tensors.
         Note that the output need to be of dimension one.
         """
         self._model.eval()
@@ -106,7 +105,7 @@ class Gpr0Torch:
         mll = gpytorch.mlls.ExactMarginalLogLikelihood(self._likelihood, model)
 
         hyper_parameter = {name: [] for name, _ in model.named_parameters()}
-        hyper_parameter["loss"] = []
+        hyper_parameter['loss'] = []
 
         # Start the training
         for i in range(self._training_iter):
@@ -137,7 +136,7 @@ class Gpr0Torch:
                     hyper_parameter[name].append(parameter.item())
 
             # Appending loss
-            hyper_parameter["loss"].append(loss.item())
+            hyper_parameter['loss'].append(loss.item())
 
         self._model = model
         return hyper_parameter
@@ -146,7 +145,7 @@ class Gpr0Torch:
         """
         Save the trained hyperparameter to a .pth file.
         """
-        torch.save(self._model.state_dict(), state_name + ".pth")
+        torch.save(self._model.state_dict(), state_name + '.pth')
         return True
 
     def load_state(
@@ -186,20 +185,22 @@ class GPR:
         models = []
         for output in train_y.T:
             train_y = torch.Tensor(output)
-            model = Gpr0Torch()
+            model = Gpr0Torch(
+                training_iter=self._training_iter, learning_rate=self._learning_rate
+            )
             hyper_parameters = model._train_with_attention(train_x, train_y)
             ####
             f, axs = plt.subplots(
                 2, int(len(hyper_parameters) / 2 + 1), figsize=(12, 8)
             )
-            f.suptitle("Hyper parameters")
+            f.suptitle('Hyper parameters')
             ticker_x = 0
             ticker_y = 0
             print(hyper_parameters.keys())
             for hyper_parameter in hyper_parameters.keys():
                 axs[ticker_x, ticker_y].plot(hyper_parameters.get(hyper_parameter))
                 axs[ticker_x, ticker_y].set(
-                    xlabel="training_iter", ylabel=hyper_parameter
+                    xlabel='training_iter', ylabel=hyper_parameter
                 )
                 ticker_x += 1
                 ticker_x = ticker_x % 2
