@@ -9,4 +9,4 @@ input_dimensions:
   - 25
   - 30
 output_dimension: 2
-max_evaluations_blackbox_function: 50
+max_evaluations_blackbox_function: 100
