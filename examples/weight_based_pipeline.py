@@ -2,11 +2,11 @@ import numpy as np
 import plotly.graph_objects as go
 from pymoo.factory import get_problem
 
-from src.weimoo.moos.helper_functions import return_pareto_front_2d
-from src.weimoo.moos.weight_based_moo import WeightBasedMOO
-from src.weimoo.interfaces.function import Function
-from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
-from src.weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.moos.helper_functions import return_pareto_front_2d
+from weimoo.moos.weight_based_moo import WeightBasedMOO
+from weimoo.interfaces.function import Function
+from weimoo.minimizers.differential_evolution import DifferentialEvolution
+from weimoo.weight_functions.scalar_potency import ScalarPotency
 
 input_dimensions = 10
 output_dimensions = 2

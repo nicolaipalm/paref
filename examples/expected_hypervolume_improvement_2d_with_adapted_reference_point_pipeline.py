@@ -3,14 +3,14 @@ import plotly.graph_objects as go
 from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
 
-from src.weimoo.moos.expected_hypervolume_improvement_2d_with_adapted_reference_point_moo import (
+from weimoo.moos.expected_hypervolume_improvement_2d_with_adapted_reference_point_moo import (
     EHVI2dAdaptedReferencePointMOO,
 )
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+from weimoo.moos.helper_functions.return_pareto_front_2d import (
     return_pareto_front_2d,
 )
-from src.weimoo.interfaces.function import Function
-from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
+from weimoo.interfaces.function import Function
+from weimoo.minimizers.differential_evolution import DifferentialEvolution
 
 input_dimensions = 5
 output_dimensions = 2

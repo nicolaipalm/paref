@@ -2,8 +2,8 @@ import numpy as np
 from pymoo.factory import get_problem
 from scipy.stats import qmc
 
-from src.weimoo.interfaces.function import Function
-from src.weimoo.surrogates.gpr import GPR
+from weimoo.interfaces.function import Function
+from weimoo.surrogates.gpr import GPR
 
 max_iter = 20
 input_dimensions = 2
