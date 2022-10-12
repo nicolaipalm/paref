@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import yaml
 from pymoo.indicators.hv import Hypervolume
 
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+from weimoo.moos.helper_functions.return_pareto_front_2d import (
     return_pareto_front_2d,
 )
 

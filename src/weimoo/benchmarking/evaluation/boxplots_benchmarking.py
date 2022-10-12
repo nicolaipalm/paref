@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 from pymoo.factory import get_problem
 
-from src.weimoo.benchmarking.evaluation.evaluation_moo import EvaluationMOO
+from weimoo.benchmarking.evaluation.evaluation_moo import EvaluationMOO
 
 moo_names = [
     # "gpr_weight_based_moo",

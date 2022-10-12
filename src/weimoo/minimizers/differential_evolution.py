@@ -3,7 +3,7 @@ from typing import Callable
 import numpy as np
 from scipy.optimize import differential_evolution
 
-from src.weimoo.interfaces.minimizer import Minimizer
+from weimoo.interfaces.minimizer import Minimizer
 
 
 class DifferentialEvolution(Minimizer):
