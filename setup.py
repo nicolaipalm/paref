@@ -16,14 +16,14 @@ setup(
     package_dir={'': 'src'},
     python_requires='>=3.6',
     install_requires=[
-        'numpy; python_version~="1.21.2"',
-        'scipy; python_version~="1.7.1"',
-        'pymoo; python_version~="0.5.0"',
-        'plotly; python_version~="5.1.0"',
-        'gpytorch; python_version~="1.5.1"',
-        'torch; python_version~="1.12.0"',
-        'matplotlib; python_version~="3.4.2"',
-        'tqdm; python_version~="4.62.2"',
+        'numpy',
+        'scipy',
+        'pymoo',
+        'plotly',
+        'gpytorch',
+        'torch',
+        'matplotlib',
+        'tqdm',
     ],
 
 )
