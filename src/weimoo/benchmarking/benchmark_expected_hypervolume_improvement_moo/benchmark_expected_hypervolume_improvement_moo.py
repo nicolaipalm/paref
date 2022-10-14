@@ -4,10 +4,10 @@ import numpy as np
 import yaml
 from pymoo.factory import get_problem
 
-from src.weimoo.interfaces.function import Function
-from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
-from src.weimoo.moos.expected_hypervolume_improvement_2d_moo import EHVI2dMOO
-from src.weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.interfaces.function import Function
+from weimoo.minimizers.differential_evolution import DifferentialEvolution
+from weimoo.moos.expected_hypervolume_improvement_2d_moo import EHVI2dMOO
+from weimoo.weight_functions.scalar_potency import ScalarPotency
 
 # MULTIPROCESSING!
 #####################

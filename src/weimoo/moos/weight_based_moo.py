@@ -1,8 +1,8 @@
 import numpy as np
 
-from src.weimoo.interfaces.function import Function
-from src.weimoo.interfaces.minimizer import Minimizer
-from src.weimoo.interfaces.weight_function import WeightFunction
+from weimoo.interfaces.function import Function
+from weimoo.interfaces.minimizer import Minimizer
+from weimoo.interfaces.weight_function import WeightFunction
 
 
 class WeightBasedMOO:

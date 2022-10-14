@@ -2,13 +2,13 @@ import numpy as np
 import plotly.graph_objects as go
 from pymoo.factory import get_problem
 
-from src.weimoo.moos.gpr_multiple_weight_based_moo import GPRMultipleWeightsBasedMOO
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+from weimoo.moos.gpr_multiple_weight_based_moo import GPRMultipleWeightsBasedMOO
+from weimoo.moos.helper_functions.return_pareto_front_2d import (
     return_pareto_front_2d,
 )
-from src.weimoo.interfaces.function import Function
-from src.weimoo.minimizers.differential_evolution import DifferentialEvolution
-from src.weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.interfaces.function import Function
+from weimoo.minimizers.differential_evolution import DifferentialEvolution
+from weimoo.weight_functions.scalar_potency import ScalarPotency
 
 input_dimensions = 20
 output_dimensions = 2

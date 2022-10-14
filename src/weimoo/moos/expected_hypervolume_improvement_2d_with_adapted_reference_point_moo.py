@@ -3,13 +3,13 @@ import torch
 from scipy.stats import qmc
 from tqdm import tqdm
 
-from src.weimoo.moos.helper_functions.ehvi_2d import ehvi_2d
-from src.weimoo.moos.helper_functions.return_pareto_front_2d import (
+from weimoo.moos.helper_functions.ehvi_2d import ehvi_2d
+from weimoo.moos.helper_functions.return_pareto_front_2d import (
     return_pareto_front_2d,
 )
-from src.weimoo.interfaces.function import Function
-from src.weimoo.interfaces.minimizer import Minimizer
-from src.weimoo.surrogates.gpr import GPR
+from weimoo.interfaces.function import Function
+from weimoo.interfaces.minimizer import Minimizer
+from weimoo.surrogates.gpr import GPR
 
 
 class EHVI2dAdaptedReferencePointMOO:
