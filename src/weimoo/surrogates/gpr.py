@@ -108,7 +108,7 @@ class Gpr0Torch:
         hyper_parameter['loss'] = []
 
         # Start the training
-        for i in range(self._training_iter):
+        for i in tqdm(range(self._training_iter)):
             # Zero gradients from previous iteration
             optimizer.zero_grad()
             # Output from _model
