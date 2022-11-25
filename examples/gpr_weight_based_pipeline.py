@@ -8,9 +8,9 @@ from weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
 from weimoo.moos.helper_functions.return_pareto_front_2d import (
     return_pareto_front_2d,
 )
-from weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.pareto_reflecting_library.weighted_norm_to_utopia import WeightedNormToUtopia
 
-input_dimensions = 10
+input_dimensions = 2
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -18,10 +18,10 @@ upper_bounds_x = np.ones(input_dimensions)
 
 minimizer = DifferentialEvolution()
 
-max_iter_minimizer = 1000
-max_evaluations = 50
+max_iter_minimizer = 10
+max_evaluations = 10
 
-problem = get_problem("dtlz2", n_var=input_dimensions, n_obj=output_dimensions)
+problem = get_problem("dtlz2", n_var=input_dimensions,n_obj=output_dimensions)
 
 
 class ExampleFunction(Function):
@@ -34,8 +34,8 @@ class ExampleFunction(Function):
 function = ExampleFunction()
 
 # Initialize weight function
-weight_function = ScalarPotency(
-    potency=2 * np.ones(output_dimensions), scalar=np.ones(output_dimensions)
+weight_function = WeightedNormToUtopia(utopia_point=np.array([0,0]),
+    potency=6 * np.ones(output_dimensions), scalar=np.ones(output_dimensions)
 )
 
 MOO = GPRWeightBasedMOO(weight_function=weight_function)
@@ -48,11 +48,11 @@ result = MOO(
     number_designs_LH=int(max_evaluations / 2),
     max_evaluations=max_evaluations,
     max_iter_minimizer=max_iter_minimizer,
-    training_iter=5000,
+    training_iter=1000,
 )
 
-print(result, function(result), weight_function(function(result)))
-print(function.evaluations)
+print("Result: \n",result, function(result), weight_function(function(result)))
+print("Evaluations: \n",function.evaluations)
 
 real_PF = problem.pareto_front()
 
@@ -81,7 +81,7 @@ metric = Hypervolume(ref_point=reference_point, normalize=False)
 hypervolume_max = metric.do(problem.pareto_front())
 hypervolume_weight = metric.do(PF)
 
-print(hypervolume_weight / hypervolume_max)
+print("HV found/HV max\n:",hypervolume_weight / hypervolume_max)
 
 y = np.array([evaluation[1] for evaluation in function.evaluations])
 

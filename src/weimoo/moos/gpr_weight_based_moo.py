@@ -3,13 +3,13 @@ from scipy.stats import qmc
 
 from weimoo.interfaces.function import Function
 from weimoo.interfaces.minimizer import Minimizer
-from weimoo.interfaces.weight_function import WeightFunction
+from weimoo.pareto_reflecting_library.weighted_norm_to_utopia import WeightedNormToUtopia
 from weimoo.surrogates.gpr import GPR
 
 
 class GPRWeightBasedMOO:
     def __init__(
-        self, weight_function: WeightFunction,
+        self, weight_function: WeightedNormToUtopia,
     ):
         self._weight_function = weight_function
 

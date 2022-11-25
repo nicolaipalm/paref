@@ -6,7 +6,7 @@ from weimoo.moos.helper_functions import return_pareto_front_2d
 from weimoo.moos.weight_based_moo import WeightBasedMOO
 from weimoo.interfaces.function import Function
 from weimoo.minimizers.differential_evolution import DifferentialEvolution
-from weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.pareto_reflecting_library.weighted_norm_to_utopia import WeightedNormToUtopia
 
 input_dimensions = 10
 output_dimensions = 2
@@ -32,7 +32,7 @@ class ExampleFunction(Function):
 function = ExampleFunction()
 
 # Initialize weight function
-weight_function = ScalarPotency(
+weight_function = WeightedNormToUtopia(utopia_point=np.array([0,0]),
     potency=2 * np.ones(output_dimensions), scalar=np.ones(output_dimensions)
 )
 

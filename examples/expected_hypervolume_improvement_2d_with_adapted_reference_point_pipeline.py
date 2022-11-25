@@ -21,9 +21,9 @@ upper_bounds_x = np.ones(input_dimensions)
 minimizer = DifferentialEvolution()
 
 max_iter_minimizer = 100
-max_evaluations = 50
+max_evaluations = 30
 
-problem = get_problem("zdt1", n_var=input_dimensions)
+problem = get_problem("dtlz2", n_var=input_dimensions,n_obj=output_dimensions)
 
 
 class ExampleFunction(Function):
@@ -43,10 +43,10 @@ result = MOO(
     minimizer=minimizer,
     upper_bounds=upper_bounds_x,
     lower_bounds=lower_bounds_x,
-    number_designs_LH=40,
+    number_designs_LH=int(max_evaluations/2),
     max_evaluations=max_evaluations,
-    max_iter_minimizer=100,
-    training_iter=5000,
+    max_iter_minimizer=max_iter_minimizer,
+    training_iter=1000,
 )
 
 

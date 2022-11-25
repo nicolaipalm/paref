@@ -8,9 +8,9 @@ from weimoo.moos.helper_functions.return_pareto_front_2d import (
 )
 from weimoo.interfaces.function import Function
 from weimoo.minimizers.differential_evolution import DifferentialEvolution
-from weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.pareto_reflecting_library.weighted_norm_to_utopia import WeightedNormToUtopia
 
-input_dimensions = 20
+input_dimensions = 5
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
@@ -19,7 +19,7 @@ upper_bounds_x = np.ones(input_dimensions)
 minimizer = DifferentialEvolution()
 
 max_iter_minimizer = 100
-max_evaluations_per_weight = 5
+max_evaluations_per_weight = 3
 
 problem = get_problem("dtlz2", n_var=input_dimensions, n_obj=output_dimensions)
 
@@ -34,15 +34,15 @@ class ExampleFunction(Function):
 function = ExampleFunction()
 
 # Initialize weight function
-weight_function_1 = ScalarPotency(
+weight_function_1 = WeightedNormToUtopia(utopia_point=np.zeros(2),
     potency=2 * np.ones(output_dimensions), scalar=np.array([1, 0.2])
 )
 
-weight_function_2 = ScalarPotency(
+weight_function_2 = WeightedNormToUtopia(utopia_point=np.zeros(2),
     potency=2 * np.ones(output_dimensions), scalar=np.array([0.2, 1])
 )
 
-weight_function_3 = ScalarPotency(
+weight_function_3 = WeightedNormToUtopia(utopia_point=np.zeros(2),
     potency=2 * np.ones(output_dimensions), scalar=np.array([1, 1])
 )
 
@@ -56,10 +56,10 @@ result = MOO(
     minimizer=minimizer,
     upper_bounds=upper_bounds_x,
     lower_bounds=lower_bounds_x,
-    number_designs_LH=7 * max_evaluations_per_weight,
+    number_designs_LH=30-3 * max_evaluations_per_weight,
     max_evaluations_per_weight=max_evaluations_per_weight,
     max_iter_minimizer=max_iter_minimizer,
-    training_iter=5000,
+    training_iter=1000,
 )
 
 real_PF = problem.pareto_front()

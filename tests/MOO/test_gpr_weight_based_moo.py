@@ -5,7 +5,7 @@ import numpy as np
 from src.weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
 from src.weimoo.interfaces import Function
 from src.weimoo.minimizers import DifferentialEvolution
-from src.weimoo.weight_functions import ScalarPotency
+from src.weimoo.pareto_reflecting_library import ScalarPotency
 
 
 class TestGPRWeightBasedMOO(unittest.TestCase):

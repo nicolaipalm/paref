@@ -7,7 +7,7 @@ from pymoo.factory import get_problem
 from weimoo.interfaces.function import Function
 from weimoo.minimizers.differential_evolution import DifferentialEvolution
 from weimoo.moos.expected_hypervolume_improvement_2d_moo import EHVI2dMOO
-from weimoo.weight_functions.scalar_potency import ScalarPotency
+from weimoo.pareto_reflecting_library.weighted_norm_to_utopia import ScalarPotency
 
 # MULTIPROCESSING!
 #####################

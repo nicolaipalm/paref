@@ -4,10 +4,10 @@ from pymoo.factory import get_problem
 
 from weimoo.benchmarking.evaluation.evaluation_moo import EvaluationMOO
 
-moo_names = [  # "gpr_weight_based_moo",
-    # "gpr_multiple_weights_based_moo",
-    # "expected_hypervolume_improvement_moo",
-    'nsga2',
+moo_names = [  "gpr_weight_based_moo",
+     "gpr_multiple_weights_based_moo",
+     "expected_hypervolume_improvement_moo",
+    #'nsga2',
     # "latin_hypercube",
 ]
 
