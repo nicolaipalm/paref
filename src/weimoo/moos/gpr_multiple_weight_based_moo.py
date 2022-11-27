@@ -3,27 +3,27 @@ from typing import List
 import numpy as np
 from scipy.stats import qmc
 
-from weimoo.interfaces.function import Function
-from weimoo.interfaces.minimizer import Minimizer
-from weimoo.interfaces.weight_function import WeightFunction
+from weimoo.function_library.interfaces.function import Function
+from weimoo.minimizers.interfaces.minimizer import Minimizer
+from weimoo.pareto_reflecting_library.functions.weighted_norm_to_utopia import WeightedNormToUtopia
 from weimoo.surrogates.gpr import GPR
 
 
 class GPRMultipleWeightsBasedMOO:
-    def __init__(self, weight_functions: List[WeightFunction]):
+    def __init__(self, weight_functions: List[WeightedNormToUtopia]):
         self._weight_functions = weight_functions
 
     def __call__(
-        self,
-        function: Function,
-        minimizer: Minimizer,
-        upper_bounds: np.ndarray,
-        lower_bounds: np.ndarray,
-        number_designs_LH: int,
-        max_evaluations_per_weight: int,
-        max_iter_minimizer: int = 1000,
-        training_iter: int = 1000,
-        learning_rate=0.1,
+            self,
+            function: Function,
+            minimizer: Minimizer,
+            upper_bounds: np.ndarray,
+            lower_bounds: np.ndarray,
+            number_designs_LH: int,
+            max_evaluations_per_weight: int,
+            max_iter_minimizer: int = 1000,
+            training_iter: int = 1000,
+            learning_rate=0.1,
     ) -> List[np.ndarray]:
         function.clear_evaluations()
         # Setting up a LH for the seed

@@ -28,5 +28,15 @@ class Function:
     def evaluations(self):
         return self._evaluations
 
+    @property
+    def x(self):
+        return np.array([evaluation[0] for evaluation in self._evaluations])
+
+    @property
+    def y(self):
+        return np.array([evaluation[1] for evaluation in self._evaluations])
+
     def clear_evaluations(self):
         self._evaluations = []
+
+

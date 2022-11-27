@@ -1,6 +1,6 @@
 import numpy as np
 
-from weimoo.interfaces.pareto_reflecting_function import ParetoReflectingFunction
+from weimoo.pareto_reflecting_library.functions.interfaces.pareto_reflecting_function import ParetoReflectingFunction
 
 
 class WeightedNormToUtopia(ParetoReflectingFunction):
@@ -9,5 +9,5 @@ class WeightedNormToUtopia(ParetoReflectingFunction):
         self.scalar = scalar
         self.utopia_point = utopia_point
 
-    def __call__(self, x):
-        return np.sum(self.scalar * (x ** self.potency))
+    def __call__(self, x: np.ndarray):
+        return np.sum(self.scalar * ((x-self.utopia_point) ** self.potency))

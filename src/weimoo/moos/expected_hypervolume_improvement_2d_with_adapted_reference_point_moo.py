@@ -7,8 +7,8 @@ from weimoo.moos.helper_functions.ehvi_2d import ehvi_2d
 from weimoo.moos.helper_functions.return_pareto_front_2d import (
     return_pareto_front_2d,
 )
-from weimoo.interfaces.function import Function
-from weimoo.interfaces.minimizer import Minimizer
+from weimoo.function_library.interfaces.function import Function
+from weimoo.minimizers.interfaces.minimizer import Minimizer
 from weimoo.surrogates.gpr import GPR
 
 

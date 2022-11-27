@@ -2,7 +2,7 @@ import numpy as np
 from pymoo.factory import get_problem
 from scipy.stats import qmc
 
-from weimoo.interfaces.function import Function
+from weimoo.function_library.interfaces.function import Function
 from weimoo.surrogates.gpr import GPR
 
 max_iter = 20

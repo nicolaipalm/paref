@@ -4,9 +4,9 @@ from pymoo.factory import get_problem
 
 from weimoo.moos.helper_functions import return_pareto_front_2d
 from weimoo.moos.weight_based_moo import WeightBasedMOO
-from weimoo.interfaces.function import Function
+from weimoo.function_library.interfaces.function import Function
 from weimoo.minimizers.differential_evolution import DifferentialEvolution
-from weimoo.pareto_reflecting_library.weighted_norm_to_utopia import WeightedNormToUtopia
+from weimoo.pareto_reflecting_library.functions.weighted_norm_to_utopia import WeightedNormToUtopia
 
 input_dimensions = 10
 output_dimensions = 2
