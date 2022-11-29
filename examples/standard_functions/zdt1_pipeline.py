@@ -1,6 +1,6 @@
 import numpy as np
-from weimoo.function_library.zdt1 import zdt1
-from weimoo.express.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
+from paref.benchmarking.testing_zdt1 import TestingZDT1
+from paref.express.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
 
 input_dimensions = 5
 
@@ -13,9 +13,9 @@ epsilon = 1e-1
 
 reference_point = 3 * np.ones(2)
 
-bench = zdt1(input_dimensions=input_dimensions,
-             max_iter_minimizer=max_iter_minimizer,
-             lh_evaluations=lh_evaluations)
+bench = TestingZDT1(input_dimensions=input_dimensions,
+                    max_iter_minimizer=max_iter_minimizer,
+                    lh_evaluations=lh_evaluations)
 
 moo = WeightedNormToUtopiaGPR(upper_bounds_x=upper_bounds_x,
                               lower_bounds_x=lower_bounds_x,

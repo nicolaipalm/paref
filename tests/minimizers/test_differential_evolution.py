@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from src.weimoo.interfaces import Function
-from src.weimoo.minimizers import DifferentialEvolution
+from src.paref.interfaces import Function
+from paref.moos.minimizers import DifferentialEvolution
 
 
 class MyTestCase(unittest.TestCase):

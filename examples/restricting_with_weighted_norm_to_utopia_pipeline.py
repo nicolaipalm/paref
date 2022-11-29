@@ -1,7 +1,7 @@
 import numpy as np
 
-from weimoo.express.restricting_with_weighted_norm_to_utopia import RestrictingWithWeightedNormToUtopia
-from weimoo.function_library.dtlz2 import dtlz2
+from paref.express.restricting_with_weighted_norm_to_utopia import RestrictingWithWeightedNormToUtopia
+from paref.benchmarking.testing_dtlz2 import TestingDTLZ2
 
 input_dimensions = 5
 
@@ -15,10 +15,9 @@ restricting_point = np.array([0.9, 0.9])
 
 reference_point = 3 * np.ones(2)
 
-bench = dtlz2(input_dimensions=input_dimensions,
-              max_iter_minimizer=max_iter_minimizer,
-              output_dimensions=2,
-              lh_evaluations=lh_evaluations)
+bench = TestingDTLZ2(input_dimensions=input_dimensions,
+                     max_iter_minimizer=max_iter_minimizer,
+                     lh_evaluations=lh_evaluations)
 
 moo = RestrictingWithWeightedNormToUtopia(upper_bounds_x=upper_bounds_x,
                                           lower_bounds_x=lower_bounds_x,

@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.weimoo.pareto_reflecting_library import ScalarPotency
+from src.paref.pareto_reflecting_library import ScalarPotency
 
 
 class TestScalarPotency(unittest.TestCase):

@@ -2,10 +2,10 @@ import unittest
 
 import numpy as np
 
-from src.weimoo.moos.weight_based_moo import WeightBasedMOO
-from src.weimoo.interfaces import Function
-from src.weimoo.minimizers import DifferentialEvolution
-from src.weimoo.pareto_reflecting_library import ScalarPotency
+from src.paref.moos.weight_based_moo import WeightBasedMOO
+from src.paref.interfaces import Function
+from paref.moos.minimizers import DifferentialEvolution
+from src.paref.pareto_reflecting_library import ScalarPotency
 
 
 class TestWeightBasedMOO(unittest.TestCase):

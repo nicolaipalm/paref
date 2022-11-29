@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='weimoo',
+    name='paref',
     version='1.0.0',
     license='MIT',
     description='Small package containing implementations and interfaces for weight-based multi-objective optimization approaches',

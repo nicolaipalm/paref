@@ -2,10 +2,10 @@ import unittest
 
 import numpy as np
 
-from src.weimoo.moos.gpr_weight_based_moo import GPRWeightBasedMOO
-from src.weimoo.interfaces import Function
-from src.weimoo.minimizers import DifferentialEvolution
-from src.weimoo.pareto_reflecting_library import ScalarPotency
+from src.paref.moos.gpr_weight_based_moo import GPRWeightBasedMOO
+from src.paref.interfaces import Function
+from paref.moos.minimizers import DifferentialEvolution
+from src.paref.pareto_reflecting_library import ScalarPotency
 
 
 class TestGPRWeightBasedMOO(unittest.TestCase):

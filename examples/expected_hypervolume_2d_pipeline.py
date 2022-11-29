@@ -1,7 +1,7 @@
 import numpy as np
 
-from weimoo.function_library.dtlz2 import dtlz2
-from weimoo.express.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
+from paref.benchmarking.testing_dtlz2 import TestingDTLZ2
+from paref.express.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
 
 input_dimensions = 2
 output_dimensions = 2
@@ -15,11 +15,10 @@ epsilon = 1e-2
 
 reference_point = 3 * np.ones(output_dimensions)
 
-bench = dtlz2(input_dimensions=input_dimensions,
-              output_dimensions=output_dimensions,
-              max_iter_minimizer=max_iter_minimizer,
-              lh_evaluations=lh_evaluations,
-              )
+bench = TestingDTLZ2(input_dimensions=input_dimensions,
+                     max_iter_minimizer=max_iter_minimizer,
+                     lh_evaluations=lh_evaluations,
+                     )
 
 moo = ExpectedHypervolumeImprovement2d(upper_bounds_x=upper_bounds_x,
                                        lower_bounds_x=lower_bounds_x,
