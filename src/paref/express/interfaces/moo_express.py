@@ -7,5 +7,10 @@ from paref.function_library.interfaces.function import Function
 class MOOExpress:
     @abstractmethod
     def __call__(self,
-                 blackbox_function: Function,):
+                 blackbox_function: Function, ):
+        pass
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
         pass

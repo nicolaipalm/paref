@@ -20,7 +20,7 @@ class TestingDTLZ2:
         self.upper_bounds_x = np.ones(input_dimensions)
         self.max_iter_minimizer = max_iter_minimizer
 
-        self.function = DTLZ2(input_dimensions=self.input_dimensions, output_dimensions=output_dimensions)
+        self.function = DTLZ2(input_dimensions=self.input_dimensions, output_dimensions=self.output_dimensions)
 
         # LH evaluation
         [self.function(x) for x in qmc.scale(
@@ -55,7 +55,7 @@ class TestingDTLZ2:
             width=800,
             height=600,
             plot_bgcolor="rgba(0,0,0,0)",
-            title=f"({self.input_dimensions}-dim) dtlz2 test function - relative Hypervolume: {hypervolume_weight / self.hypervolume_max * 100}%",
+            title=f"dtlz2 - {moo.name}: {self.input_dimensions}-dim with rel. HV: {hypervolume_weight / self.hypervolume_max * 100}%",
         )
 
         fig1.show()

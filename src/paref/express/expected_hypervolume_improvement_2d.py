@@ -69,3 +69,7 @@ class ExpectedHypervolumeImprovement2d(MOOExpress):
             iteration_step += 1
 
             stop = stopping_criteria(blackbox_function=blackbox_function)
+
+    @property
+    def name(self) -> str:
+        return "expected_hypervolume_improvement"

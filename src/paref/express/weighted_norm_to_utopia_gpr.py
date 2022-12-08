@@ -70,3 +70,7 @@ class WeightedNormToUtopiaGPR(MOOExpress):
         moo(blackbox_function=blackbox_function,
             pareto_reflecting_sequence=sequence,
             stopping_criteria=stopping_criteria)
+
+    @property
+    def name(self) -> str:
+        return "WeightedNormToUtopia"
