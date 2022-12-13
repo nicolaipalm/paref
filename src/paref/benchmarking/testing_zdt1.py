@@ -33,6 +33,7 @@ class TestingZDT1:
         self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
     def __call__(self, moo: MOOExpress):
+        y_initial = self.function.y
         moo(blackbox_function=self.function)
 
         PF = return_pareto_front_2d([point[1] for point in self.function.evaluations])
@@ -43,9 +44,10 @@ class TestingZDT1:
         y = np.array([evaluation[1] for evaluation in self.function.evaluations])
 
         data = [
-            go.Scatter(x=self.real_PF.T[0], y=self.real_PF.T[1], mode="markers"),
-            go.Scatter(x=y.T[0], y=y.T[1], mode="markers"),
-            go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers"),
+            go.Scatter(x=self.real_PF.T[0], y=self.real_PF.T[1], name="Real Pareto front"),
+            go.Scatter(x=y.T[0], y=y.T[1], mode="markers", name="Evaluations"),
+            go.Scatter(x=y_initial.T[0], y=y_initial.T[1], mode="markers", name="Initial Evaluations"),
+            go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers", name="Found Pareto front"),
         ]
 
         fig1 = go.Figure(data=data)

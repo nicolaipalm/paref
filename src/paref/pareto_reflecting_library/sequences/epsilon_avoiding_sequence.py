@@ -1,6 +1,7 @@
 import numpy as np
 
 from paref.function_library.interfaces.function import Function
+from paref.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
 from paref.pareto_reflecting_library.functions.epsilon_avoiding import EpsilonAvoiding
 from paref.pareto_reflecting_library.functions.interfaces.pareto_reflecting_function import ParetoReflectingFunction
 from paref.pareto_reflecting_library.functions.operations.composing import Composing
@@ -18,5 +19,5 @@ class EpsilonAvoidingSequence(SequenceParetoReflectingFunctions):
         return Composing(
             EpsilonAvoiding(nadir=self._nadir,
                             epsilon=self._epsilon,
-                            epsilon_avoiding_points=blackbox_function.y),
+                            epsilon_avoiding_points=return_pareto_front_2d(blackbox_function.y)),
             self._pareto_reflecting_function)

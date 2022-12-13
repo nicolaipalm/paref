@@ -14,7 +14,6 @@ class GPRMinimizer(MOO):
     def __init__(self,
                  upper_bounds: np.ndarray,
                  lower_bounds: np.ndarray,
-                 number_designs_lh: int = 20,
                  max_iter_minimizer: int = 100,
                  training_iter: int = 2000,
                  minimizer: Minimizer= DifferentialEvolution(),
@@ -22,7 +21,6 @@ class GPRMinimizer(MOO):
         self._minimizer = minimizer
         self._upper_bounds = upper_bounds
         self._lower_bounds = lower_bounds
-        self._number_designs_lh = number_designs_lh
         self._max_iter_minimizer = max_iter_minimizer
         self._training_iter = training_iter
         self._learning_rate = learning_rate
@@ -49,7 +47,7 @@ class GPRMinimizer(MOO):
 
             pareto_reflecting_function = pareto_reflecting_sequence.next(blackbox_function=blackbox_function)
             res = self._minimizer(
-                function=lambda x: pareto_reflecting_function(gpr(x)),
+                function=lambda x: pareto_reflecting_function(gpr(x)-gpr.std(x)),
                 max_iter=self._max_iter_minimizer,
                 upper_bounds=self._upper_bounds,
                 lower_bounds=self._lower_bounds,
