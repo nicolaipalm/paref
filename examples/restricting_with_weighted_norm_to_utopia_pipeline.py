@@ -9,11 +9,11 @@ input_dimensions = 5
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 15
+max_evaluations = 5
 max_iter_minimizer = 100
 lh_evaluations = 35
 
-restricting_point = np.array([19, 19])
+restricting_point = np.array([0.7, 9])
 
 reference_point = 3 * np.ones(2)
 epsilon = 1e-3
@@ -28,7 +28,7 @@ moo = RestrictingWithWeightedNormToUtopia(upper_bounds_x=upper_bounds_x,
                                           restricting_point=restricting_point,
                                           nadir=np.array([10, 10]),
                                           potency=np.array([1, 1]),
-                                          scalar=np.array([1, 0.01])
+                                          scalar=np.array([0.1, 1])
                                           )
 
 bench(moo)

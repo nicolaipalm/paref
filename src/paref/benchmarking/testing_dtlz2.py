@@ -3,7 +3,7 @@ from scipy.stats import qmc
 
 from paref.express.interfaces.moo_express import MOOExpress
 from paref.function_library.dtlz2 import DTLZ2
-from paref.moos.helper_functions.return_pareto_front_2d import return_pareto_front_2d
+from paref.moos.helper_functions.return_pareto_front_2d import return_pareto_front
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 
@@ -37,7 +37,7 @@ class TestingDTLZ2:
         y_initial = self.function.y
         moo(blackbox_function=self.function)
 
-        PF = return_pareto_front_2d([point[1] for point in self.function.evaluations])
+        PF = return_pareto_front([point[1] for point in self.function.evaluations])
         hypervolume_weight = self.metric.do(PF)
 
         print("HV found/HV max\n:", hypervolume_weight / self.hypervolume_max)

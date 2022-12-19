@@ -7,7 +7,7 @@ import yaml
 from pymoo.indicators.hv import Hypervolume
 
 from paref.moos.helper_functions.return_pareto_front_2d import (
-    return_pareto_front_2d,
+    return_pareto_front,
 )
 
 
@@ -24,7 +24,7 @@ class EvaluationMOOSingleRun:
 
             self.x = [np.array(element.get("x")) for element in self.data]
             self.y = np.array([np.array(element.get("y")) for element in self.data])
-            self.pareto_front_evaluations = return_pareto_front_2d(self.y)
+            self.pareto_front_evaluations = return_pareto_front(self.y)
 
     def plot_dots_2d(self, pareto_front: np.ndarray = None):
 
