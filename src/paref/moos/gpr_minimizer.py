@@ -16,14 +16,16 @@ class GPRMinimizer(MOO):
                  lower_bounds: np.ndarray,
                  max_iter_minimizer: int = 100,
                  training_iter: int = 2000,
-                 minimizer: Minimizer= DifferentialEvolution(),
-                 learning_rate: float = 0.05):
+                 minimizer: Minimizer = DifferentialEvolution(),
+                 learning_rate: float = 0.05,
+                 min_distance_to_evaluated_points: float = 1e-2):
         self._minimizer = minimizer
         self._upper_bounds = upper_bounds
         self._lower_bounds = lower_bounds
         self._max_iter_minimizer = max_iter_minimizer
         self._training_iter = training_iter
         self._learning_rate = learning_rate
+        self._min_distance_to_evaluated_points = min_distance_to_evaluated_points
 
     def __call__(self,
                  blackbox_function: Function,
@@ -42,19 +44,31 @@ class GPRMinimizer(MOO):
                 f"{iteration_step} Training of the GPR...\n"
             )
             gpr.train(train_x=train_x, train_y=train_y)
-            print(f"\n finished!\n")
+            print(f"\nfinished!\n")
             print(f"Starting minimization...")
 
             pareto_reflecting_function = pareto_reflecting_sequence.next(blackbox_function=blackbox_function)
             res = self._minimizer(
-                function=lambda x: pareto_reflecting_function(gpr(x)-gpr.std(x)),
+                function=lambda x: pareto_reflecting_function(gpr(x)),
                 max_iter=self._max_iter_minimizer,
                 upper_bounds=self._upper_bounds,
                 lower_bounds=self._lower_bounds,
             )
-            print(f"\n finished!\n Evaluating blackbox function...")
+            print("finished!")
+
+            if np.all(pareto_reflecting_function(gpr(res)) >= pareto_reflecting_function(
+                    blackbox_function.y[0])):
+                print("\nNo Pareto point was found. Algorithmic search stopped.")
+                break
+
+            if np.any(np.linalg.norm(gpr(res) - np.array(
+                    [gpr(x) for x in blackbox_function.x]),axis=1) <= self._min_distance_to_evaluated_points):
+                print("\nFound Pareto point is too close to some already evaluated point.")
+                break
+
+            print("Evaluating blackbox function...")
             blackbox_function(res)
-            print(f"\n finished!")
+            print("finished!")
 
             iteration_step += 1
 

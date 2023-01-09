@@ -8,10 +8,10 @@ input_dimensions = 5
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 1
+max_evaluations = 2
 max_iter_minimizer = 100
-lh_evaluations = 35
-epsilon = 7e-2
+lh_evaluations = 20
+epsilon = np.array([8e-2, 8e-2])
 
 reference_point = 3 * np.ones(2)
 
@@ -25,7 +25,7 @@ moo = AvoidingWithWeightedNormToUtopia(upper_bounds_x=upper_bounds_x,
                                        epsilon=epsilon,
                                        nadir=np.array([10, 10]),
                                        scalar=np.array([0.1, 1]),
-                                       potency=np.ones(2)
+                                       potency=1 * np.ones(2),
                                        )
 
 bench(moo)

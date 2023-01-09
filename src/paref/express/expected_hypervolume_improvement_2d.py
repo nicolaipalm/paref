@@ -4,7 +4,7 @@ from paref.express.interfaces.moo_express import MOOExpress
 from paref.function_library.interfaces.function import Function
 from paref.moos.minimizers.interfaces.minimizer import Minimizer
 from paref.moos.minimizers.differential_evolution import DifferentialEvolution
-from paref.moos.helper_functions.return_pareto_front_2d import return_pareto_front
+from paref.moos.helper_functions.return_pareto_front import return_pareto_front
 from paref.pareto_reflecting_library.functions.expected_hypervolume_2d import ExpectedHypervolume2d
 from paref.stopping_criteria.max_iterations_reached import MaxIterationsReached
 from paref.surrogates.gpr import GPR

@@ -3,7 +3,7 @@ from scipy.stats import qmc
 
 from paref.express.interfaces.moo_express import MOOExpress
 from paref.function_library.zdt1 import ZDT1
-from paref.moos.helper_functions.return_pareto_front_2d import return_pareto_front
+from paref.moos.helper_functions.return_pareto_front import return_pareto_front
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 
@@ -18,6 +18,7 @@ class TestingZDT1:
         self.lower_bounds_x = np.zeros(input_dimensions)
         self.upper_bounds_x = np.ones(input_dimensions)
         self.max_iter_minimizer = max_iter_minimizer
+        self.lh_evaluations = lh_evaluations
 
         self.function = ZDT1(input_dimensions=self.input_dimensions)
 
@@ -45,10 +46,12 @@ class TestingZDT1:
 
         data = [
             go.Scatter(x=self.real_PF.T[0], y=self.real_PF.T[1], name="Real Pareto front"),
-            go.Scatter(x=y.T[0], y=y.T[1], mode="markers", name="Evaluations"),
-            go.Scatter(x=y_initial.T[0], y=y_initial.T[1], mode="markers", name="Initial Evaluations"),
+            go.Scatter(x=y[self.lh_evaluations:].T[0], y=y[self.lh_evaluations:].T[1], mode="markers",
+                       name="Evaluations"),
+            go.Scatter(x=y[:self.lh_evaluations].T[0], y=y[:self.lh_evaluations].T[1], mode="markers",
+                       name="Initial Evaluations"),
             go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers", marker=dict(
-                symbol="circle-open", size=8, line_width=2), name="Found Pareto front"),
+                color="red", size=8), name="Found Pareto front"),
         ]
 
         fig1 = go.Figure(data=data)
@@ -61,3 +64,5 @@ class TestingZDT1:
         )
 
         fig1.show()
+
+        return self.function

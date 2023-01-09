@@ -9,16 +9,16 @@ input_dimensions = 5
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 5
+max_evaluations = 1
 max_iter_minimizer = 100
 lh_evaluations = 35
 
-restricting_point = np.array([0.7, 9])
+restricting_point = np.array([0.7, 10])
 
 reference_point = 3 * np.ones(2)
 epsilon = 1e-3
 
-bench = TestingZDT1(input_dimensions=input_dimensions,
+bench = TestingZDT2(input_dimensions=input_dimensions,
                     max_iter_minimizer=max_iter_minimizer,
                     lh_evaluations=lh_evaluations)
 

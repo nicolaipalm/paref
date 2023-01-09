@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 import numpy as np
 
 from paref.express.interfaces.moo_express import MOOExpress
@@ -16,7 +16,7 @@ class AvoidingWithWeightedNormToUtopia(MOOExpress):
                  upper_bounds_x: np.ndarray,
                  lower_bounds_x: np.ndarray,
                  nadir: np.ndarray,
-                 epsilon: float = 1e-1,
+                 epsilon: Union[float, np.ndarray] = 1e-1,
                  max_evaluations_moo: int = 20,
                  utopia_point: Optional[np.ndarray] = None,
                  potency: Optional[np.ndarray] = None,
@@ -57,7 +57,8 @@ class AvoidingWithWeightedNormToUtopia(MOOExpress):
 
         stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
 
-        sequence = EpsilonAvoidingSequence(nadir=self._nadir, epsilon=self._epsilon,
+        sequence = EpsilonAvoidingSequence(nadir=self._nadir,
+                                           epsilon=self._epsilon,
                                            pareto_reflecting_function=pareto_reflecting_function)
 
         moo = GPRMinimizer(minimizer=self._minimizer,

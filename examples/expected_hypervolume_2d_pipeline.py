@@ -5,17 +5,17 @@ from paref.benchmarking.testing_zdt1 import TestingZDT1
 from paref.benchmarking.testing_zdt2 import TestingZDT2
 from paref.express.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
 
-input_dimensions = 5
+input_dimensions = 10
 output_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 15
+max_evaluations = 10
 max_iter_minimizer = 100
-lh_evaluations = 35
+lh_evaluations = 20
 epsilon = 1e-6
 
-reference_point = np.array([1.5, 1.5])
+reference_point = np.array([4, 4])
 
 bench = TestingZDT1(input_dimensions=input_dimensions,
                     max_iter_minimizer=max_iter_minimizer,
