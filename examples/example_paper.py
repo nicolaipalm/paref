@@ -2,8 +2,11 @@ import numpy as np
 from pymoo.indicators.hv import Hypervolume
 from scipy.stats import qmc
 import plotly.graph_objects as go
+
+from paref.express.restricting_with_weighted_norm_to_utopia import RestrictingWithWeightedNormToUtopia
 from paref.function_library.interfaces.function import Function
 from paref.function_library.zdt1 import ZDT1
+from paref.function_library.zdt2 import ZDT2
 from paref.moos.gpr_minimizer import GPRMinimizer
 from paref.moos.helper_functions.return_pareto_front import return_pareto_front
 from paref.pareto_reflecting_library.functions.epsilon_avoiding import EpsilonAvoiding
@@ -13,6 +16,7 @@ from paref.pareto_reflecting_library.functions.weighted_norm_to_utopia import We
 from paref.pareto_reflecting_library.sequences.interfaces.sequence_pareto_reflecting_functions import \
     SequenceParetoReflectingFunctions
 from paref.pareto_reflecting_library.sequences.repeating_sequence import RepeatingSequence
+from paref.pareto_reflecting_library.sequences.restricting_sequence import RestrictingSequence
 from paref.stopping_criteria.convergence_reached import ConvergenceReached
 from paref.stopping_criteria.interfaces.logical_or_stopping_criteria import LogicalOrStoppingCriteria
 from paref.stopping_criteria.max_iterations_reached import MaxIterationsReached
@@ -163,9 +167,75 @@ fig.update_layout(
 
 fig.show()
 
-######################################################################################################################
-# find another 2 Pareto point between the 2 Pareto point and the 1 Pareto point corresponding to the second component#
-######################################################################################################################
+###################################
+# find Evenly spaced Pareto points#
+###################################
+
+# define constant sequence of linear function searching for the Pareto point corresponding to the second component
+pareto_reflecting_function = WeightedNormToUtopia(utopia_point=utopia_point,
+                                                  potency=np.ones(2),
+                                                  scalar=np.array([0.1, 1]))
+
+restricting_point = np.array(
+    [0.2, 10])
+print(restricting_point)
+sequence = RestrictingSequence(nadir=10 * np.ones(2),
+                               restricting_point=restricting_point,
+                               pareto_reflecting_function=pareto_reflecting_function)
+
+# apply minimizer to sequence
+moo(blackbox_function=function,
+    pareto_reflecting_sequence=sequence,
+    stopping_criteria=MaxIterationsReached(max_iterations=1))
+
+# Search for
+restricting_point = np.array(
+    [0.7, 10])
+print(restricting_point)
+sequence = RestrictingSequence(nadir=10 * np.ones(2),
+                               restricting_point=restricting_point,
+                               pareto_reflecting_function=pareto_reflecting_function)
+
+# apply minimizer to sequence
+moo(blackbox_function=function,
+    pareto_reflecting_sequence=sequence,
+    stopping_criteria=MaxIterationsReached(max_iterations=1))
+
+####################
+# plot the results #
+####################
+PF = return_pareto_front([point[1] for point in function.evaluations])
+spaced_pareto_points = function.y[-2:]
+data = [
+    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name="Real Pareto front"),
+    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode="markers",
+               marker=dict(
+                   color="red", size=8),
+               name="Maximal Pareto point"),
+    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode="markers",
+               name="Initial Evaluations"),
+    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode="markers", marker=dict(
+        color="purple", size=8),
+               name="One Pareto points"),
+    go.Scatter(x=spaced_pareto_points.T[0], y=spaced_pareto_points.T[1], mode="markers", marker=dict(
+        color="pink", size=8),
+               name="Evenly distributed of whole front"),
+]
+
+fig = go.Figure(data=data)
+
+fig.update_layout(
+    width=800,
+    height=600,
+    plot_bgcolor="rgba(0,0,0,0)",
+    title=f"zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%",
+)
+
+fig.show()
+
+############################################################################################################
+# find Pareto point between the 2 Pareto point and the 1 Pareto point corresponding to the second component#
+############################################################################################################
 print("Search for evenly separated Pareto points")
 
 
@@ -190,12 +260,13 @@ class EpsilonAvoidingSequenceOfSpecificPoints(SequenceParetoReflectingFunctions)
             self._pareto_reflecting_function)
 
 
-avoided_points = [function.y[lh_evaluations + 1]]
-number_points = 30 - len(function.y)
+avoided_points = [one_pareto_points[0]]
 
-distance = np.linalg.norm(avoided_points[0] - function.y[lh_evaluations]) / (number_points + 1) * 0.8
+number_points = 5
 
-for _ in range(number_points):
+distance = np.linalg.norm(one_pareto_points[0] - function.y[-1]) / (number_points + 1) * 0.8
+
+for i in range(number_points):
     pareto_reflecting_function = WeightedNormToUtopia(utopia_point=utopia_point,
                                                       potency=np.ones(2),
                                                       scalar=np.array([0.1, 1]))
@@ -204,20 +275,18 @@ for _ in range(number_points):
                                                        pareto_reflecting_function=pareto_reflecting_function,
                                                        epsilon=distance,
                                                        avoided_points=np.array(avoided_points))
-
-    # while a pareto point is found:
-
     # apply minimizer to sequence
     moo(blackbox_function=function,
         pareto_reflecting_sequence=sequence,
         stopping_criteria=MaxIterationsReached(max_iterations=1))
+
     avoided_points.append(function.y[-1])
 
 ####################
 # plot the results #
 ####################
 PF = return_pareto_front([point[1] for point in function.evaluations])
-evenly_pareto_points = function.y[-7:]
+evenly_pareto_points = function.y[-number_points:]
 
 data = [
     go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name="Real Pareto front"),
@@ -230,6 +299,9 @@ data = [
     go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode="markers", marker=dict(
         color="purple", size=8),
                name="One Pareto points"),
+    go.Scatter(x=spaced_pareto_points.T[0], y=spaced_pareto_points.T[1], mode="markers", marker=dict(
+        color="pink", size=8),
+               name="Evenly distributed of whole front"),
     go.Scatter(x=evenly_pareto_points.T[0], y=evenly_pareto_points.T[1], mode="markers", marker=dict(
         color="orange", size=8),
                name="Evenly scanned Pareto points"),
@@ -247,3 +319,7 @@ fig.update_layout(
 fig.show()
 
 print("Evaluations used:", len(function.x))
+
+number_points = 30 - len(function.y)  # = 7
+
+distance = np.linalg.norm(avoided_points[0] - function.y[lh_evaluations]) / (number_points + 1) * 0.8

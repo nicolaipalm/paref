@@ -4,13 +4,13 @@ from paref.benchmarking.testing_zdt2 import TestingZDT2
 from paref.benchmarking.testing_zdt1 import TestingZDT1
 from paref.express.avoiding_with_weighted_norm_to_utopia import AvoidingWithWeightedNormToUtopia
 
-input_dimensions = 5
+input_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 2
+max_evaluations = 10
 max_iter_minimizer = 100
-lh_evaluations = 20
+lh_evaluations = 30
 epsilon = np.array([8e-2, 8e-2])
 
 reference_point = 3 * np.ones(2)
