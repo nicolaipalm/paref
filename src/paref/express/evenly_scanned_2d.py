@@ -19,6 +19,7 @@ class EvenlyScanned2d(MOOExpress):
                  max_evaluations_moo: int = 20,
                  scalar: Optional[np.ndarray] = None,
                  epsilon: float = 1e-2,
+                 restricting_point_wrt_previous_evaluated_point: bool = True,
                  minimizer: Minimizer = DifferentialEvolution()):
         self._upper_bounds_x = upper_bounds_x
         self._lower_bounds_x = lower_bounds_x
@@ -26,6 +27,7 @@ class EvenlyScanned2d(MOOExpress):
         self._scalar = scalar
         self._minimizer = minimizer
         self._epsilon = epsilon
+        self._restricting_point_wrt_previous_evaluated=restricting_point_wrt_previous_evaluated_point
 
     def __call__(self,
                  blackbox_function: Function,
@@ -75,7 +77,8 @@ class EvenlyScanned2d(MOOExpress):
             blackbox_function.y.T[0] <= pareto_point_corresponding_to_second_component[0]))
 
         if side:
-            restricting_point = np.array([np.max(blackbox_function.y), pareto_point_corresponding_to_first_component[1]])
+            restricting_point = np.array(
+                [np.max(blackbox_function.y), pareto_point_corresponding_to_first_component[1]])
             scalar = np.ones(dimension_codomain)
             scalar[1] = self._epsilon
             pareto_reflecting_function = WeightedNormToUtopia(utopia_point=self._utopia_point,
@@ -83,7 +86,8 @@ class EvenlyScanned2d(MOOExpress):
                                                               scalar=scalar)
 
         else:
-            restricting_point = np.array([pareto_point_corresponding_to_second_component[0], np.max(blackbox_function.y)])
+            restricting_point = np.array(
+                [pareto_point_corresponding_to_second_component[0], np.max(blackbox_function.y)])
             scalar = np.ones(dimension_codomain)
             scalar[0] = self._epsilon
             pareto_reflecting_function = WeightedNormToUtopia(utopia_point=self._utopia_point,
@@ -93,7 +97,7 @@ class EvenlyScanned2d(MOOExpress):
         number_remaining_evaluations = self._max_evaluations_moo - 2
         print("Search for evenly distributed Pareto points by restricting...\n")
         for _ in range(number_remaining_evaluations):
-            restricting_point[side] -= 0.8*distance_one_pareto_points / (number_remaining_evaluations+1)
+            restricting_point[side] -= 0.8 * distance_one_pareto_points / (number_remaining_evaluations + 1)
 
             sequence = RestrictingSequence(nadir=self._nadir,
                                            restricting_point=restricting_point,
@@ -102,6 +106,9 @@ class EvenlyScanned2d(MOOExpress):
             moo(blackbox_function=blackbox_function,
                 pareto_reflecting_sequence=sequence,
                 stopping_criteria=MaxIterationsReached(max_iterations=1))
+
+            if self._restricting_point_wrt_previous_evaluated:
+                restricting_point[side] = blackbox_function.y[-1][side]
 
     @property
     def name(self) -> str:
