@@ -27,7 +27,7 @@ class EvenlyScanned2d(MOOExpress):
         self._scalar = scalar
         self._minimizer = minimizer
         self._epsilon = epsilon
-        self._restricting_point_wrt_previous_evaluated=restricting_point_wrt_previous_evaluated_point
+        self._restricting_point_wrt_previous_evaluated = restricting_point_wrt_previous_evaluated_point
 
     def __call__(self,
                  blackbox_function: Function,
@@ -37,15 +37,15 @@ class EvenlyScanned2d(MOOExpress):
             raise ValueError("Dimension of codomain is not 2.")
 
         self._nadir = np.max(blackbox_function.y) * np.ones(dimension_codomain)
+        print("Nadir: ", self._nadir)
 
         self._utopia_point = np.zeros(dimension_codomain)
+        print("Utopia point: ", self._utopia_point)
 
         if len(blackbox_function.evaluations) == 0:
             raise ValueError("Need at least one initial evaluation of the blackbox function.")
 
         # find out where more points are
-
-        stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
 
         moo = GPRMinimizer(minimizer=self._minimizer,
                            upper_bounds=self._upper_bounds_x,

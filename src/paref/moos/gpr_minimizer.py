@@ -62,13 +62,19 @@ class GPRMinimizer(MOO):
                 break
 
             if np.any(np.linalg.norm(gpr(res) - np.array(
-                    [gpr(x) for x in blackbox_function.x]),axis=1) <= self._min_distance_to_evaluated_points):
+                    [gpr(x) for x in blackbox_function.x]), axis=1) <= self._min_distance_to_evaluated_points):
                 print("\nFound Pareto point is too close to some already evaluated point.")
                 break
 
+            print(
+                f"Found Pareto point: \n x={res} "
+                f"\n y={gpr(res)} "
+                f"\n value at Pareto reflection = {pareto_reflecting_function(gpr(res))}")
             print("Evaluating blackbox function...")
             blackbox_function(res)
             print("finished!")
+            print(f"Value of blackbox function: ", blackbox_function.y[-1])
+            print("Difference to estimation: ", gpr(res)-blackbox_function.y[-1])
 
             iteration_step += 1
 
