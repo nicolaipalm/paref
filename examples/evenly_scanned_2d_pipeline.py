@@ -2,7 +2,7 @@ import numpy as np
 from paref.benchmarking.testing_zdt2 import TestingZDT2
 from paref.express.evenly_scanned_2d import EvenlyScanned2d
 
-input_dimensions = 2
+input_dimensions = 20
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
