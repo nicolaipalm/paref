@@ -6,7 +6,7 @@ input_dimensions = 20
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 5
+max_evaluations = 3
 max_iter_minimizer = 1000
 lh_evaluations = 30
 

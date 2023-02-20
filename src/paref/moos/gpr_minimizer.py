@@ -14,7 +14,7 @@ class GPRMinimizer(MOO):
     def __init__(self,
                  upper_bounds: np.ndarray,
                  lower_bounds: np.ndarray,
-                 max_iter_minimizer: int = 100,
+                 max_iter_minimizer: int = 1000,
                  training_iter: int = 2000,
                  minimizer: Minimizer = DifferentialEvolution(),
                  learning_rate: float = 0.05,

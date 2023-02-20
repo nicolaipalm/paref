@@ -20,6 +20,8 @@ class EvenlyScanned2d(MOOExpress):
                  scalar: Optional[np.ndarray] = None,
                  epsilon: float = 1e-2,
                  restricting_point_wrt_previous_evaluated_point: bool = True,
+                 training_iter: int = 2000,
+                 max_iter_minimizer: int = 1000,
                  minimizer: Minimizer = DifferentialEvolution()):
         self._upper_bounds_x = upper_bounds_x
         self._lower_bounds_x = lower_bounds_x
@@ -28,6 +30,8 @@ class EvenlyScanned2d(MOOExpress):
         self._minimizer = minimizer
         self._epsilon = epsilon
         self._restricting_point_wrt_previous_evaluated = restricting_point_wrt_previous_evaluated_point
+        self._training_iter = training_iter
+        self._max_iter_minimizer = max_iter_minimizer
 
     def __call__(self,
                  blackbox_function: Function,
@@ -45,6 +49,8 @@ class EvenlyScanned2d(MOOExpress):
 
         # find out where more points are
         moo = GPRMinimizer(minimizer=self._minimizer,
+                           max_iter_minimizer=self._max_iter_minimizer,
+                           training_iter=self._training_iter,
                            upper_bounds=self._upper_bounds_x,
                            lower_bounds=self._lower_bounds_x)
         # Search for 1 Pareto points
@@ -61,7 +67,7 @@ class EvenlyScanned2d(MOOExpress):
 
             moo(blackbox_function=blackbox_function,
                 pareto_reflecting_sequence=sequence,
-                stopping_criteria=MaxIterationsReached(max_iterations=1))
+                stopping_criteria=MaxIterationsReached(max_iterations=3))
 
             index_one_pareto_point = np.argmin([pareto_reflecting_function(y) for y in blackbox_function.y])
             one_pareto_points.append(blackbox_function.y[index_one_pareto_point])

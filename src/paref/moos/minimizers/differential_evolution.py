@@ -19,7 +19,6 @@ class DifferentialEvolution(Minimizer):
         max_iter: int = 1000,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
-
         res = differential_evolution(
             func=function,
             x0=t_initial,
