@@ -28,7 +28,7 @@ class EvenlyScanned2d(MOOExpress):
         self._lower_bounds_x = lower_bounds_x
         self._max_evaluations_moo = max_evaluations_moo
         self._scalar = scalar
-        self._min_distance_to_evaluated_points= min_distance_to_evaluated_points
+        self._min_distance_to_evaluated_points = min_distance_to_evaluated_points
         self._minimizer = minimizer
         self._epsilon = epsilon
         self._restricting_point_wrt_previous_evaluated = restricting_point_wrt_previous_evaluated_point
@@ -54,7 +54,7 @@ class EvenlyScanned2d(MOOExpress):
                            max_iter_minimizer=self._max_iter_minimizer,
                            training_iter=self._training_iter,
                            upper_bounds=self._upper_bounds_x,
-                           min_distance_to_evaluated_points= self._min_distance_to_evaluated_points,
+                           min_distance_to_evaluated_points=self._min_distance_to_evaluated_points,
                            lower_bounds=self._lower_bounds_x)
         # Search for 1 Pareto points
         print("Search for 1 Pareto points...\n")
@@ -78,7 +78,7 @@ class EvenlyScanned2d(MOOExpress):
         # Search for evenly scanned front
         pareto_point_corresponding_to_first_component = one_pareto_points[1]
         pareto_point_corresponding_to_second_component = one_pareto_points[0]
-        distance_one_pareto_points = np.linalg.norm(
+        distance_one_pareto_points = np.abs(
             pareto_point_corresponding_to_first_component - pareto_point_corresponding_to_second_component)
 
         # check on which side restricting leads to more already evaluated points which are not mapped to the nadir
@@ -107,7 +107,7 @@ class EvenlyScanned2d(MOOExpress):
         number_remaining_evaluations = self._max_evaluations_moo - 2
         print("Search for evenly distributed Pareto points by restricting...\n")
         for _ in range(number_remaining_evaluations):
-            restricting_point[side] -= 0.8 * distance_one_pareto_points / (number_remaining_evaluations + 1)
+            restricting_point[side] -= 0.8 * distance_one_pareto_points[side] / (number_remaining_evaluations + 1)
 
             sequence = RestrictingSequence(nadir=self._nadir,
                                            restricting_point=restricting_point,
