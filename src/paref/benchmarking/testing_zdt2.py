@@ -34,7 +34,6 @@ class TestingZDT2:
         self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
     def __call__(self, moo: MOOExpress):
-        y_initial = self.function.y
         moo(blackbox_function=self.function)
 
         PF = return_pareto_front([point[1] for point in self.function.evaluations])

@@ -32,11 +32,19 @@ class Function:
     def x(self):
         return np.array([evaluation[0] for evaluation in self._evaluations])
 
+    @x.setter
+    def x(self, value):
+        for index, evaluation in enumerate(self._evaluations):
+            evaluation[0] = value[index]
+
     @property
     def y(self):
         return np.array([evaluation[1] for evaluation in self._evaluations])
 
+    @y.setter
+    def y(self, value):
+        for index, evaluation in enumerate(self._evaluations):
+            evaluation[1] = value[index]
+
     def clear_evaluations(self):
         self._evaluations = []
-
-
