@@ -19,6 +19,7 @@ class WeightedNormToUtopiaGPR(MOOExpress):
                  lower_bounds_x: np.ndarray,
                  max_evaluations_moo: int = 20,
                  epsilon: float = 1e-3,
+                 max_iter_minimizer: int = 100,
                  utopia_point: Optional[np.ndarray] = None,
                  potency: Optional[np.ndarray] = None,
                  scalar: Optional[np.ndarray] = None,
@@ -31,6 +32,7 @@ class WeightedNormToUtopiaGPR(MOOExpress):
         self._scalar = scalar
         self._minimizer = minimizer
         self._epsilon = epsilon
+        self._max_iter_minimizer = max_iter_minimizer
 
     def __call__(self,
                  blackbox_function: Function,
@@ -64,6 +66,7 @@ class WeightedNormToUtopiaGPR(MOOExpress):
                                      stopping_criteria=MaxIterationsReached(max_iterations=self._max_evaluations_moo))
 
         moo = GPRMinimizer(minimizer=self._minimizer,
+                           max_iter_minimizer=self._max_iter_minimizer,
                            upper_bounds=self._upper_bounds_x,
                            lower_bounds=self._lower_bounds_x)
 

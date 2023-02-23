@@ -21,12 +21,14 @@ class EvenlyScanned2d(MOOExpress):
                  epsilon: float = 1e-2,
                  restricting_point_wrt_previous_evaluated_point: bool = True,
                  training_iter: int = 2000,
-                 max_iter_minimizer: int = 1000,
+                 min_distance_to_evaluated_points: float = 2e-2,
+                 max_iter_minimizer: int = 100,
                  minimizer: Minimizer = DifferentialEvolution()):
         self._upper_bounds_x = upper_bounds_x
         self._lower_bounds_x = lower_bounds_x
         self._max_evaluations_moo = max_evaluations_moo
         self._scalar = scalar
+        self._min_distance_to_evaluated_points= min_distance_to_evaluated_points
         self._minimizer = minimizer
         self._epsilon = epsilon
         self._restricting_point_wrt_previous_evaluated = restricting_point_wrt_previous_evaluated_point
@@ -52,6 +54,7 @@ class EvenlyScanned2d(MOOExpress):
                            max_iter_minimizer=self._max_iter_minimizer,
                            training_iter=self._training_iter,
                            upper_bounds=self._upper_bounds_x,
+                           min_distance_to_evaluated_points= self._min_distance_to_evaluated_points,
                            lower_bounds=self._lower_bounds_x)
         # Search for 1 Pareto points
         print("Search for 1 Pareto points...\n")
