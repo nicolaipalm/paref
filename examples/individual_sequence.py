@@ -1,5 +1,5 @@
 import numpy as np
-from paref.benchmarking.testing_zdt1 import TestingZDT1
+from examples.function_library.testing_zdt1 import TestingZDT1
 from paref.moo_algorithms.avoiding_with_weighted_norm_to_utopia import AvoidingWithWeightedNormToUtopia
 from paref.moo_algorithms.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
 

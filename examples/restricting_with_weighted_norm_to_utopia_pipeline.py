@@ -1,6 +1,6 @@
 import numpy as np
 
-from paref.benchmarking.testing_zdt2 import TestingZDT2
+from examples.function_library.testing_zdt2 import TestingZDT2
 from paref.moo_algorithms.restricting_with_weighted_norm_to_utopia import RestrictingWithWeightedNormToUtopia
 
 input_dimensions = 5
