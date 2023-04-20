@@ -2,7 +2,7 @@ import numpy as np
 
 from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
 from paref.interfaces.optimizers.minimizer import Minimizer
-from paref.optimizers.minimizers import DifferentialEvolution
+from paref.optimizers.minimizers.differential_evolution import DifferentialEvolution
 from paref.interfaces.optimizers.moo import MOO
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
     SequenceParetoReflectingFunctions

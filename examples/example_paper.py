@@ -4,7 +4,7 @@ from scipy.stats import qmc
 import plotly.graph_objects as go
 
 from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
-from paref.function_library.zdt1 import ZDT1
+from examples.function_library.zdt1 import ZDT1
 from paref.optimizers.gpr_minimizer import GPRMinimizer
 from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 from paref.pareto_reflections.epsilon_avoiding import EpsilonAvoiding
@@ -16,7 +16,7 @@ from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_fu
 from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
 from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
 from paref.optimizers.stopping_criteria.convergence_reached import ConvergenceReached
-from paref.optimizers.stopping_criteria import LogicalOrStoppingCriteria
+from paref.optimizers.stopping_criteria.logical_or_stopping_criteria import LogicalOrStoppingCriteria
 from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
 #########
