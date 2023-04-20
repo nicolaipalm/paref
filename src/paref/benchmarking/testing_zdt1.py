@@ -1,9 +1,9 @@
 import numpy as np
 from scipy.stats import qmc
 
-from paref.express.interfaces.moo_express import MOOExpress
+from paref.interfaces.moo_algorithms.moo_algorithm import MOOAlgorithm
 from paref.function_library.zdt1 import ZDT1
-from paref.moos.helper_functions.return_pareto_front import return_pareto_front
+from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 
@@ -33,7 +33,7 @@ class TestingZDT1:
         self.hypervolume_max = self.function.calculate_hypervolume_of_pareto_front(reference_point=reference_point)
         self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
-    def __call__(self, moo: MOOExpress):
+    def __call__(self, moo: MOOAlgorithm):
         y_initial = self.function.y
         moo(blackbox_function=self.function)
 

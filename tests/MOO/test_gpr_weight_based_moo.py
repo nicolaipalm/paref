@@ -4,7 +4,7 @@ import numpy as np
 
 from src.paref.moos.gpr_weight_based_moo import GPRWeightBasedMOO
 from src.paref.interfaces import Function
-from paref.moos.minimizers import DifferentialEvolution
+from paref.optimizers.minimizers import DifferentialEvolution
 from src.paref.pareto_reflecting_library import ScalarPotency
 
 

@@ -1,7 +1,7 @@
 import numpy as np
 
 from paref.benchmarking.testing_dtlz2 import TestingDTLZ2
-from paref.express.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
+from paref.moo_algorithms.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
 
 input_dimensions = 20
 output_dimensions = 2

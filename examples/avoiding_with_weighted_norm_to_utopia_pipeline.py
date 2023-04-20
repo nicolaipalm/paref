@@ -1,8 +1,6 @@
 import numpy as np
-from paref.benchmarking.testing_dtlz2 import TestingDTLZ2
-from paref.benchmarking.testing_zdt2 import TestingZDT2
 from paref.benchmarking.testing_zdt1 import TestingZDT1
-from paref.express.avoiding_with_weighted_norm_to_utopia import AvoidingWithWeightedNormToUtopia
+from paref.moo_algorithms.avoiding_with_weighted_norm_to_utopia import AvoidingWithWeightedNormToUtopia
 
 input_dimensions = 2
 

@@ -3,23 +3,21 @@ from pymoo.indicators.hv import Hypervolume
 from scipy.stats import qmc
 import plotly.graph_objects as go
 
-from paref.express.restricting_with_weighted_norm_to_utopia import RestrictingWithWeightedNormToUtopia
-from paref.function_library.interfaces.function import Function
+from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
 from paref.function_library.zdt1 import ZDT1
-from paref.function_library.zdt2 import ZDT2
-from paref.moos.gpr_minimizer import GPRMinimizer
-from paref.moos.helper_functions.return_pareto_front import return_pareto_front
-from paref.pareto_reflecting_library.functions.epsilon_avoiding import EpsilonAvoiding
-from paref.pareto_reflecting_library.functions.interfaces.pareto_reflecting_function import ParetoReflectingFunction
-from paref.pareto_reflecting_library.functions.operations.composing import Composing
-from paref.pareto_reflecting_library.functions.weighted_norm_to_utopia import WeightedNormToUtopia
-from paref.pareto_reflecting_library.sequences.interfaces.sequence_pareto_reflecting_functions import \
+from paref.optimizers.gpr_minimizer import GPRMinimizer
+from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
+from paref.pareto_reflections.epsilon_avoiding import EpsilonAvoiding
+from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
+from paref.pareto_reflections.operations.composing import Composing
+from paref.pareto_reflections.weighted_norm_to_utopia import WeightedNormToUtopia
+from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
     SequenceParetoReflectingFunctions
-from paref.pareto_reflecting_library.sequences.repeating_sequence import RepeatingSequence
-from paref.pareto_reflecting_library.sequences.restricting_sequence import RestrictingSequence
-from paref.stopping_criteria.convergence_reached import ConvergenceReached
-from paref.stopping_criteria.interfaces.logical_or_stopping_criteria import LogicalOrStoppingCriteria
-from paref.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
+from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
+from paref.optimizers.stopping_criteria.convergence_reached import ConvergenceReached
+from paref.optimizers.stopping_criteria import LogicalOrStoppingCriteria
+from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
 #########
 # Setup #
@@ -252,7 +250,7 @@ class EpsilonAvoidingSequenceOfSpecificPoints(SequenceParetoReflectingFunctions)
         self._pareto_reflecting_function = pareto_reflecting_function
         self._avoided_points = avoided_points
 
-    def next(self, blackbox_function: Function) -> ParetoReflectingFunction:
+    def next(self, blackbox_function: BlackboxFunction) -> ParetoReflectingFunction:
         return Composing(
             EpsilonAvoiding(nadir=self._nadir,
                             epsilon=self._epsilon,

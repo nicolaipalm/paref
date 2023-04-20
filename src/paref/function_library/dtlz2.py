@@ -1,11 +1,11 @@
 import numpy as np
 
-from paref.function_library.interfaces.function import Function
+from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
 from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
 
 
-class DTLZ2(Function):
+class DTLZ2(BlackboxFunction):
     def __init__(self, input_dimensions: int = 5, output_dimensions: int = 2):
         super().__init__()
         self.problem = get_problem("dtlz2", n_var=input_dimensions, n_obj=output_dimensions)

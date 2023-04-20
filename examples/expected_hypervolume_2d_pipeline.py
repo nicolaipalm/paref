@@ -1,9 +1,7 @@
 import numpy as np
 
-from paref.benchmarking.testing_dtlz2 import TestingDTLZ2
 from paref.benchmarking.testing_zdt1 import TestingZDT1
-from paref.benchmarking.testing_zdt2 import TestingZDT2
-from paref.express.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
+from paref.moo_algorithms.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
 
 input_dimensions = 2
 output_dimensions = 2

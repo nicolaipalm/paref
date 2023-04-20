@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.paref.surrogates.gpr import GPR
+from paref.optimizers.surrogates.gpr import GPR
 
 
 class TestGPR(unittest.TestCase):

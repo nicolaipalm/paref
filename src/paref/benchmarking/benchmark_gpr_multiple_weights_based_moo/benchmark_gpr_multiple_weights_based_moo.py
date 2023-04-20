@@ -4,10 +4,10 @@ import numpy as np
 import yaml
 from pymoo.factory import get_problem
 
-from paref.function_library.interfaces.function import Function
-from paref.moos.minimizers.differential_evolution import DifferentialEvolution
+from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
+from paref.optimizers.minimizers import DifferentialEvolution
 from paref.moos.gpr_multiple_weight_based_moo import GPRMultipleWeightsBasedMOO
-from paref.pareto_reflecting_library.functions.weighted_norm_to_utopia import ScalarPotency
+from paref.pareto_reflections.weighted_norm_to_utopia import ScalarPotency
 
 # MULTIPROCESSING!
 #####################
@@ -65,7 +65,7 @@ for j in range(5, number_runs_moo):
             weight_functions.append(ScalarPotency(potency=potency, scalar=scalar))
 
         ####################
-        class ExampleFunction(Function):
+        class ExampleFunction(BlackboxFunction):
             def __call__(self, x):
                 self._evaluations.append([x, problem.evaluate(x)])
                 return problem.evaluate(x)

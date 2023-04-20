@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from src.paref.interfaces import Function
-from paref.moos.minimizers import DifferentialEvolution
+from paref.optimizers.minimizers import DifferentialEvolution
 
 
 class MyTestCase(unittest.TestCase):
