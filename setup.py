@@ -13,7 +13,6 @@ setup(
         'Operating System :: OS Independent',
         'Development Status:: 1 - Planning'
     ],
-    package_dir={'': 'src'},
     python_requires='>=3.6',
     install_requires=[
         'numpy',
@@ -25,5 +24,4 @@ setup(
         'matplotlib',
         'tqdm',
     ],
-
 )

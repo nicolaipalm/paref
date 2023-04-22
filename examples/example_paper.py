@@ -3,21 +3,21 @@ from pymoo.indicators.hv import Hypervolume
 from scipy.stats import qmc
 import plotly.graph_objects as go
 
-from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
+from paref.interfaces import BlackboxFunction
 from examples.function_library.zdt1 import ZDT1
-from paref.optimizers.gpr_minimizer import GPRMinimizer
-from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
-from paref.pareto_reflections.epsilon_avoiding import EpsilonAvoiding
-from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
-from paref.pareto_reflections.operations.composing import Composing
-from paref.pareto_reflections.weighted_norm_to_utopia import WeightedNormToUtopia
-from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
+from paref.optimizers import GPRMinimizer
+from paref.optimizers import return_pareto_front
+from paref.pareto_reflections import EpsilonAvoiding
+from paref.interfaces import ParetoReflectingFunction
+from paref.pareto_reflections import Composing
+from paref.pareto_reflections import WeightedNormToUtopia
+from paref.interfaces import \
     SequenceParetoReflectingFunctions
 from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
 from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
-from paref.optimizers.stopping_criteria.convergence_reached import ConvergenceReached
-from paref.optimizers.stopping_criteria.logical_or_stopping_criteria import LogicalOrStoppingCriteria
-from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.optimizers import ConvergenceReached
+from paref.optimizers import LogicalOrStoppingCriteria
+from paref.optimizers import MaxIterationsReached
 
 #########
 # Setup #

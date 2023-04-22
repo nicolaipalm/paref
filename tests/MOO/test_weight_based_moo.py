@@ -2,10 +2,10 @@ import unittest
 
 import numpy as np
 
-from src.paref.moos.weight_based_moo import WeightBasedMOO
-from src.paref.interfaces import Function
-from paref.optimizers.minimizers import DifferentialEvolution
-from src.paref.pareto_reflecting_library import ScalarPotency
+from paref import WeightBasedMOO
+from paref.interfaces import Function
+from paref.optimizers import DifferentialEvolution
+from paref import ScalarPotency
 
 
 class TestWeightBasedMOO(unittest.TestCase):

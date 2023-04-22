@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.paref.pareto_reflecting_library import ScalarPotency
+from paref import ScalarPotency
 
 
 class TestScalarPotency(unittest.TestCase):

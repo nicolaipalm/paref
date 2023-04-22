@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from src.paref.interfaces import Function
-from paref.optimizers.minimizers import DifferentialEvolution
+from paref.interfaces import Function
+from paref.optimizers import DifferentialEvolution
 
 
 class MyTestCase(unittest.TestCase):
