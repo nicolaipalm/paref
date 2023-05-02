@@ -4,8 +4,20 @@ import numpy as np
 
 
 class ParetoReflectingFunction:
-    """
-    Interface fot Pareto reflecting function.
+    """Interface for Pareto reflections
+
+    Documentation should contain:
+
+    When to use
+    -----------
+    This sequence should be used if...
+
+    What it does
+    ------------
+    The sequence...
+
+    Examples
+    --------
     """
 
     @abstractmethod
