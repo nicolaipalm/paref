@@ -26,8 +26,9 @@ setup(
         'tqdm',
     ],
     extras_require={
-        'dev': ['pre-commit'],
+        'dev': ['pre-commit', 'flake8', 'flake8-print'],
         'examples': ['ipython', 'jupyter'],
-        'test': ['flake8', 'flake8-print'],  # , "pytest", "nbval"],
+        'test': ['pytest', 'pytest-cov'],  # "nbval"],
     },
+    test_suite='test',
 )
