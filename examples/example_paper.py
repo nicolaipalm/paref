@@ -47,7 +47,7 @@ moo = GPRMinimizer(upper_bounds=upper_bounds_x,
 #########################
 # find a 2 Pareto point #
 #########################
-print("Search for 2 Pareto point")
+print('Search for 2 Pareto point')
 # define variables
 utopia_point = np.zeros(output_dimensions)
 epsilon_convergence = 1e-2
@@ -78,13 +78,13 @@ hypervolume_weight = metric.do(PF)
 maximal_pareto_points = function.y[-1:]
 
 data = [
-    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name="Real Pareto front"),
-    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode="markers",
+    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name='Real Pareto front'),
+    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode='markers',
                marker=dict(
-                   color="red", size=8),
-               name="Maximal Pareto point"),
-    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode="markers",
-               name="Initial Evaluations"),
+                   color='red', size=8),
+               name='Maximal Pareto point'),
+    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode='markers',
+               name='Initial Evaluations'),
 ]
 
 fig = go.Figure(data=data)
@@ -92,8 +92,8 @@ fig = go.Figure(data=data)
 fig.update_layout(
     width=800,
     height=600,
-    plot_bgcolor="rgba(0,0,0,0)",
-    title=f"zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%",
+    plot_bgcolor='rgba(0,0,0,0)',
+    title=f'zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%',
 )
 
 fig.show()
@@ -101,7 +101,7 @@ fig.show()
 ########################
 # find 1 Pareto points #
 ########################
-print("Search for 1 Pareto points")
+print('Search for 1 Pareto points')
 
 # define stopping criteria for sequence
 stopping_criteria = LogicalOrStoppingCriteria(MaxIterationsReached(max_iterations=20),
@@ -142,16 +142,16 @@ moo(blackbox_function=function,
 PF = return_pareto_front([point[1] for point in function.evaluations])
 one_pareto_points = function.y[-2:]
 data = [
-    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name="Real Pareto front"),
-    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode="markers",
+    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name='Real Pareto front'),
+    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode='markers',
                marker=dict(
-                   color="red", size=8),
-               name="Maximal Pareto point"),
-    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode="markers",
-               name="Initial Evaluations"),
-    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode="markers", marker=dict(
-        color="purple", size=8),
-               name="One Pareto points"),
+                   color='red', size=8),
+               name='Maximal Pareto point'),
+    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode='markers',
+               name='Initial Evaluations'),
+    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode='markers', marker=dict(
+        color='purple', size=8),
+               name='One Pareto points'),
 ]
 
 fig = go.Figure(data=data)
@@ -159,8 +159,8 @@ fig = go.Figure(data=data)
 fig.update_layout(
     width=800,
     height=600,
-    plot_bgcolor="rgba(0,0,0,0)",
-    title=f"zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%",
+    plot_bgcolor='rgba(0,0,0,0)',
+    title=f'zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%',
 )
 
 fig.show()
@@ -205,19 +205,19 @@ moo(blackbox_function=function,
 PF = return_pareto_front([point[1] for point in function.evaluations])
 spaced_pareto_points = function.y[-2:]
 data = [
-    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name="Real Pareto front"),
-    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode="markers",
+    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name='Real Pareto front'),
+    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode='markers',
                marker=dict(
-                   color="red", size=8),
-               name="Maximal Pareto point"),
-    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode="markers",
-               name="Initial Evaluations"),
-    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode="markers", marker=dict(
-        color="purple", size=8),
-               name="One Pareto points"),
-    go.Scatter(x=spaced_pareto_points.T[0], y=spaced_pareto_points.T[1], mode="markers", marker=dict(
-        color="pink", size=8),
-               name="Evenly distributed of whole front"),
+                   color='red', size=8),
+               name='Maximal Pareto point'),
+    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode='markers',
+               name='Initial Evaluations'),
+    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode='markers', marker=dict(
+        color='purple', size=8),
+               name='One Pareto points'),
+    go.Scatter(x=spaced_pareto_points.T[0], y=spaced_pareto_points.T[1], mode='markers', marker=dict(
+        color='pink', size=8),
+               name='Evenly distributed of whole front'),
 ]
 
 fig = go.Figure(data=data)
@@ -225,8 +225,8 @@ fig = go.Figure(data=data)
 fig.update_layout(
     width=800,
     height=600,
-    plot_bgcolor="rgba(0,0,0,0)",
-    title=f"zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%",
+    plot_bgcolor='rgba(0,0,0,0)',
+    title=f'zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%',
 )
 
 fig.show()
@@ -234,7 +234,7 @@ fig.show()
 ############################################################################################################
 # find Pareto point between the 2 Pareto point and the 1 Pareto point corresponding to the second component#
 ############################################################################################################
-print("Search for evenly separated Pareto points")
+print('Search for evenly separated Pareto points')
 
 
 # define constant sequence of linear function searching for the Pareto point corresponding to the second component
@@ -287,22 +287,22 @@ PF = return_pareto_front([point[1] for point in function.evaluations])
 evenly_pareto_points = function.y[-number_points:]
 
 data = [
-    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name="Real Pareto front"),
-    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode="markers",
+    go.Scatter(x=real_PF.T[0], y=real_PF.T[1], name='Real Pareto front'),
+    go.Scatter(x=maximal_pareto_points.T[0], y=maximal_pareto_points.T[1], mode='markers',
                marker=dict(
-                   color="red", size=8),
-               name="Maximal Pareto point"),
-    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode="markers",
-               name="Initial Evaluations"),
-    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode="markers", marker=dict(
-        color="purple", size=8),
-               name="One Pareto points"),
-    go.Scatter(x=spaced_pareto_points.T[0], y=spaced_pareto_points.T[1], mode="markers", marker=dict(
-        color="pink", size=8),
-               name="Evenly distributed of whole front"),
-    go.Scatter(x=evenly_pareto_points.T[0], y=evenly_pareto_points.T[1], mode="markers", marker=dict(
-        color="orange", size=8),
-               name="Evenly scanned Pareto points"),
+                   color='red', size=8),
+               name='Maximal Pareto point'),
+    go.Scatter(x=function.y[:lh_evaluations].T[0], y=function.y[:lh_evaluations].T[1], mode='markers',
+               name='Initial Evaluations'),
+    go.Scatter(x=one_pareto_points.T[0], y=one_pareto_points.T[1], mode='markers', marker=dict(
+        color='purple', size=8),
+               name='One Pareto points'),
+    go.Scatter(x=spaced_pareto_points.T[0], y=spaced_pareto_points.T[1], mode='markers', marker=dict(
+        color='pink', size=8),
+               name='Evenly distributed of whole front'),
+    go.Scatter(x=evenly_pareto_points.T[0], y=evenly_pareto_points.T[1], mode='markers', marker=dict(
+        color='orange', size=8),
+               name='Evenly scanned Pareto points'),
 ]
 
 fig = go.Figure(data=data)
@@ -310,13 +310,13 @@ fig = go.Figure(data=data)
 fig.update_layout(
     width=800,
     height=600,
-    plot_bgcolor="rgba(0,0,0,0)",
-    title=f"zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%",
+    plot_bgcolor='rgba(0,0,0,0)',
+    title=f'zdt1: {input_dimensions}-dim with rel. HV: {hypervolume_weight / hypervolume_max * 100}%',
 )
 
 fig.show()
 
-print("Evaluations used:", len(function.x))
+print('Evaluations used:', len(function.x))
 
 number_points = 30 - len(function.y)  # = 7
 

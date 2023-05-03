@@ -56,7 +56,7 @@ class WeightedNormToUtopiaGPR(MOOAlgorithm):
                                        ]
 
         if len(blackbox_function.evaluations) == 0:
-            raise ValueError("Need at least one initial evaluations of the blackbox functions.")
+            raise ValueError('Need at least one initial evaluations of the blackbox functions.')
 
         stopping_criteria = LogicalOrStoppingCriteria(MaxIterationsReached(max_iterations=self._max_evaluations_moo),
                                                       ConvergenceReached(
@@ -76,4 +76,4 @@ class WeightedNormToUtopiaGPR(MOOAlgorithm):
 
     @property
     def name(self) -> str:
-        return "WeightedNormToUtopia"
+        return 'WeightedNormToUtopia'

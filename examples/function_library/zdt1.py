@@ -8,7 +8,7 @@ from pymoo.indicators.hv import Hypervolume
 class ZDT1(BlackboxFunction):
     def __init__(self, input_dimensions: int = 5):
         super().__init__()
-        self.problem = get_problem("zdt1", n_var=input_dimensions)
+        self.problem = get_problem('zdt1', n_var=input_dimensions)
 
     def __call__(self, x):
         self._evaluations.append([x, self.problem.evaluate(x)])

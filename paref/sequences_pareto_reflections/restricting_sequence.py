@@ -19,7 +19,7 @@ class RestrictingSequence(SequenceParetoReflectingFunctions):
 
     def next(self,
              blackbox_function: BlackboxFunction) -> ParetoReflectingFunction:
-        print("Restricting point:", self._restricting_point)
+        print('Restricting point:', self._restricting_point)
         return Composing(
             Restricting(nadir=self._nadir,
                         restricting_point=self._restricting_point),

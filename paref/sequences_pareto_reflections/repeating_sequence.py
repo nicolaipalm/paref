@@ -89,4 +89,4 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
             return self._pareto_reflecting_functions[self._iter % len(self._pareto_reflecting_functions)]
 
         else:
-            raise ValueError("Stopping criteria is reached")
+            raise ValueError('Stopping criteria is reached')

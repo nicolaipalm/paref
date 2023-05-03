@@ -40,14 +40,14 @@ class EvenlyScanned2d(MOOAlgorithm):
                  ):
         dimension_codomain = len(blackbox_function.y[0])
         if dimension_codomain != 2:
-            raise ValueError("Dimension of codomain is not 2.")
+            raise ValueError('Dimension of codomain is not 2.')
 
         self._nadir = np.max(blackbox_function.y) * np.ones(dimension_codomain)
 
         self._utopia_point = np.zeros(dimension_codomain)
 
         if len(blackbox_function.evaluations) == 0:
-            raise ValueError("Need at least one initial evaluation of the blackbox function.")
+            raise ValueError('Need at least one initial evaluation of the blackbox function.')
 
         # find out where more points are
         moo = GPRMinimizer(minimizer=self._minimizer,
@@ -57,7 +57,7 @@ class EvenlyScanned2d(MOOAlgorithm):
                            min_distance_to_evaluated_points=self._min_distance_to_evaluated_points,
                            lower_bounds=self._lower_bounds_x)
         # Search for 1 Pareto points
-        print("Search for 1 Pareto points...\n")
+        print('Search for 1 Pareto points...\n')
         one_pareto_points = []
         for i in range(dimension_codomain):
             scalar = np.ones(dimension_codomain)
@@ -105,7 +105,7 @@ class EvenlyScanned2d(MOOAlgorithm):
                                                               scalar=scalar)
 
         number_remaining_evaluations = self._max_evaluations_moo - 2
-        print("Search for evenly distributed Pareto points by restricting...\n")
+        print('Search for evenly distributed Pareto points by restricting...\n')
         for _ in range(number_remaining_evaluations):
             restricting_point[side] -= 0.8 * distance_one_pareto_points[side] / (number_remaining_evaluations + 1)
 
@@ -122,4 +122,4 @@ class EvenlyScanned2d(MOOAlgorithm):
 
     @property
     def name(self) -> str:
-        return "EvenlyScanned2d"
+        return 'EvenlyScanned2d'

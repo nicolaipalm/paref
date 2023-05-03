@@ -45,5 +45,5 @@ class TestGPR(unittest.TestCase):
         self.assertAlmostEqual(0, gpr.std(x=np.array([[1.5]]))[0][0], delta=0.1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

@@ -14,5 +14,3 @@ def return_pareto_front(array: np.array):
         if is_pareto:
             pareto_points.append(point)
     return np.array(pareto_points)
-
-

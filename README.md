@@ -5,7 +5,7 @@ With Paref you can build and use problem tailored multi-objective optimization a
 A multi-objective optimization problem comes with an idea of what property identified (Pareto) points should contain.
 Why not construct a multi-objective optimization algorithm which searches precisely for those points?
 With the language of PAreto REFlections this is now possible.
-Paref provides a generic interface for general constructions of multi-objective optimization algorithms (see picture) based on Pareto reflections. 
+Paref provides a generic interface for general constructions of multi-objective optimization algorithms (see picture) based on Pareto reflections.
 
 Basic usage:
 - paref additionally offers a multitude of ready-to-use multi-objective optimization algorithms
@@ -26,4 +26,3 @@ Check out Parefs [documentation]() to learn about the individual properties of e
 [] Are the components of input and output within the same scale? Action: Normalization of input and output data
 [] Do you have enough training data (Rule of thumb: 3 dots per input dimension; Ex: 10 input dimensions and 30 samples)? Action: Extend initial (LH) sampling
 [] Was the training successful? Action: inspect trainingsprocess if error converged; if not raise the number of training iteration (Rule of thumb: at least 2000 training iterations)
-

@@ -53,7 +53,7 @@ class RestrictingWithWeightedNormToUtopia(MOOAlgorithm):
                                                           scalar=self._scalar)
 
         if len(blackbox_function.evaluations) == 0:
-            raise ValueError("Need at least one initial evaluation of the blackbox function.")
+            raise ValueError('Need at least one initial evaluation of the blackbox function.')
 
         stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
 
@@ -71,4 +71,4 @@ class RestrictingWithWeightedNormToUtopia(MOOAlgorithm):
 
     @property
     def name(self) -> str:
-        return "RestrictingWithWeightedNormToUtopia"
+        return 'RestrictingWithWeightedNormToUtopia'

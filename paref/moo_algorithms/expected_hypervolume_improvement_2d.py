@@ -45,14 +45,14 @@ class ExpectedHypervolumeImprovement2d(MOOAlgorithm):
 
             pareto_front = return_pareto_front(train_y)
             print(
-                f"{iteration_step} Training of the GPR...\n"
+                f'{iteration_step} Training of the GPR...\n'
             )
             gpr.train(train_x=train_x, train_y=train_y)
-            print(f"\n finished!\n")
-            print(f"Starting minimization...")
+            print('\n finished!\n')
+            print('Starting minimization...')
 
             expected_hypervolume_improvement = ExpectedHypervolume2d(reference_point=self._reference_point,
-                                                         pareto_front=pareto_front, gpr=gpr)
+                                                                     pareto_front=pareto_front, gpr=gpr)
 
             res = self._minimizer(
                 function=lambda x: expected_hypervolume_improvement(x),
@@ -61,10 +61,10 @@ class ExpectedHypervolumeImprovement2d(MOOAlgorithm):
                 lower_bounds=self._lower_bounds,
             )
 
-            print(f"\n finished!\n Evaluating blackbox function...")
+            print('\n finished!\n Evaluating blackbox function...')
 
             blackbox_function(res)
-            print(f"\n finished!")
+            print('\n finished!')
 
             iteration_step += 1
 
@@ -72,4 +72,4 @@ class ExpectedHypervolumeImprovement2d(MOOAlgorithm):
 
     @property
     def name(self) -> str:
-        return "expected_hypervolume_improvement"
+        return 'expected_hypervolume_improvement'

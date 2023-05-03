@@ -16,5 +16,5 @@ class ConvergenceReached(StoppingCriteria):
             return False
 
         else:
-            print(f"Convergence reached. The l2-distance of the last two points found is {norm}.")
+            print(f'Convergence reached. The l2-distance of the last two points found is {norm}.')
             return True
