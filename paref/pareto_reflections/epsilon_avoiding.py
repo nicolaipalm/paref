@@ -9,7 +9,7 @@ class EpsilonAvoiding(ParetoReflectingFunction):
     def __init__(self,
                  nadir: np.ndarray,
                  epsilon_avoiding_points: np.ndarray,
-                 epsilon: Union[float, np.ndarray] ):
+                 epsilon: Union[float, np.ndarray]):
         self.nadir = nadir
         self.epsilon = epsilon
         self.epsilon_avoiding_points = epsilon_avoiding_points
