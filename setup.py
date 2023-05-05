@@ -30,5 +30,5 @@ setup(
         'examples': ['ipython', 'jupyter'],
         'test': ['pytest', 'pytest-cov'],  # "nbval"],
     },
-    test_suite='test',
+    test_suite='tests',
 )
