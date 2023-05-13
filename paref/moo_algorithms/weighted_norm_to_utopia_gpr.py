@@ -62,8 +62,7 @@ class WeightedNormToUtopiaGPR(MOOAlgorithm):
                                                       ConvergenceReached(blackbox_function, epsilon=self._epsilon))
 
         sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                                     stopping_criteria=stopping_criteria,
-                                     blackbox_function=blackbox_function)
+                                     stopping_criteria=stopping_criteria,)
 
         moo = GPRMinimizer(minimizer=self._minimizer,
                            max_iter_minimizer=self._max_iter_minimizer,

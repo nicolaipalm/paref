@@ -66,7 +66,6 @@ class EvenlyScanned2d(MOOAlgorithm):
                                                               potency=np.ones(dimension_codomain),
                                                               scalar=scalar)
             sequence = RepeatingSequence(pareto_reflecting_functions=[pareto_reflecting_function],
-                                         blackbox_function=blackbox_function,
                                          stopping_criteria=MaxIterationsReached(max_iterations=1))
 
             moo(blackbox_function=blackbox_function,

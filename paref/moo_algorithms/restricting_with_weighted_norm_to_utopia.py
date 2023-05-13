@@ -57,7 +57,8 @@ class RestrictingWithWeightedNormToUtopia(MOOAlgorithm):
 
         stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
 
-        sequence = RestrictingSequence(nadir=self._nadir, stopping_criteria=stopping_criteria,
+        sequence = RestrictingSequence(nadir=self._nadir,
+                                       stopping_criteria=stopping_criteria,
                                        pareto_reflecting_function=pareto_reflecting_function,
                                        restricting_point=self._restricting_point)
 

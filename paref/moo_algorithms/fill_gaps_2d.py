@@ -71,8 +71,7 @@ class FillGaps2d(MOOAlgorithm):
                 potency=self._potency * np.ones(dimension_codomain),
                 scalar=np.ones(dimension_codomain))
             sequence = RepeatingSequence(pareto_reflecting_functions=[pareto_reflecting_function],
-                                         stopping_criteria=MaxIterationsReached(max_iterations=1),
-                                         blackbox_function=blackbox_function)
+                                         stopping_criteria=MaxIterationsReached(max_iterations=1),)
 
             moo(blackbox_function=blackbox_function,
                 pareto_reflecting_sequence=sequence,

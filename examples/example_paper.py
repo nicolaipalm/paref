@@ -57,8 +57,7 @@ pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                                     scalar=np.ones(2))]
 
 sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=1),
-                             blackbox_function=blackbox_function)
+                             stopping_criteria=MaxIterationsReached(max_iterations=1),)
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -115,8 +114,7 @@ pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                ]
 
 sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=5),
-                             blackbox_function=blackbox_function)
+                             stopping_criteria=MaxIterationsReached(max_iterations=5),)
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -130,8 +128,7 @@ pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                ]
 
 sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=5),
-                             blackbox_function=blackbox_function)
+                             stopping_criteria=MaxIterationsReached(max_iterations=5),)
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
