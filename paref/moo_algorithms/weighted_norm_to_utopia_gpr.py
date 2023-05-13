@@ -14,6 +14,9 @@ from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterati
 
 
 class WeightedNormToUtopiaGPR(MOOAlgorithm):
+    """
+
+    """
     def __init__(self,
                  upper_bounds_x: np.ndarray,
                  lower_bounds_x: np.ndarray,

@@ -32,20 +32,25 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
     >>> from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
 
     Initialize blackbox function
+
     >>> blackbox_function = ZDT1(input_dimensions=2)
 
     Initialze stopping criteria
+
     >>> stopping_criteria = MaxIterationsReached(max_iterations=1)
 
     Initialize Pareto reflection to be repeated
+
     >>> pareto_reflecting_functions = [Restricting(nadir=np.ones(1),restricting_point=np.ones(1))]
 
     Initialize repeating sequence
+
     >>> sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions, \
                                      stopping_criteria=stopping_criteria, \
                                      blackbox_function=blackbox_function)
 
     The repeating sequence returns the given Pareto reflection in each step of iteration until the stopping criteria is met
+
     >>> sequence.next().__class__.__name__
     Restricting
 
