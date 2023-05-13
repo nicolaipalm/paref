@@ -12,6 +12,5 @@ class LogicalOrStoppingCriteria(StoppingCriteria):
         self.stopping_criteria_2 = stopping_criteria_2
 
     @abstractmethod
-    def __call__(self, blackbox_function: BlackboxFunction) -> bool:
-        return self.stopping_criteria_1(blackbox_function=blackbox_function) or self.stopping_criteria_2(
-            blackbox_function=blackbox_function)
+    def __call__(self) -> bool:
+        return self.stopping_criteria_1() or self.stopping_criteria_2()

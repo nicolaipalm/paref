@@ -47,7 +47,7 @@ class EvenlyScanned2d(MOOAlgorithm):
         self._utopia_point = np.zeros(dimension_codomain)
 
         if len(blackbox_function.evaluations) == 0:
-            raise ValueError('Need at least one initial evaluation of the blackbox function.')
+            raise ValueError('Need at least one initial evaluation of the blackbox blackbox_function.')
 
         # find out where more points are
         moo = GPRMinimizer(minimizer=self._minimizer,
@@ -66,11 +66,11 @@ class EvenlyScanned2d(MOOAlgorithm):
                                                               potency=np.ones(dimension_codomain),
                                                               scalar=scalar)
             sequence = RepeatingSequence(pareto_reflecting_functions=[pareto_reflecting_function],
+                                         blackbox_function=blackbox_function,
                                          stopping_criteria=MaxIterationsReached(max_iterations=1))
 
             moo(blackbox_function=blackbox_function,
-                pareto_reflecting_sequence=sequence,
-                stopping_criteria=MaxIterationsReached(max_iterations=3))
+                pareto_reflecting_sequence=sequence,)
 
             index_one_pareto_point = np.argmin([pareto_reflecting_function(y) for y in blackbox_function.y])
             one_pareto_points.append(blackbox_function.y[index_one_pareto_point])
@@ -110,12 +110,12 @@ class EvenlyScanned2d(MOOAlgorithm):
             restricting_point[side] -= 0.8 * distance_one_pareto_points[side] / (number_remaining_evaluations + 1)
 
             sequence = RestrictingSequence(nadir=self._nadir,
-                                           restricting_point=restricting_point,
-                                           pareto_reflecting_function=pareto_reflecting_function)
+                                           pareto_reflecting_function=pareto_reflecting_function,
+                                           stopping_criteria=MaxIterationsReached(max_iterations=1),
+                                           restricting_point=restricting_point)
 
             moo(blackbox_function=blackbox_function,
-                pareto_reflecting_sequence=sequence,
-                stopping_criteria=MaxIterationsReached(max_iterations=1))
+                pareto_reflecting_sequence=sequence,)
 
             if self._restricting_point_wrt_previous_evaluated:
                 restricting_point[side] = blackbox_function.y[-1][side]

@@ -38,7 +38,7 @@ class FillGaps2d(MOOAlgorithm):
             raise ValueError('Dimension of codomain is not 2.')
 
         if len(blackbox_function.evaluations) == 0:
-            raise ValueError('Need at least one initial evaluation of the blackbox function.')
+            raise ValueError('Need at least one initial evaluation of the blackbox blackbox_function.')
 
         moo = GPRMinimizer(minimizer=self._minimizer,
                            max_iter_minimizer=self._max_iter_minimizer,
@@ -71,11 +71,12 @@ class FillGaps2d(MOOAlgorithm):
                 potency=self._potency * np.ones(dimension_codomain),
                 scalar=np.ones(dimension_codomain))
             sequence = RepeatingSequence(pareto_reflecting_functions=[pareto_reflecting_function],
-                                         stopping_criteria=MaxIterationsReached(max_iterations=1))
+                                         stopping_criteria=MaxIterationsReached(max_iterations=1),
+                                         blackbox_function=blackbox_function)
 
             moo(blackbox_function=blackbox_function,
                 pareto_reflecting_sequence=sequence,
-                stopping_criteria=MaxIterationsReached(max_iterations=1))
+                )
 
     @property
     def name(self) -> str:

@@ -1,9 +1,9 @@
 import numpy as np
 from scipy.stats import qmc
 
-from paref.interfaces import MOOAlgorithm
+from paref.interfaces.moo_algorithms.moo_algorithm import MOOAlgorithm
 from examples.function_library.zdt2 import ZDT2
-from paref.optimizers import return_pareto_front
+from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 

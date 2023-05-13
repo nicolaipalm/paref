@@ -12,5 +12,6 @@ class MOO:
     def __call__(self,
                  blackbox_function: BlackboxFunction,
                  pareto_reflecting_sequence: SequenceParetoReflectingFunctions,
-                 stopping_criteria: StoppingCriteria):
+                 ):
+        # if pareto_reflecting_sequence returns None then optimizer should stop
         pass

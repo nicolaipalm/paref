@@ -48,7 +48,7 @@ class WeightedNormToUtopia(ParetoReflectingFunction):
     2
     """
 
-    def __init__(self, utopia_point: np.ndarray, potency: int, scalar: np.ndarray):
+    def __init__(self, utopia_point: np.ndarray, potency: np.ndarray, scalar: np.ndarray):
         """Specify the utopia point, the potency and the scalar used in the weighted p-norm
 
         Parameters

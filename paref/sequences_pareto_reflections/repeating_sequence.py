@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
 from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
@@ -15,7 +15,7 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
     This sequence should be used if you search for finitely many Pareto points with certain properties
     reflected by a suitable Pareto reflection.
     Notice that by repeating the Pareto reflections you iteratively search for the optimum
-    (similar to iteratively minimizing a certain function).
+    (similar to iteratively minimizing a certain blackbox_function).
 
     What it does
     ------------
@@ -30,7 +30,7 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
     >>> from paref.pareto_reflections.restricting import Restricting
     >>> pareto_reflecting_functions = [Restricting(nadir=np.ones(1),restricting_point=np.ones(1))]
 
-    Initialze stopping criteria and blackbox function
+    Initialze stopping criteria and blackbox blackbox_function
     #TODO: fill both
     >>>
     >>> stopping_criteria =
@@ -41,13 +41,14 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
                                      pareto_reflecting_functions=pareto_reflecting_functions)
 
     The repeating sequence returns the given Pareto reflection in each step of iteration until the stopping criteria is met
-    >>> sequence.next(blackbox_function=blackbox_function)
+    >>> sequence.next()
     #TODO: fill output
-    >>> sequence.next(blackbox_function=blackbox_function)
+    >>> sequence.next()
     None
     """
 
     def __init__(self,
+                 blackbox_function: BlackboxFunction,
                  stopping_criteria: StoppingCriteria,
                  pareto_reflecting_functions: List[ParetoReflectingFunction]):
         """Specify the stopping criteria and the Pareto reflections to be repeated
@@ -65,17 +66,15 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
         self._stopping_criteria = stopping_criteria
         self._pareto_reflecting_functions = pareto_reflecting_functions
         self._iter = 0
+        self._blackbox_function = blackbox_function
 
-    def next(self,
-             blackbox_function: BlackboxFunction
-             ) -> ParetoReflectingFunction:
+    def next(self) -> Optional[ParetoReflectingFunction]:
         """Return the next Pareto reflection of the sequence
 
         Parameters
         ----------
-        blackbox_function :
         BlackboxFunction
-            blackbox function to be optimized
+            blackbox blackbox_function to be optimized
 
         Returns
         -------
@@ -83,10 +82,9 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
             next Pareto reflection of the sequence
 
         """
-        # TODO: What to do if the end of the sequence is reached?
-        if self._stopping_criteria(blackbox_function):
+        if not self._stopping_criteria():
             self._iter += 1
             return self._pareto_reflecting_functions[self._iter % len(self._pareto_reflecting_functions)]
 
         else:
-            raise ValueError('Stopping criteria is reached')
+            return None

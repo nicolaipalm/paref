@@ -35,7 +35,7 @@ class TestingDTLZ2:
         self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
     def __call__(self, moo: MOOAlgorithm):
-        # y_initial = self.function.y
+        # y_initial = self.blackbox_function.y
         moo(blackbox_function=self.function)
 
         PF = return_pareto_front([point[1] for point in self.function.evaluations])

@@ -1,6 +1,6 @@
 import numpy as np
 
-from paref.interfaces import BlackboxFunction
+from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
 from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
 

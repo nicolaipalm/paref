@@ -7,7 +7,7 @@ class MaxIterationsReached(StoppingCriteria):
         self._iteration_step = 0
         self._max_iterations = max_iterations
 
-    def __call__(self, blackbox_function: BlackboxFunction):
+    def __call__(self):
         if self._iteration_step < self._max_iterations:
             self._iteration_step += 1
             return False
