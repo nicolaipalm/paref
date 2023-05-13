@@ -1,10 +1,9 @@
 from typing import List, Optional
 
-from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
 from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
     SequenceParetoReflectingFunctions
-from paref.interfaces.optimizers.stopping_criteria import StoppingCriteria
+from paref.interfaces.sequences_pareto_reflections.stopping_criteria import StoppingCriteria
 
 
 class RepeatingSequence(SequenceParetoReflectingFunctions):
@@ -76,11 +75,6 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
 
     def next(self) -> Optional[ParetoReflectingFunction]:
         """Return the next Pareto reflection of the sequence
-
-        Parameters
-        ----------
-        BlackboxFunction
-            blackbox blackbox_function to be optimized
 
         Returns
         -------

@@ -1,7 +1,7 @@
 import numpy as np
 
 from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
-from paref.interfaces.optimizers.stopping_criteria import StoppingCriteria
+from paref.interfaces.sequences_pareto_reflections.stopping_criteria import StoppingCriteria
 from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 from paref.pareto_reflections.epsilon_avoiding import EpsilonAvoiding
 from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction

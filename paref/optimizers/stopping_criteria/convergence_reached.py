@@ -1,7 +1,7 @@
 import numpy as np
 
 from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
-from paref.interfaces.optimizers.stopping_criteria import StoppingCriteria
+from paref.interfaces.sequences_pareto_reflections.stopping_criteria import StoppingCriteria
 
 
 class ConvergenceReached(StoppingCriteria):

@@ -1,4 +1,4 @@
-from paref.interfaces.optimizers.stopping_criteria import StoppingCriteria
+from paref.interfaces.sequences_pareto_reflections.stopping_criteria import StoppingCriteria
 
 
 class TimeLimitReached(StoppingCriteria):

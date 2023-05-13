@@ -18,6 +18,8 @@ class ParetoReflectingFunction:
 
     Examples
     --------
+
+    TODO: into contribution
     """
 
     @abstractmethod
