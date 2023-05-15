@@ -59,6 +59,8 @@ class AvoidingWithWeightedNormToUtopia(MOOAlgorithm):
 
         sequence = EpsilonAvoidingSequence(nadir=self._nadir,
                                            epsilon=self._epsilon,
+                                           stopping_criteria=stopping_criteria,
+                                           blackbox_function=blackbox_function,
                                            pareto_reflecting_function=pareto_reflecting_function)
 
         moo = GPRMinimizer(minimizer=self._minimizer,
@@ -66,8 +68,7 @@ class AvoidingWithWeightedNormToUtopia(MOOAlgorithm):
                            lower_bounds=self._lower_bounds_x)
 
         moo(blackbox_function=blackbox_function,
-            pareto_reflecting_sequence=sequence,
-            stopping_criteria=stopping_criteria)
+            pareto_reflecting_sequence=sequence,)
 
     @property
     def name(self) -> str:

@@ -1,6 +1,6 @@
-from paref.interfaces.optimizers.stopping_criteria import StoppingCriteria
+from paref.interfaces.sequences_pareto_reflections.stopping_criteria import StoppingCriteria
 
 
 class TimeLimitReached(StoppingCriteria):
-    def __call__(self, time_limit: float = 100):
+    def __call__(self):
         pass

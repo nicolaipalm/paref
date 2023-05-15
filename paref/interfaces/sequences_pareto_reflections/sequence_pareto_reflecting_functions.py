@@ -1,13 +1,12 @@
 from abc import abstractmethod
-
-from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
+from typing import Optional
 from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
 
 
 class SequenceParetoReflectingFunctions:
-    """Interface fot sequences of Pareto reflections
+    """Interface for sequences of Pareto reflections
 
-    Documentation should contain:
+    Documentation of an implementation of this interface should contain:
 
     When to use
     -----------
@@ -22,8 +21,17 @@ class SequenceParetoReflectingFunctions:
 
     Examples
     --------
+
+    #TODO: this should be in a contributing.md
     """
 
     @abstractmethod
-    def next(self, blackbox_function: BlackboxFunction) -> ParetoReflectingFunction:
+    def next(self, ) -> Optional[ParetoReflectingFunction]:
+        """
+
+        Returns
+        -------
+        Optional[ParetoReflectingFunction]
+            Either the next Pareto reflection or None if the end of the sequence is reached
+        """
         pass

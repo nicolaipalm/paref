@@ -37,7 +37,7 @@ class ExpectedHypervolumeImprovement2d(MOOAlgorithm):
 
         iteration_step = 1
         stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
-        stop = stopping_criteria(blackbox_function=blackbox_function)
+        stop = stopping_criteria()
         while not stop:
             train_x = blackbox_function.x
 
@@ -61,14 +61,14 @@ class ExpectedHypervolumeImprovement2d(MOOAlgorithm):
                 lower_bounds=self._lower_bounds,
             )
 
-            print('\n finished!\n Evaluating blackbox function...')
+            print('\n finished!\n Evaluating blackbox blackbox_function...')
 
             blackbox_function(res)
             print('\n finished!')
 
             iteration_step += 1
 
-            stop = stopping_criteria(blackbox_function=blackbox_function)
+            stop = stopping_criteria()
 
     @property
     def name(self) -> str:

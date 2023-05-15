@@ -13,5 +13,5 @@ class Minimizer(ABC):
         lower_bounds: np.ndarray,
         max_iter: int,
     ) -> np.ndarray:
-        # x value; not f(x) (stored in function)
+        # x value; not f(x) (stored in blackbox_function)
         pass

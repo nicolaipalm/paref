@@ -14,6 +14,9 @@ from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterati
 
 
 class WeightedNormToUtopiaGPR(MOOAlgorithm):
+    """
+
+    """
     def __init__(self,
                  upper_bounds_x: np.ndarray,
                  lower_bounds_x: np.ndarray,
@@ -59,11 +62,10 @@ class WeightedNormToUtopiaGPR(MOOAlgorithm):
             raise ValueError('Need at least one initial evaluations of the blackbox functions.')
 
         stopping_criteria = LogicalOrStoppingCriteria(MaxIterationsReached(max_iterations=self._max_evaluations_moo),
-                                                      ConvergenceReached(
-                                                          epsilon=self._epsilon))
+                                                      ConvergenceReached(blackbox_function, epsilon=self._epsilon))
 
         sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                                     stopping_criteria=MaxIterationsReached(max_iterations=self._max_evaluations_moo))
+                                     stopping_criteria=stopping_criteria,)
 
         moo = GPRMinimizer(minimizer=self._minimizer,
                            max_iter_minimizer=self._max_iter_minimizer,
@@ -71,8 +73,7 @@ class WeightedNormToUtopiaGPR(MOOAlgorithm):
                            lower_bounds=self._lower_bounds_x)
 
         moo(blackbox_function=blackbox_function,
-            pareto_reflecting_sequence=sequence,
-            stopping_criteria=stopping_criteria)
+            pareto_reflecting_sequence=sequence,)
 
     @property
     def name(self) -> str:

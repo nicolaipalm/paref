@@ -3,11 +3,11 @@ import numpy as np
 from examples.function_library.testing_zdt2 import TestingZDT2
 from paref.moo_algorithms.restricting_with_weighted_norm_to_utopia import RestrictingWithWeightedNormToUtopia
 
-input_dimensions = 5
+input_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 1
+max_evaluations = 3
 max_iter_minimizer = 100
 lh_evaluations = 35
 

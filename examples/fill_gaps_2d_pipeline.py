@@ -1,8 +1,7 @@
 import numpy as np
-from paref.moo_algorithms.fill_gaps_2d import FillGaps2d
-
 from examples.function_library.testing_zdt2 import TestingZDT2
 from paref.moo_algorithms.evenly_scanned_2d import EvenlyScanned2d
+from paref.moo_algorithms.fill_gaps_2d import FillGaps2d
 
 input_dimensions = 10
 

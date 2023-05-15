@@ -6,7 +6,6 @@ from paref.optimizers.minimizers.differential_evolution import DifferentialEvolu
 from paref.interfaces.optimizers.moo import MOO
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
     SequenceParetoReflectingFunctions
-from paref.interfaces.optimizers.stopping_criteria import StoppingCriteria
 from paref.optimizers.surrogates.gpr import GPR
 
 
@@ -29,14 +28,17 @@ class GPRMinimizer(MOO):
 
     def __call__(self,
                  blackbox_function: BlackboxFunction,
-                 pareto_reflecting_sequence: SequenceParetoReflectingFunctions,
-                 stopping_criteria: StoppingCriteria):
+                 pareto_reflecting_sequence: SequenceParetoReflectingFunctions):
 
         gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate)
 
         iteration_step = 1
-        stop = stopping_criteria(blackbox_function)
-        while not stop:
+        while True:
+            pareto_reflecting_function = pareto_reflecting_sequence.next()
+
+            if pareto_reflecting_function is None:
+                break
+
             train_x = blackbox_function.x
 
             train_y = blackbox_function.y
@@ -47,7 +49,7 @@ class GPRMinimizer(MOO):
             print('\nfinished!\n')
             print('Starting minimization...')
 
-            pareto_reflecting_function = pareto_reflecting_sequence.next(blackbox_function=blackbox_function)
+
             res = self._minimizer(
                 function=lambda x: pareto_reflecting_function(gpr(x)),
                 max_iter=self._max_iter_minimizer,
@@ -68,14 +70,13 @@ class GPRMinimizer(MOO):
             if np.any(np.linalg.norm(gpr(res) - np.array(
                     [gpr(x) for x in blackbox_function.x]), axis=1) <= self._min_distance_to_evaluated_points):
                 print('\nFound Pareto point is too close to some already evaluated point.')
-                break
+                if input("Continue?[y/n]") != "y":
+                    break
 
-            print('Evaluating blackbox function...')
+            print('Evaluating blackbox blackbox_function...')
             blackbox_function(res)
             print('finished!')
-            print('Value of blackbox function: ', blackbox_function.y[-1])
+            print('Value of blackbox blackbox_function: ', blackbox_function.y[-1])
             print('Difference to estimation: ', gpr(res)-blackbox_function.y[-1])
 
             iteration_step += 1
-
-            stop = stopping_criteria(blackbox_function)

@@ -53,21 +53,21 @@ class RestrictingWithWeightedNormToUtopia(MOOAlgorithm):
                                                           scalar=self._scalar)
 
         if len(blackbox_function.evaluations) == 0:
-            raise ValueError('Need at least one initial evaluation of the blackbox function.')
+            raise ValueError('Need at least one initial evaluation of the blackbox blackbox_function.')
 
         stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
 
         sequence = RestrictingSequence(nadir=self._nadir,
-                                       restricting_point=self._restricting_point,
-                                       pareto_reflecting_function=pareto_reflecting_function)
+                                       stopping_criteria=stopping_criteria,
+                                       pareto_reflecting_function=pareto_reflecting_function,
+                                       restricting_point=self._restricting_point)
 
         moo = GPRMinimizer(minimizer=self._minimizer,
                            upper_bounds=self._upper_bounds_x,
                            lower_bounds=self._lower_bounds_x)
 
         moo(blackbox_function=blackbox_function,
-            pareto_reflecting_sequence=sequence,
-            stopping_criteria=stopping_criteria)
+            pareto_reflecting_sequence=sequence,)
 
     @property
     def name(self) -> str:
