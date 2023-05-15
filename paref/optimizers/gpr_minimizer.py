@@ -49,7 +49,6 @@ class GPRMinimizer(MOO):
             print('\nfinished!\n')
             print('Starting minimization...')
 
-
             res = self._minimizer(
                 function=lambda x: pareto_reflecting_function(gpr(x)),
                 max_iter=self._max_iter_minimizer,
@@ -70,7 +69,7 @@ class GPRMinimizer(MOO):
             if np.any(np.linalg.norm(gpr(res) - np.array(
                     [gpr(x) for x in blackbox_function.x]), axis=1) <= self._min_distance_to_evaluated_points):
                 print('\nFound Pareto point is too close to some already evaluated point.')
-                if input("Continue?[y/n]") != "y":
+                if input('Continue?[y/n]') != 'y':
                     break
 
             print('Evaluating blackbox blackbox_function...')
