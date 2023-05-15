@@ -6,7 +6,7 @@ from paref.interfaces.optimizers.minimizer import Minimizer
 from paref.optimizers.minimizers.differential_evolution import DifferentialEvolution
 from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 from paref.pareto_reflections.expected_hypervolume_2d import ExpectedHypervolume2d
-from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.sequences_pareto_reflections.stopping_criteria.max_iterations_reached import MaxIterationsReached
 from paref.optimizers.surrogates.gpr import GPR
 
 

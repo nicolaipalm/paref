@@ -26,3 +26,17 @@ Check out Parefs [documentation]() to learn about the individual properties of e
 [] Are the components of input and output within the same scale? Action: Normalization of input and output data
 [] Do you have enough training data (Rule of thumb: 3 dots per input dimension; Ex: 10 input dimensions and 30 samples)? Action: Extend initial (LH) sampling
 [] Was the training successful? Action: inspect trainingsprocess if error converged; if not raise the number of training iteration (Rule of thumb: at least 2000 training iterations)
+
+## Step-by-step guide
+
+### Build your own algorithm
+[Graphic workflow]
+
+with coding example
+
+
+
+### Apply an algorithm to a MOO problem
+[Graphic workflow]
+
+with coding example (every example in examples folder is built that way)

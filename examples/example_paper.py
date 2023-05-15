@@ -14,9 +14,9 @@ from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_fu
     SequenceParetoReflectingFunctions
 from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
 from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
-from paref.optimizers.stopping_criteria.convergence_reached import ConvergenceReached
-from paref.optimizers.stopping_criteria.logical_or_stopping_criteria import LogicalOrStoppingCriteria
-from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.sequences_pareto_reflections.stopping_criteria.convergence_reached import ConvergenceReached
+from paref.sequences_pareto_reflections.stopping_criteria.logical_or_stopping_criteria import LogicalOrStoppingCriteria
+from paref.sequences_pareto_reflections.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
 #########
 # Setup #
@@ -57,7 +57,7 @@ pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                                     scalar=np.ones(2))]
 
 sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=1),)
+                             stopping_criteria=MaxIterationsReached(max_iterations=1), )
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -105,16 +105,17 @@ print('Search for 1 Pareto points')
 # define stopping criteria for sequence
 stopping_criteria = LogicalOrStoppingCriteria(MaxIterationsReached(max_iterations=20),
                                               ConvergenceReached(
-                                                  epsilon=epsilon_convergence,blackbox_function=blackbox_function))
+                                                  epsilon=epsilon_convergence, blackbox_function=blackbox_function))
 
-# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second component
+# define constant sequence of linear blackbox_function searching for the Pareto
+# point corresponding to the second component
 pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                                     potency=np.ones(2),
                                                     scalar=np.array([0.1, 1])),
                                ]
 
 sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=5),)
+                             stopping_criteria=MaxIterationsReached(max_iterations=5), )
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -128,7 +129,7 @@ pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                ]
 
 sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=5),)
+                             stopping_criteria=MaxIterationsReached(max_iterations=5), )
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,

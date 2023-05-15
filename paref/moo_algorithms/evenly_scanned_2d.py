@@ -9,7 +9,7 @@ from paref.optimizers.gpr_minimizer import GPRMinimizer
 from paref.pareto_reflections.weighted_norm_to_utopia import WeightedNormToUtopia
 from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
 from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
-from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.sequences_pareto_reflections.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
 
 class EvenlyScanned2d(MOOAlgorithm):
