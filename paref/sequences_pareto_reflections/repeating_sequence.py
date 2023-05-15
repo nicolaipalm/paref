@@ -49,7 +49,8 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
                                      stopping_criteria=stopping_criteria, \
                                      blackbox_function=blackbox_function)
 
-    The repeating sequence returns the given Pareto reflection in each step of iteration until the stopping criteria is met
+    The repeating sequence returns the given Pareto reflection in each step of iteration until the stopping criteria is
+    met
 
     >>> sequence.next().__class__.__name__
     Restricting

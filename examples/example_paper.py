@@ -1,17 +1,17 @@
 import numpy as np
+import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 from scipy.stats import qmc
-import plotly.graph_objects as go
 
 from examples.function_library.zdt1 import ZDT1
+from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
+from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
+    SequenceParetoReflectingFunctions
 from paref.optimizers.gpr_minimizer import GPRMinimizer
 from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 from paref.pareto_reflections.epsilon_avoiding import EpsilonAvoiding
-from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
 from paref.pareto_reflections.operations.composing import Composing
 from paref.pareto_reflections.weighted_norm_to_utopia import WeightedNormToUtopia
-from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
-    SequenceParetoReflectingFunctions
 from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
 from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
 from paref.sequences_pareto_reflections.stopping_criteria.convergence_reached import ConvergenceReached
@@ -122,7 +122,8 @@ moo(blackbox_function=blackbox_function,
     pareto_reflecting_sequence=sequence,
     )
 
-# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second component
+# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second
+# component
 pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
                                                     potency=np.ones(2),
                                                     scalar=np.array([1, 0.1])),
@@ -169,7 +170,8 @@ fig.show()
 # find Evenly spaced Pareto points#
 ###################################
 
-# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second component
+# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second
+# component
 pareto_reflecting_function = WeightedNormToUtopia(utopia_point=utopia_point,
                                                   potency=np.ones(2),
                                                   scalar=np.array([0.1, 1]))
@@ -237,7 +239,8 @@ fig.show()
 print('Search for evenly separated Pareto points')
 
 
-# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second component
+# define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second
+# component
 
 class EpsilonAvoidingSequenceOfSpecificPoints(SequenceParetoReflectingFunctions):
     def __init__(self,

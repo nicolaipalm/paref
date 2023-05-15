@@ -85,7 +85,8 @@ class Restricting(ParetoReflectingFunction):
         """
         if x.shape != self.restricting_point.shape:
             raise ValueError(
-                f"Shapes don't match! Shape of x is {x.shape}, shape of restricting point is {self.restricting_point.shape}!")
+                f'Shapes don\'t match! Shape of x is {x.shape}, shape of restricting point is '
+                f'{self.restricting_point.shape}!')
 
         if np.any(self.restricting_point <= x):
             return self.nadir

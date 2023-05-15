@@ -1,13 +1,13 @@
-from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
-
 import numpy as np
 from scipy import stats
 
+from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
 from paref.optimizers.surrogates.gpr import GPR
 
 
 def ehvi_2d(PF, r, mu, sigma):
-    # TODO: does not work properly, i.e. does not depend on reference point as it should: ref point too small does not make EHVI = 0!
+    # TODO: does not work properly, i.e. does not depend on reference point as it should: ref point too small does not
+    #  make EHVI = 0!
     n = PF.shape[0]
     S1 = np.array([r[0], -np.inf])
     S1 = S1.reshape(1, -1)
@@ -40,8 +40,8 @@ def ehvi_2d(PF, r, mu, sigma):
                 y2[i], y2[i], mu[0][1], sigma[0][1]
             )
         sum_total2 = sum_total2 + (
-            psi_cal(y1[i - 1], y1[i - 1], mu[0][0], sigma[0][0])
-            - psi_cal(y1[i - 1], y1[i], mu[0][0], sigma[0][0])
+                psi_cal(y1[i - 1], y1[i - 1], mu[0][0], sigma[0][0])
+                - psi_cal(y1[i - 1], y1[i], mu[0][0], sigma[0][0])
         ) * psi_cal(y2[i], y2[i], mu[0][1], sigma[0][1])
 
     EHVI = sum_total1 + sum_total2

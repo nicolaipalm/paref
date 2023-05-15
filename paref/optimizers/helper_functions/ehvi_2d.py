@@ -3,7 +3,8 @@ from scipy import stats
 
 
 def ehvi_2d(PF, r, mu, sigma):
-    # TODO: does not work properly, i.e. does not depend on reference point as it should: ref point too small does not make EHVI = 0!
+    # TODO: does not work properly, i.e. does not depend on reference point as it should: ref point too small does not
+    #  make EHVI = 0!
     n = PF.shape[0]
     S1 = np.array([r[0], -np.inf])
     S1 = S1.reshape(1, -1)
@@ -36,8 +37,8 @@ def ehvi_2d(PF, r, mu, sigma):
                 y2[i], y2[i], mu[0][1], sigma[0][1]
             )
         sum_total2 = sum_total2 + (
-            psi_cal(y1[i - 1], y1[i - 1], mu[0][0], sigma[0][0])
-            - psi_cal(y1[i - 1], y1[i], mu[0][0], sigma[0][0])
+                psi_cal(y1[i - 1], y1[i - 1], mu[0][0], sigma[0][0])
+                - psi_cal(y1[i - 1], y1[i], mu[0][0], sigma[0][0])
         ) * psi_cal(y2[i], y2[i], mu[0][1], sigma[0][1])
 
     EHVI = sum_total1 + sum_total2
@@ -47,6 +48,5 @@ def ehvi_2d(PF, r, mu, sigma):
 def psi_cal(a, b, m, s):
     t = (b - m) / s
     return s * stats.norm.pdf(t) + (a - m) * stats.norm.cdf(t)
-
 
 # print(ehvi_2d(PF=np.array([[0,0]]),r=np.array([0.1,0.1]),mu=np.array([1,1]),sigma=np.array([[0.1],[0.1]])))

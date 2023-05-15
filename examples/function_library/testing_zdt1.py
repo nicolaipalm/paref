@@ -60,7 +60,8 @@ class TestingZDT1:
             width=800,
             height=600,
             plot_bgcolor='rgba(0,0,0,0)',
-            title=f'zdt1 - {moo.name}: {self.input_dimensions}-dim with rel. HV: {hypervolume_weight / self.hypervolume_max * 100}%',
+            title=f'zdt1 - {moo.name}: {self.input_dimensions}-dim with rel. HV: '
+                  f'{hypervolume_weight / self.hypervolume_max * 100}%',
         )
 
         fig1.show()
