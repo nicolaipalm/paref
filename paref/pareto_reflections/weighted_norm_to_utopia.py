@@ -31,7 +31,7 @@ class WeightedNormToUtopia(ParetoReflectingFunction):
     Define the utopia point, potency (p) and the scalar
 
     >>> import numpy as np
-    >>> utopia_point, potency, scalar = np.zeros(2),2,np.ones(2)
+    >>> utopia_point, potency, scalar = np.zeros(2), np.array([2]), np.ones(2)
 
     Initialize the WeightedNormToUtopia
 
@@ -57,7 +57,7 @@ class WeightedNormToUtopia(ParetoReflectingFunction):
         np.ndarray
             utopia point stored in 1 dimensional array of length n
         potency :
-        int
+        np.ndarray
             potency (i.e. value of p for the used p-norm)
         scalar :
         np.ndarray
