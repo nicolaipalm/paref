@@ -21,7 +21,7 @@ class Restricting(ParetoReflectingFunction):
     .. math::
         p(x) = x
 
-    if x dominates d and
+    if x dominates or is equal to d and
 
     .. math::
         p(x) = n
