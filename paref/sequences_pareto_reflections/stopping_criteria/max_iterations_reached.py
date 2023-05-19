@@ -7,8 +7,6 @@ class MaxIterationsReached(StoppingCriteria):
     Examples
     --------
 
-    >>> from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
-
     Initialze stopping criteria
 
     >>> stopping_criteria = MaxIterationsReached(max_iterations=1)
@@ -24,6 +22,7 @@ class MaxIterationsReached(StoppingCriteria):
     True
 
     """
+
     def __init__(self, max_iterations: int = 50):
         """
 

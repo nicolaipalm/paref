@@ -27,13 +27,7 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
 
     >>> import numpy as np
     >>> from paref.pareto_reflections.restricting import Restricting
-    >>> from paref.optimizers.stopping_criteria.max_iterations_reached import MaxIterationsReached
-    >>> from examples.function_library.zdt1 import ZDT1
-    >>> from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
-
-    Initialize blackbox function
-
-    >>> blackbox_function = ZDT1(input_dimensions=2)
+    >>> from paref.sequences_pareto_reflections.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
     Initialze stopping criteria
 
@@ -46,8 +40,7 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
     Initialize repeating sequence
 
     >>> sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions, \
-                                     stopping_criteria=stopping_criteria, \
-                                     blackbox_function=blackbox_function)
+                                     stopping_criteria=stopping_criteria)
 
     The repeating sequence returns the given Pareto reflection in each step of iteration until the stopping criteria is
     met
