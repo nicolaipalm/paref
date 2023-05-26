@@ -1,4 +1,4 @@
-[![Python Test & Lint](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml/badge.svg?branch=refactoring_mortag)](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml)  
+[![Python Test & Lint](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml/badge.svg)](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml)  
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg?style=plastic)](https://www.python.org/downloads/)
 # Paref
 
