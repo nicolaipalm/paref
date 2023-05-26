@@ -1,11 +1,11 @@
 import numpy as np
-from scipy.stats import qmc
-
-from paref.interfaces.moo_algorithms.moo_algorithm import MOOAlgorithm
-from examples.function_library.zdt2 import ZDT2
-from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
+from scipy.stats import qmc
+
+from examples.function_library.zdt2 import ZDT2
+from paref.interfaces.moo_algorithms.moo_algorithm import MOOAlgorithm
+from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
 
 
 class TestingZDT2:
@@ -39,17 +39,18 @@ class TestingZDT2:
         PF = return_pareto_front([point[1] for point in self.function.evaluations])
         hypervolume_weight = self.metric.do(PF)
 
-        print("HV found/HV max\n:", hypervolume_weight / self.hypervolume_max)
+        print('HV found/HV max\n:', hypervolume_weight / self.hypervolume_max)
 
         y = np.array([evaluation[1] for evaluation in self.function.evaluations])
 
         data = [
-            go.Scatter(x=self.real_PF.T[0], y=self.real_PF.T[1], name="Real Pareto front"),
-            go.Scatter(x=y[self.lh_evaluations:].T[0], y=y[self.lh_evaluations:].T[1], mode="markers", name="Evaluations"),
-            go.Scatter(x=y[:self.lh_evaluations].T[0], y=y[:self.lh_evaluations].T[1], mode="markers",
-                       name="Initial Evaluations"),
-            go.Scatter(x=PF.T[0], y=PF.T[1], mode="markers", marker=dict(
-                color="red", size=8), name="Found Pareto front"),
+            go.Scatter(x=self.real_PF.T[0], y=self.real_PF.T[1], name='Real Pareto front'),
+            go.Scatter(x=y[self.lh_evaluations:].T[0], y=y[self.lh_evaluations:].T[1], mode='markers',
+                       name='Evaluations'),
+            go.Scatter(x=y[:self.lh_evaluations].T[0], y=y[:self.lh_evaluations].T[1], mode='markers',
+                       name='Initial Evaluations'),
+            go.Scatter(x=PF.T[0], y=PF.T[1], mode='markers', marker=dict(
+                color='red', size=8), name='Found Pareto front'),
         ]
 
         fig1 = go.Figure(data=data)
@@ -57,8 +58,9 @@ class TestingZDT2:
         fig1.update_layout(
             width=800,
             height=600,
-            plot_bgcolor="rgba(0,0,0,0)",
-            title=f"zdt2 - {moo.name}: {self.input_dimensions}-dim with rel. HV: {hypervolume_weight / self.hypervolume_max * 100}%",
+            plot_bgcolor='rgba(0,0,0,0)',
+            title=f'zdt2 - {moo.name}: {self.input_dimensions}-dim with rel. HV: '
+                  f'{hypervolume_weight / self.hypervolume_max * 100}%',
         )
 
         fig1.show()

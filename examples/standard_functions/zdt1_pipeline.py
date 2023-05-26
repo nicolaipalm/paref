@@ -1,6 +1,7 @@
 import numpy as np
-from examples.function_library.testing_zdt1 import TestingZDT1
 from paref.moo_algorithms.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
+
+from examples.function_library.testing_zdt1 import TestingZDT1
 
 input_dimensions = 5
 

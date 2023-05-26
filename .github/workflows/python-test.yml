@@ -28,8 +28,8 @@ jobs:
         flake8 --config=setup.cfg
     - name: Checks with pre-commit
       run: |
-        SKIP=flake8 pre-commit run --files tests/**/*.py paref/**/*.py
-        
+        SKIP=flake8,pytest pre-commit run --files tests/**/*.py paref/**/*.py
+
   python_tests:
     runs-on: ubuntu-latest
     steps:

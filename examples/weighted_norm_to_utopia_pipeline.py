@@ -7,9 +7,9 @@ input_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 1
-max_iter_minimizer = 1000
-lh_evaluations = 5
+max_evaluations = 2
+max_iter_minimizer = 100
+lh_evaluations = 20
 epsilon = 1e-2
 
 reference_point = 3 * np.ones(2)

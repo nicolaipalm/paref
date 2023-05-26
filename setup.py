@@ -4,7 +4,8 @@ setup(
     name='paref',
     version='1.0.0',
     license='MIT',
-    description='Small package containing implementations and interfaces for weight-based multi-objective optimization approaches',
+    description='Small package containing implementations and interfaces for weight-based multi-objective '
+                'optimization approaches',
     author='Nicolai Palm',
     author_email='nicolaipalm@googlemail.com',
     classifiers=[
@@ -13,7 +14,6 @@ setup(
         'Operating System :: OS Independent',
         'Development Status:: 1 - Planning'
     ],
-    package_dir={'': 'src'},
     python_requires='>=3.6',
     install_requires=[
         'numpy',
@@ -25,5 +25,10 @@ setup(
         'matplotlib',
         'tqdm',
     ],
-
+    extras_require={
+        'dev': ['pre-commit', 'flake8', 'flake8-print'],
+        'examples': ['ipython', 'jupyter'],
+        'test': ['pytest', 'pytest-cov'],  # "nbval"],
+    },
+    test_suite='tests',
 )
