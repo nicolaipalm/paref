@@ -1,0 +1,48 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python Test & Lint
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  python_linter:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8 flake8-print pre-commit
+        pre-commit install
+    - name: Lint with flake8
+      run: |
+        flake8 --config=setup.cfg
+    - name: Checks with pre-commit
+      run: |
+        SKIP=flake8 pre-commit run --files tests/**/*.py paref/**/*.py
+        
+  python_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -U pytest pytest-cov
+    - name: Run Python tests
+      run: |
+        pytest
