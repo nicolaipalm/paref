@@ -12,7 +12,7 @@ class WeightedNormToUtopia(ParetoReflectingFunction):
 
     What it does
     ------------
-    The Pareto points of this map are the ones which minimize the (weighteed) distance to the utopia point.
+    The Pareto points of this map are the ones which minimize the (weighted) distance to the utopia point.
 
     Mathematical formula
     --------------------

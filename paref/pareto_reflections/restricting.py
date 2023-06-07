@@ -69,7 +69,7 @@ class Restricting(ParetoReflectingFunction):
         self.restricting_point = restricting_point
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        """Calculate the Restricting blackbox_function
+        """Calculate the Restricting function
 
         Parameters
         ----------
@@ -80,7 +80,7 @@ class Restricting(ParetoReflectingFunction):
         Returns
         -------
         float
-            value of the restricting blackbox_function
+            value of the restricting function
 
         """
         if x.shape != self.restricting_point.shape:

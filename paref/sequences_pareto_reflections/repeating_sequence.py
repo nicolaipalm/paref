@@ -60,12 +60,10 @@ class RepeatingSequence(SequenceParetoReflectingFunctions):
         Parameters
         ----------
 
-        stopping_criteria :
-        StoppingCriteria
+        stopping_criteria : StoppingCriteria
             stopping criteria defining the end of the sequence
 
-        pareto_reflecting_functions :
-        List[ParetoReflectingFunction]
+        pareto_reflecting_functions : List[ParetoReflectingFunction]
             Pareto reflections to be repeated stored in a list
         """
         self._stopping_criteria = stopping_criteria
