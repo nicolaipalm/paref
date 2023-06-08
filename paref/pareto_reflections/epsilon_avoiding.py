@@ -38,11 +38,12 @@ class EpsilonAvoiding(ParetoReflectingFunction):
         Define the nadir and the points which should dominate
 
         >>> import numpy as np
-        >>> nadir, epsilon, epsilon_avoiding_points = np.array([3,7]),1,np.array([[2,1],[1,5]])
+        >>> nadir, epsilon_avoiding_points, epsilon = np.array([3,7]), np.array([[2,1],[1,5]]), 1
 
         Initialize the EpsilonAvoiding
 
-        >>> pareto_reflection = EpsilonAvoiding(nadir=nadir,restricting_point=restricting_point)
+        >>> pareto_reflection = EpsilonAvoiding(nadir=nadir, epsilon_avoiding_points=epsilon_avoiding_points, \
+            epsilon=epsilon)
 
         Calling it to (1,1), i.e. calculating
 
