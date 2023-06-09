@@ -70,7 +70,7 @@ class EpsilonAvoiding(ParetoReflectingFunction):
             nadir (dominated by all points) stored in 1 dimensional array of length n
 
         epsilon_avoiding_points : np.ndarray
-            avoided points stored in 2 dimensional array with first dimension corresponding to the points
+            avoided points stored in 2-dimensional array with first dimension corresponding to the points
 
         epsilon : Union[float, np.ndarray])
             value which is subtracted from avoided points
@@ -94,6 +94,7 @@ class EpsilonAvoiding(ParetoReflectingFunction):
             value of the epsilon avoiding function
 
         """
+        # TODO: add dimensionality check
         for _, point in enumerate(self.epsilon_avoiding_points):
             if np.all(point - self.epsilon <= x):
                 return self.nadir
