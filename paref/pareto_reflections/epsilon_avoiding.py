@@ -75,6 +75,10 @@ class EpsilonAvoiding(ParetoReflectingFunction):
         epsilon : Union[float, np.ndarray])
             value which is subtracted from avoided points
         """
+        if epsilon_avoiding_points.ndim != 2:
+            raise ValueError(
+                f'Avoided points must be 2-dimensional array, but is {epsilon_avoiding_points.ndim}-dimensional')
+
         self.nadir = nadir
         self.epsilon = epsilon
         self.epsilon_avoiding_points = epsilon_avoiding_points
@@ -94,8 +98,12 @@ class EpsilonAvoiding(ParetoReflectingFunction):
             value of the epsilon avoiding function
 
         """
-        # TODO: add dimensionality check
-        for _, point in enumerate(self.epsilon_avoiding_points):
+
+        if x.shape[0] != self.epsilon_avoiding_points.shape[1]:
+            raise ValueError(f'Dimension mismatch, input vector has dimension {x.shape[0]} but dimension '
+                             f'{self.epsilon_avoiding_points.shape[1]} is expected')
+
+        for point in self.epsilon_avoiding_points:
             if np.all(point - self.epsilon <= x):
                 return self.nadir
 
