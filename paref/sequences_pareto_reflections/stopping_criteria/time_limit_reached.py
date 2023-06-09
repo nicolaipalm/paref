@@ -3,4 +3,4 @@ from paref.interfaces.sequences_pareto_reflections.stopping_criteria import Stop
 
 class TimeLimitReached(StoppingCriteria):
     def __call__(self):
-        pass
+        raise NotImplementedError
