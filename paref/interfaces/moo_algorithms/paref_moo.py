@@ -9,28 +9,133 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections
 from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
-from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 from paref.pareto_reflections.operations.compose_sequences import ComposeSequences
 
 
 class ParefMOO:
+    """Generic interface for MOO algorithms in Paref
+
+    Mathematically, an MOO algorithm is expressed as a sequence
+
+    .. math::
+
+        (\mathcal{A}_i)_{i\\in \mathbb{N}}
+
+    where each
+
+    .. math::
+
+        \mathcal{A}_i
+
+    can be applied to a
+    :py:class:`blackbox function <paref.interfaces.moo_algorithms.blackbox_function.BlackboxFunction>`
+    and returns (approximately) a subset of its pareto front.
+
+    A Pareto reflection based MOO algorithm is the of the form
+    .. math::
+
+        (\mathcal{A}_i)_{i\\in \mathbb{N}}
+
+    where each
+
+    .. math::
+
+        \mathcal{A}_i
+
+    is applied to a composition
+
+    .. math::
+
+        p_i \\circ f
+
+    where :math:`p_i` is a Pareto reflection and :math:`f` is the blackbox function.
+
+    This class provides the functionality needed.
+    In addition, it allows you to
+
+    **construct new algorithm** from a sequence of Pareto reflections with minimal effort simply by implementing its
+    :meth:`sequence of Pareto reflections property
+    <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.sequence_of_pareto_reflections>`
+
+    **apply** an MOO algorithm to a blackbox function and a sequence of Pareto reflections with minimal effort simply by
+    calling its ::meth:`apply to sequence method
+    <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_to_sequence>`.
+
+    Examples
+    --------
+    # TODO: implement algo, implement by sequence, apply to sequence
+
+
+    """
+
     @abstractmethod
     def apply_moo_operation(self,
                             blackbox_function: BlackboxFunction,
-                            ):
+                            ) -> None:
+        """Apply the MOO operation to the blackbox function
+
+        This is the core of any MOO algorithm. In the language from above, this is the assignment :math:`\mathcal{A}_i`.
+
+
+        .. warning::
+
+            Applying the MOO operation to the blackbox function must include:
+            #. determining a (potential) Pareto point
+            #. evaluating the blackbox function at that point
+
+        Parameters
+        ----------
+        blackbox_function : BlackboxFunction
+            blackbox function to which the MOO operation is applied
+
+        """
         raise NotImplementedError
 
     # TODO: how to supported domain? Or needed?
     @property
     @abstractmethod
-    def supported_codomain_dimensions(self) -> List[int]:
+    def supported_codomain_dimensions(self) -> Optional[List[int]]:
         # If None then all codomain dimensions are supported
+        """Supported codomain dimensions
+
+        This includes all the dimensions of the target space this MOO supports, i.e. to which this MOO can be applied.
+        For example, if the MOO algorithm is a minimization algorithm, then, the only supported dimension is one, i.e.
+        this property must return [2].
+
+        .. warning::
+
+            If all dimensions are supported, then, this property must return None!
+
+        Returns
+        -------
+        Optional[List[int]]
+            list of supported dimensions or None if all dimensions are supported
+
+        """
         raise NotImplementedError
 
     def __call__(self,
                  blackbox_function: BlackboxFunction,
                  stopping_criteria: StoppingCriteria,
-                 ):
+                 ) -> None:
+        """Apply the algorithm to a blackbox function
+
+        .. note::
+            If the given stopping criteria is met, then, the algorithm terminates as well as if the end of a sequence
+            of Pareto reflections is reached.
+
+        Parameters
+        ----------
+        blackbox_function : BlackboxFunction
+            blackbox function to which the algorithm is applied
+
+        stopping_criteria : StoppingCriteria
+            stopping criteria at which the algorithm must terminate
+
+        Returns
+        -------
+
+        """
 
         sequence_of_pareto_reflections = self.sequence_of_pareto_reflections
 

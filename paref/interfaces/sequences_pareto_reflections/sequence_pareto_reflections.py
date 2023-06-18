@@ -8,6 +8,12 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 class SequenceParetoReflections:
     """Interface for sequences of Pareto reflections
 
+    A sequence of Pareto reflections is a mathematical sequence
+
+    .. math::
+
+        (p_i)_{i \\in \mathbb{N}}
+
     Documentation of an implementation of this interface should contain:
 
     When to use
