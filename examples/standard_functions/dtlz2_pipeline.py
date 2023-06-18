@@ -1,5 +1,5 @@
 import numpy as np
-from paref.moo_algorithms.weighted_norm_to_utopia_gpr import WeightedNormToUtopiaGPR
+from paref.moo_algorithms.multi_dimensional.OUTDATED_find_pareto_point_closest_to_utopia import FindParetoPointClosestToUtopia
 
 from examples.function_library.testing_dtlz2 import TestingDTLZ2
 
@@ -20,10 +20,10 @@ bench = TestingDTLZ2(input_dimensions=input_dimensions,
                      lh_evaluations=lh_evaluations,
                      )
 
-moo = WeightedNormToUtopiaGPR(upper_bounds_x=upper_bounds_x,
-                              lower_bounds_x=lower_bounds_x,
-                              max_evaluations_moo=max_evaluations,
-                              epsilon=epsilon,
-                              )
+moo = FindParetoPointClosestToUtopia(upper_bounds_x=upper_bounds_x,
+                                     lower_bounds_x=lower_bounds_x,
+                                     max_evaluations_moo=max_evaluations,
+                                     epsilon=epsilon,
+                                     )
 
 bench(moo)

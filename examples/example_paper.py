@@ -4,23 +4,25 @@ from pymoo.indicators.hv import Hypervolume
 from scipy.stats import qmc
 
 from examples.function_library.zdt1 import ZDT1
-from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
-from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflecting_functions import \
-    SequenceParetoReflectingFunctions
-from paref.optimizers.gpr_minimizer import GPRMinimizer
-from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
-from paref.pareto_reflections.epsilon_avoiding import EpsilonAvoiding
-from paref.pareto_reflections.operations.composing import Composing
-from paref.pareto_reflections.weighted_norm_to_utopia import WeightedNormToUtopia
-from paref.sequences_pareto_reflections.repeating_sequence import RepeatingSequence
-from paref.sequences_pareto_reflections.restricting_sequence import RestrictingSequence
-from paref.sequences_pareto_reflections.stopping_criteria.convergence_reached import ConvergenceReached
-from paref.sequences_pareto_reflections.stopping_criteria.logical_or_stopping_criteria import LogicalOrStoppingCriteria
-from paref.sequences_pareto_reflections.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
+from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
+    SequenceParetoReflections
+from paref.moo_algorithms.minimizer.gpr_minimizer import GPRMinimizer
+from paref.helper_functions.return_pareto_front import return_pareto_front
+from paref.pareto_reflections.avoid_points import AvoidPoints
+from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
+from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
+from paref.pareto_reflection_sequences.generic.repeating_sequence import RepeatingSequence
+from paref.pareto_reflection_sequences.restricting_sequence import RestrictingSequence
+from paref.moo_algorithms.stopping_criteria.convergence_reached import ConvergenceReached
+from paref.moo_algorithms.stopping_criteria.logical_or_stopping_criteria import LogicalOrStoppingCriteria
+from paref.moo_algorithms.stopping_criteria import MaxIterationsReached
 
 #########
 # Setup #
 #########
+
+# TODO: doesnt work anymore
 
 # define test blackbox_function
 input_dimensions = 2
@@ -52,12 +54,11 @@ utopia_point = np.zeros(output_dimensions)
 epsilon_convergence = 1e-2
 
 # define constant sequence of l5-norm to zero (=utopia point)
-pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
-                                                    potency=5 * np.ones(2),
-                                                    scalar=np.ones(2))]
+pareto_reflecting_functions = [MinimizeWeightedNormToUtopia(utopia_point=utopia_point,
+                                                            potency=5 * np.ones(2),
+                                                            scalar=np.ones(2))]
 
-sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=1), )
+sequence = RepeatingSequence(pareto_reflections=pareto_reflecting_functions)
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -69,7 +70,7 @@ moo(blackbox_function=blackbox_function,
 ####################
 reference_point = 3 * np.ones(2)
 PF = return_pareto_front([point[1] for point in blackbox_function.evaluations])
-real_PF = blackbox_function.return_pareto_front()
+real_PF = blackbox_function.pareto_front()
 hypervolume_max = blackbox_function.calculate_hypervolume_of_pareto_front(reference_point=reference_point)
 metric = Hypervolume(ref_point=reference_point, normalize=False)
 hypervolume_weight = metric.do(PF)
@@ -109,13 +110,12 @@ stopping_criteria = LogicalOrStoppingCriteria(MaxIterationsReached(max_iteration
 
 # define constant sequence of linear blackbox_function searching for the Pareto
 # point corresponding to the second component
-pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
-                                                    potency=np.ones(2),
-                                                    scalar=np.array([0.1, 1])),
+pareto_reflecting_functions = [MinimizeWeightedNormToUtopia(utopia_point=utopia_point,
+                                                            potency=np.ones(2),
+                                                            scalar=np.array([0.1, 1])),
                                ]
 
-sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=5), )
+sequence = RepeatingSequence(pareto_reflections=pareto_reflecting_functions)
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -124,13 +124,12 @@ moo(blackbox_function=blackbox_function,
 
 # define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second
 # component
-pareto_reflecting_functions = [WeightedNormToUtopia(utopia_point=utopia_point,
-                                                    potency=np.ones(2),
-                                                    scalar=np.array([1, 0.1])),
+pareto_reflecting_functions = [MinimizeWeightedNormToUtopia(utopia_point=utopia_point,
+                                                            potency=np.ones(2),
+                                                            scalar=np.array([1, 0.1])),
                                ]
 
-sequence = RepeatingSequence(pareto_reflecting_functions=pareto_reflecting_functions,
-                             stopping_criteria=MaxIterationsReached(max_iterations=5), )
+sequence = RepeatingSequence(pareto_reflections=pareto_reflecting_functions)
 
 # apply minimizer to sequence
 moo(blackbox_function=blackbox_function,
@@ -172,9 +171,9 @@ fig.show()
 
 # define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second
 # component
-pareto_reflecting_function = WeightedNormToUtopia(utopia_point=utopia_point,
-                                                  potency=np.ones(2),
-                                                  scalar=np.array([0.1, 1]))
+pareto_reflecting_function = MinimizeWeightedNormToUtopia(utopia_point=utopia_point,
+                                                          potency=np.ones(2),
+                                                          scalar=np.array([0.1, 1]))
 
 restricting_point = np.array(
     [0.2, 10])
@@ -242,10 +241,10 @@ print('Search for evenly separated Pareto points')
 # define constant sequence of linear blackbox_function searching for the Pareto point corresponding to the second
 # component
 
-class EpsilonAvoidingSequenceOfSpecificPoints(SequenceParetoReflectingFunctions):
+class EpsilonAvoidingSequenceOfSpecificPoints(SequenceParetoReflections):
     def __init__(self,
                  nadir: np.ndarray,
-                 pareto_reflecting_function: ParetoReflectingFunction,
+                 pareto_reflecting_function: ParetoReflection,
                  avoided_points: np.ndarray,
                  epsilon: float = 0):
         self._nadir = nadir
@@ -253,11 +252,11 @@ class EpsilonAvoidingSequenceOfSpecificPoints(SequenceParetoReflectingFunctions)
         self._pareto_reflecting_function = pareto_reflecting_function
         self._avoided_points = avoided_points
 
-    def next(self) -> ParetoReflectingFunction:
-        return Composing(
-            EpsilonAvoiding(nadir=self._nadir,
-                            epsilon=self._epsilon,
-                            epsilon_avoiding_points=self._avoided_points),
+    def next(self) -> ParetoReflection:
+        return ComposeReflections(
+            AvoidPoints(nadir=self._nadir,
+                        epsilon=self._epsilon,
+                        epsilon_avoiding_points=self._avoided_points),
             self._pareto_reflecting_function)
 
 
@@ -268,9 +267,9 @@ number_points = 5
 distance = np.linalg.norm(one_pareto_points[0] - blackbox_function.y[-1]) / (number_points + 1) * 0.8
 
 for i in range(number_points):
-    pareto_reflecting_function = WeightedNormToUtopia(utopia_point=utopia_point,
-                                                      potency=np.ones(2),
-                                                      scalar=np.array([0.1, 1]))
+    pareto_reflecting_function = MinimizeWeightedNormToUtopia(utopia_point=utopia_point,
+                                                              potency=np.ones(2),
+                                                              scalar=np.array([0.1, 1]))
 
     sequence = EpsilonAvoidingSequenceOfSpecificPoints(nadir=10 * np.ones(2),
                                                        pareto_reflecting_function=pareto_reflecting_function,

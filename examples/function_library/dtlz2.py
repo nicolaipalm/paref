@@ -15,8 +15,8 @@ class DTLZ2(BlackboxFunction):
         return self.problem.evaluate(x)
 
     def return_pareto_front(self, ):
-        return self.problem.pareto_front()
+        return self.problem.return_true_pareto_front()
 
     def calculate_hypervolume_of_pareto_front(self, reference_point: np.ndarray):
         metric = Hypervolume(ref_point=reference_point, normalize=False)
-        return metric.do(self.problem.pareto_front())
+        return metric.do(self.problem.return_true_pareto_front())

@@ -1,7 +1,7 @@
 import numpy as np
-from paref.optimizers.helper_functions.return_pareto_front import return_pareto_front
+from paref.helper_functions.return_pareto_front import return_pareto_front
 
-from paref.interfaces.moo_algorithms.moo_algorithm import MOOAlgorithm
+from paref.interfaces.moo_algorithms.paref_moo import ParefMOO
 from scipy.stats import qmc
 
 from examples.function_library.dtlz2 import DTLZ2
@@ -35,7 +35,7 @@ class TestingDTLZ2:
         self.hypervolume_max = self.function.calculate_hypervolume_of_pareto_front(reference_point=reference_point)
         self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
-    def __call__(self, moo: MOOAlgorithm):
+    def __call__(self, moo: ParefMOO):
         # y_initial = self.blackbox_function.y
         moo(blackbox_function=self.function)
 

@@ -39,6 +39,7 @@ With the language of PAreto REFlections this is now possible.
 Paref provides a generic interface for general constructions of multi-objective optimization algorithms (see picture) based on Pareto reflections.
 
 ### Basic
+- HP: we provide a library of elementary (often scalar valued) Pareto reflections; Kern: Par refl, sequences and algos looking for specifiy properties
 - paref additionally offers a multitude of ready-to-use multi-objective optimization algorithms
 - each algorithm attempts to return Pareto points with specific properties and is based on mathematical proofs
 - based on your individual preference which Pareto points you are looking for choose the one which fits your task best
@@ -54,6 +55,11 @@ Check out Parefs [documentation]() to learn about the individual properties of e
 
 
 ## Step-by-step guide
+HP:
+(Mathematical backgound) A(p circ f)
+1. define bbf
+2. conc with p
+3. apply algo
 
 ### Apply an algorithm to a MOO problem
 [Graphic workflow]

@@ -1,6 +1,6 @@
 import numpy as np
 
-from paref.interfaces.optimizers.blackbox_function import BlackboxFunction
+from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
 
@@ -14,9 +14,9 @@ class ZDT1(BlackboxFunction):
         self._evaluations.append([x, self.problem.evaluate(x)])
         return self.problem.evaluate(x)
 
-    def return_pareto_front(self, ):
-        return self.problem.pareto_front()
+    def pareto_front(self, ):
+        return self.problem.return_true_pareto_front()
 
     def calculate_hypervolume_of_pareto_front(self, reference_point: np.ndarray):
         metric = Hypervolume(ref_point=reference_point, normalize=False)
-        return metric.do(self.problem.pareto_front())
+        return metric.do(self.problem.return_true_pareto_front())

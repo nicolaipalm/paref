@@ -1,29 +1,44 @@
 import numpy as np
-from examples.function_library.testing_zdt1 import TestingZDT1
-from paref.moo_algorithms.avoiding_with_weighted_norm_to_utopia import AvoidingWithWeightedNormToUtopia
+
+from examples.function_library.testing_zdt2 import TestingZDT2
+from examples.function_library.zdt2 import ZDT2
+from paref.moo_algorithms.multi_dimensional.OUTDATED_find_pareto_point_closest_to_utopia import FindParetoPointClosestToUtopia
+from paref.pareto_reflections.epsilon_pareto_points_avoiding import EpsilonParetoPointsAvoiding
 
 input_dimensions = 2
 
 lower_bounds_x = np.zeros(input_dimensions)
 upper_bounds_x = np.ones(input_dimensions)
-max_evaluations = 4
+max_evaluations = 5
 max_iter_minimizer = 100
-lh_evaluations = 30
-epsilon = np.array([8e-2, 8e-2])
+lh_evaluations = 20
+epsilon = 1e-2
 
 reference_point = 3 * np.ones(2)
 
-bench = TestingZDT1(input_dimensions=input_dimensions,
-                    max_iter_minimizer=max_iter_minimizer,
-                    lh_evaluations=lh_evaluations)
+nadir = 10 * np.ones(2)
+restricting_point = np.array([0.1, 10])
 
-moo = AvoidingWithWeightedNormToUtopia(upper_bounds_x=upper_bounds_x,
-                                       lower_bounds_x=lower_bounds_x,
-                                       max_evaluations_moo=max_evaluations,
-                                       epsilon=epsilon,
-                                       nadir=np.array([10, 10]),
-                                       scalar=np.array([1e-3, 1]),
-                                       potency=1 * np.ones(2),
-                                       )
+function = ZDT2(input_dimensions=input_dimensions)
+
+pareto_reflection = EpsilonParetoPointsAvoiding(nadir=nadir,
+                                                blackbox_function=function,
+                                                epsilon=0.1)
+
+bench = TestingZDT2(input_dimensions=input_dimensions,
+                    max_iter_minimizer=max_iter_minimizer,
+                    lh_evaluations=lh_evaluations,
+                    pareto_reflection=pareto_reflection,
+                    function=function,
+                    )
+
+moo = FindParetoPointClosestToUtopia(
+                                     max_evaluations_moo=max_evaluations,
+                                     max_iter_minimizer=max_iter_minimizer,
+                                     epsilon=epsilon,
+                                     potency=np.array([2, 2]),
+                                     scalar=np.array([1, 1]),
+                                     # utopia_point=reference_point,
+                                     )
 
 bench(moo)

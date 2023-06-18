@@ -1,8 +1,8 @@
 import numpy as np
 from scipy import stats
 
-from paref.interfaces.pareto_reflections.pareto_reflecting_function import ParetoReflectingFunction
-from paref.optimizers.surrogates.gpr import GPR
+from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
+from paref.moo_algorithms.minimizer.surrogates import GPR
 
 
 def ehvi_2d(PF, r, mu, sigma):
@@ -56,7 +56,7 @@ def psi_cal(a, b, m, s):
 # print(ehvi_2d(PF=np.array([[0,0]]),r=np.array([0.1,0.1]),mu=np.array([1,1]),sigma=np.array([[0.1],[0.1]])))
 
 
-class ExpectedHypervolume2d(ParetoReflectingFunction):
+class ExpectedHypervolume2d(ParetoReflection):
     def __init__(self, reference_point: np.ndarray, pareto_front: np.ndarray, gpr: GPR):
         self.pareto_front = pareto_front
         self.reference_point = reference_point

@@ -1,7 +1,7 @@
 import numpy as np
 
 from examples.function_library.testing_zdt1 import TestingZDT1
-from paref.moo_algorithms.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
+from paref.moo_algorithms.two_dimensional.expected_hypervolume_improvement_2d import ExpectedHypervolumeImprovement2d
 
 input_dimensions = 2
 output_dimensions = 2
