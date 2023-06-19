@@ -51,13 +51,13 @@ class ParefMOO:
     where :math:`p_i` is a Pareto reflection and :math:`f` is the blackbox function.
 
     This class provides the functionality needed.
-    In addition, it allows you to
+    In particular, it allows you to
 
-    **construct new algorithm** from a sequence of Pareto reflections with minimal effort simply by implementing its
+    **construct new algorithm** from a sequence of Pareto reflections simply by implementing its
     :meth:`sequence of Pareto reflections property
     <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.sequence_of_pareto_reflections>`
 
-    **apply** an MOO algorithm to a blackbox function and a sequence of Pareto reflections with minimal effort simply by
+    **apply** an MOO algorithm to a blackbox function and a sequence of Pareto reflections simply by
     calling its ::meth:`apply to sequence method
     <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_to_sequence>`.
 
@@ -152,6 +152,27 @@ class ParefMOO:
                           sequence_pareto_reflections: Union[SequenceParetoReflections, ParetoReflection],
                           stopping_criteria: StoppingCriteria,
                           ):
+        """Apply the algorithm the composition of a blackbox function with a (sequence of) Pareto reflection(s)
+
+        Calling this method, applies to algorithm to the composition of the blackbox function with the pareto reflection
+        (if a single Pareto reflection is provided) and with the next Pareto reflection obtained by the sequence (if a
+        sequence of Pareto reflection is provided).
+
+        Parameters
+        ----------
+        blackbox_function : BlackboxFunction
+            underlying blackbox function
+
+        sequence_pareto_reflections : SequenceParetoReflections
+            sequence or single Pareto reflection to compose with blackbox function
+
+        stopping_criteria : StoppingCriteria
+            indicator when the algorthm terminates
+
+        Returns
+        -------
+
+        """
         moo_sequence_of_pareto_reflections = self.sequence_of_pareto_reflections
         if moo_sequence_of_pareto_reflections is not None:
             sequence_pareto_reflections = ComposeSequences(sequence_pareto_reflections,
@@ -180,11 +201,58 @@ class ParefMOO:
 
     @property
     def sequence_of_pareto_reflections(self) -> Union[SequenceParetoReflections, ParetoReflection, None]:
+        """Optional: Underlying sequence of MOO algorithm
+
+        We can extend every MOO algorithm by applying it to a composition of the blackbox function and a Pareto reflection
+        in each iteration.
+        Implementing this property (i.e. a sequence of or a single Pareto reflection) will extent the underlying MOO algorithm
+        in this fashion.
+
+        .. note::
+
+            This is an optional parameter.
+            If a single Pareto reflection is implemented, then, the underlying MOO algorithm applied to some blackbox function
+            will be applied to the composition of blackbox function with this Pareto reflection when called. This does not change
+            the underlying :meth:`moo operation method
+            <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_to_sequence>`!
+            Similarly, if a sequence of reflections ins implemented, then, the algorithm is applied to the composition with the
+            next reflection obtained from the sequence.
+            The sequence will be initialized *once* when the algorithm is called.
+
+        Returns
+        -------
+        SequenceParetoReflections
+            underlying sequence of Pareto reflection
+
+        """
         return None
 
 
 class CompositionWithParetoReflection(BlackboxFunction):
+    """Wrapper for composing a Pareto reflection with a blackbox function in order to obtain a new blackbox function
+
+    This class constructs a new blackbox function :math:`p\\circ f` out of a blackbox function :math:`f` and a Pareto
+    reflection :math:`p`.
+    In particular, its design space is given by the design space of the underlying blackbox function and its target space
+    dimension is given by the dimension of the codomain of the Pareto reflection.
+
+    .. note::
+
+        Calling this blackbox function will call the underlying blackbox function. In particular, this means that
+        the result is stored in the underlying blackbox function.
+
+    """
     def __init__(self, blackbox_function: BlackboxFunction, pareto_reflection: ParetoReflection):
+        """Initilize blackbox function and Pareto reflection to be composed
+
+        Parameters
+        ----------
+        blackbox_function : BlackboxFunction
+            blackbox function
+
+        pareto_reflection : ParetoReflection
+            Pareto reflection
+        """
         if blackbox_function.dimension_target_space != pareto_reflection.dimension_domain:
             raise ValueError(
                 f'Dimension of target space ({blackbox_function.dimension_target_space}) of blackbox function and '
@@ -194,18 +262,63 @@ class CompositionWithParetoReflection(BlackboxFunction):
         self._evaluations = blackbox_function._evaluations
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
+        """Apply the composition to an input
+
+        I.e. evaluate the Pareto reflection at the evaluation of the blackbox function at the input x.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            Input to which composition is applied
+
+        Returns
+        -------
+        np.ndarray
+            Output of composition applied to input
+
+        """
         return self._pareto_reflection(self._blackbox_function(x))
 
     @property
     def dimension_design_space(self) -> int:
+        """Dimension of design space
+
+        I.e. dimension of design space of underlying blackbox function.
+
+        Returns
+        -------
+        int
+            dimension of design space of composition
+
+        """
         return self._blackbox_function.dimension_design_space
 
     @property
     @abstractmethod
     def dimension_target_space(self) -> int:
+        """Dimension of target space
+
+        I.e. dimension of codomain of Pareto reflection.
+
+        Returns
+        -------
+        int
+            dimension of target space of composition
+
+        """
         return self._pareto_reflection.dimension_codomain
 
     @property
     @abstractmethod
     def design_space(self) -> Union[Bounds]:
+        """Design space of composition
+
+        I.e. design space of the blackbox function.
+
+        Returns
+        -------
+        Union[Bounds]
+            pythonic representation of design space
+
+        """
         return self._blackbox_function.design_space
