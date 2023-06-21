@@ -148,12 +148,16 @@ class ParefMOO:
                 self.apply_moo_operation(blackbox_function)
 
         else:
-            self.apply_to_sequence(blackbox_function, sequence_of_pareto_reflections, stopping_criteria)
+            self.apply_to_sequence(blackbox_function,
+                                   sequence_of_pareto_reflections,
+                                   stopping_criteria,
+                                   with_underlying_sequence=False)
 
     def apply_to_sequence(self,
                           blackbox_function: BlackboxFunction,
                           sequence_pareto_reflections: Union[SequenceParetoReflections, ParetoReflection],
                           stopping_criteria: StoppingCriteria,
+                          with_underlying_sequence: bool = True,
                           ):
         """Apply the algorithm the composition of a blackbox function with a (sequence of) Pareto reflection(s)
 
@@ -172,12 +176,19 @@ class ParefMOO:
         stopping_criteria : StoppingCriteria
             indicator when the algorthm terminates
 
+        with_underlying_sequence : bool default False
+            decide whether sequence should be composed with implemented sequence of algorithm
+
         Returns
         -------
 
         """
+        if with_underlying_sequence:
+            moo_sequence_of_pareto_reflections = self.sequence_of_pareto_reflections
 
-        moo_sequence_of_pareto_reflections = self.sequence_of_pareto_reflections
+        else:
+            moo_sequence_of_pareto_reflections = None
+
         if moo_sequence_of_pareto_reflections is not None:
             sequence_pareto_reflections = ComposeSequences(sequence_pareto_reflections,
                                                            moo_sequence_of_pareto_reflections)

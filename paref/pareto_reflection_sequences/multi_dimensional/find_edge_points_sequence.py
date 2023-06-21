@@ -45,8 +45,6 @@ class FindEdgePointsSequence(SequenceParetoReflections):
         if self._iter == 0:
             self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,
                                                          stopping_criteria=stopping_criteria)
-
-        else:
             self._iter = 1
 
         return self._sequence.next(blackbox_function)

@@ -56,23 +56,20 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
         """
         if point_1.shape != (self.dimension_domain,) or point_2.shape != (
                 self.dimension_domain,) or utopia_point.shape != (self.dimension_domain,):
-            raise ValueError('Both points and utopia points must be 1 dimensional arrays of length 2!')
+            raise ValueError('Both points and utopia points must be 1 dimensional arrays of length 2! Shape of '
+                             f'utopia_point: {utopia_point.shape}'
+                             f'\n point_1: {point_1.shape} '
+                             f'\n point_1: {point_2.shape}')
 
         dimension_domain = self.dimension_domain
         m = 1 / 2 * (point_1 + point_2)  # middle point
         y = point_1 - point_2  # helper
         v = np.array([1, -(y[0] / y[1])])  # normal vector
-        print('Normal vector: ', v)
         lamb = (utopia_point[0] - m[0]) / v[0]  # parameter of utopia point projected to normal
-        if (m + lamb * v)[1] > utopia_point[1]:
-            lamb = (utopia_point[1] - m[1]) / v[1]
-
-        utopia_point = m + lamb * v  # utopia point projected to normal st previous utopia point is dominated
 
         self.potency = potency * np.ones(dimension_domain)
-        self.scalar = (1 / v) ** potency
-        self.utopia_point = utopia_point
-        print('Utopia projection: ', self.utopia_point)
+        self.scalar = (1 / v)
+        self.utopia_point = m + lamb * v  # utopia point projected to normal st previous utopia point is dominated
 
     @property
     def dimension_codomain(self) -> int:

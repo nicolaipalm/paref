@@ -125,12 +125,12 @@ class GPRMinimizer(ParefMOO):
         # TODO: monitoring: stop time, evaluations found, if training process of gpr converged, ALL WITH hints
 
         if not isinstance(blackbox_function.design_space, Bounds):
-            raise ValueError(f"Design space of blackbox function must be an instance of by Bounds! Design space is of"
-                             f"type {blackbox_function.design_space}.")
+            raise ValueError(f'Design space of blackbox function must be an instance of by Bounds! Design space is of'
+                             f'type {blackbox_function.design_space}.')
 
         if self._min_required_evaluations < 20:
             print(
-                "WARNING: minimum number of evaluations is 20! The minimum number of evaluations is, thus, set to 20!")
+                'WARNING: minimum number of evaluations is 20! The minimum number of evaluations is, thus, set to 20!')
 
         if len(blackbox_function.evaluations) < self._min_required_evaluations:
             [blackbox_function(x) for x in qmc.scale(

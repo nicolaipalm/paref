@@ -81,6 +81,7 @@ class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
         """
         if self._stopping_criteria(blackbox_function):
             self._iter += 1
+
         if self._iter == len(self._pareto_reflections):
             return None
 

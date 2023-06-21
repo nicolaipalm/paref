@@ -54,4 +54,9 @@ class ComposeSequences(SequenceParetoReflections):
         if reflection_2 is None:
             return None
 
+        if reflection_1.dimension_codomain != reflection_2.dimension_domain:
+            raise ValueError('Codomain of reflection_1 and domain of reflection_2 must match! '
+                             f'Codomain of reflection_1 is {reflection_1.dimension_codomain} '
+                             f'and domain of reflection_2 is {reflection_2.dimension_domain}.')
+
         return ComposeReflections(reflection_1, reflection_2)
