@@ -72,7 +72,7 @@ class MinimizeWeightedNormToUtopia(ParetoReflection):
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
         if len(x.shape) != 1:
-            raise ValueError(f"Input x must be of dimension 1! Shape of x is {x.shape}.")
+            raise ValueError(f'Input x must be of dimension 1! Shape of x is {x.shape}.')
         return np.sum(self.scalar*(x-self.utopia_point)**self.potency)
 
     @property

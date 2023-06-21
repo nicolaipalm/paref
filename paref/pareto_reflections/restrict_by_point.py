@@ -86,7 +86,7 @@ class RestrictByPoint(ParetoReflection):
 
         """
         if len(x.shape) != 1:
-            raise ValueError(f"Input x must be of dimension 1! Shape of x is {x.shape}.")
+            raise ValueError(f'Input x must be of dimension 1! Shape of x is {x.shape}.')
 
         if x.shape != self.restricting_point.shape:
             raise ValueError(

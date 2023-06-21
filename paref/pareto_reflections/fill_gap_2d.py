@@ -56,7 +56,7 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
         """
         if point_1.shape != (self.dimension_domain,) or point_2.shape != (
                 self.dimension_domain,) or utopia_point.shape != (self.dimension_domain,):
-            raise ValueError("Both points and utopia points must be 1 dimensional arrays of length 2!")
+            raise ValueError('Both points and utopia points must be 1 dimensional arrays of length 2!')
 
         dimension_domain = self.dimension_domain
         m = 1 / 2 * (point_1 + point_2)  # middle point

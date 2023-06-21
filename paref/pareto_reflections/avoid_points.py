@@ -108,7 +108,7 @@ class AvoidPoints(ParetoReflection):
 
         """
         if len(x.shape) != 1:
-            raise ValueError(f"Input x must be of dimension 1! Shape of x is {x.shape}.")
+            raise ValueError(f'Input x must be of dimension 1! Shape of x is {x.shape}.')
         for point in self.epsilon_avoiding_points:
             if np.all(point - self.epsilon <= x):
                 return self.nadir
