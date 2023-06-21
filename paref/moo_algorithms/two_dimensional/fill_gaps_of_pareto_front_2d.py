@@ -5,12 +5,23 @@ from paref.pareto_reflection_sequences.two_dimensional.fill_gaps_of_pareto_front
 
 
 class FillGapsOfParetoFront2D(GPRMinimizer):
+    """Fill gaps of Pareto front in two dimensions
+
+
+
+    ..note::
+
+        Use this algorithm if you want to fill (by middle point) the gaps between the currently found Pareto front
+        (Pareto front of the evaluations).
+
+
+    Examples
+    --------
+    # TODO: add
+
+
     """
 
-    .. note::
-
-        When to use?
-    """
     @property
     def sequence_of_pareto_reflections(self) -> SequenceParetoReflections:
         return FillGapsOfParetoFrontSequence2D()

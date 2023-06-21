@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 class ExactGP0(gpytorch.models.ExactGP):
     """
-    This class provides the base of the GPR.
+    # TODO: add
     """
 
     def __init__(self, train_x: torch.Tensor, train_y: torch.Tensor, likelihood):

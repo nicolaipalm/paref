@@ -176,6 +176,7 @@ class ParefMOO:
         -------
 
         """
+
         moo_sequence_of_pareto_reflections = self.sequence_of_pareto_reflections
         if moo_sequence_of_pareto_reflections is not None:
             sequence_pareto_reflections = ComposeSequences(sequence_pareto_reflections,
@@ -245,6 +246,7 @@ class CompositionWithParetoReflection(BlackboxFunction):
         the result is stored in the underlying blackbox function.
 
     """
+
     def __init__(self, blackbox_function: BlackboxFunction, pareto_reflection: ParetoReflection):
         """Initilize blackbox function and Pareto reflection to be composed
 
