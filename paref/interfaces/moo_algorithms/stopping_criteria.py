@@ -8,7 +8,7 @@ class StoppingCriteria:
 
     Stopping criteria are used to indicate the end of a sequence of Pareto reflections or the end of an
     MOO algorithm.
-    Evaluated they return true if the stopping criteria is met and false otherwise.
+    Evaluated, they return true if the stopping criteria is met and false otherwise.
 
     """
     @abstractmethod

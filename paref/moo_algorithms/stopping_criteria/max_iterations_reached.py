@@ -5,6 +5,8 @@ from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 class MaxIterationsReached(StoppingCriteria):
     """Stopping criteria based on a maximal number of iterations
 
+    If a defined maximum of iterations is reached, this stopping criteria is met.
+
     Examples
     --------
 
@@ -29,9 +31,8 @@ class MaxIterationsReached(StoppingCriteria):
 
         Parameters
         ----------
-        max_iterations :
-        int
-            maximal number of iterations
+        max_iterations : int
+            maximum number of iterations
         """
         self._iteration_step = 0
         self._max_iterations = max_iterations

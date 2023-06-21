@@ -5,7 +5,7 @@ from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 
 
 class LogicalOrStoppingCriteria(StoppingCriteria):
-    """Joining two stopping criteria by a logical or
+    """Join two stopping criteria by a logical or
 
     Given two stopping criteria, define a new stopping criteria by returning true if at least one of the criteria is met
     (i.e. true).

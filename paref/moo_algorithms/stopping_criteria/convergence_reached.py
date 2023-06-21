@@ -10,7 +10,12 @@ class ConvergenceReached(StoppingCriteria):
     compare the previous two evaluations, calculate their (2-)distance and stop when the distance is smaller or equal
     than a certain epsilon.
     For example, if the previous evaluations of the blackbox function are (1,1) and (1,1.1) and the threshold is 0.1,
-    then, the stopping criteria would return true since the (2-)distance is 0.1<=epsilon.
+    then, the stopping criteria returns true since the (2-)distance is 0.1<=epsilon.
+
+
+    Examples
+    --------
+    # TODO: add
     """
 
     def __init__(self,
