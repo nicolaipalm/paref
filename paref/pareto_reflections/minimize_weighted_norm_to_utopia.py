@@ -6,7 +6,7 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 
 
 class MinimizeWeightedNormToUtopia(ParetoReflection):
-    """Weighted norm to some utopia point (Pareto Reflection)
+    """Find the Pareto point closest to some utopia point
 
     When to use
     -----------
@@ -71,6 +71,8 @@ class MinimizeWeightedNormToUtopia(ParetoReflection):
         self.utopia_point = utopia_point
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
+        if len(x.shape) != 1:
+            raise ValueError(f"Input x must be of dimension 1! Shape of x is {x.shape}.")
         return np.sum(self.scalar*(x-self.utopia_point)**self.potency)
 
     @property

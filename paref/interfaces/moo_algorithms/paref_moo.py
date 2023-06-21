@@ -32,6 +32,7 @@ class ParefMOO:
     and returns (approximately) a subset of its pareto front.
 
     A Pareto reflection based MOO algorithm is the of the form
+
     .. math::
 
         (\mathcal{A}_i)_{i\\in \mathbb{N}}
@@ -80,7 +81,9 @@ class ParefMOO:
         .. warning::
 
             Applying the MOO operation to the blackbox function must include:
+
             #. determining a (potential) Pareto point
+
             #. evaluating the blackbox function at that point
 
         Parameters
@@ -214,8 +217,8 @@ class ParefMOO:
             If a single Pareto reflection is implemented, then, the underlying MOO algorithm applied to some blackbox function
             will be applied to the composition of blackbox function with this Pareto reflection when called. This does not change
             the underlying :meth:`moo operation method
-            <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_to_sequence>`!
-            Similarly, if a sequence of reflections ins implemented, then, the algorithm is applied to the composition with the
+            <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_moo_operation>`!
+            Similarly, if a sequence of reflections is implemented, then, the algorithm is applied to the composition with the
             next reflection obtained from the sequence.
             The sequence will be initialized *once* when the algorithm is called.
 

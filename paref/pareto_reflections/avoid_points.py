@@ -10,17 +10,17 @@ class AvoidPoints(ParetoReflection):
 
         When to use
         -----------
-        This Pareto reflection should be used if Pareto points are desired which are not dominated by certain points
-        (plus some epsilon)
+        This Pareto reflection should be used if Pareto points are desired which have a minimum distance to some points
+        in each component
 
         What it does
         ------------
-        The Pareto points of this map are all the Pareto points which are not dominated by that point(s)
-        (minus some epsilon)
+        The Pareto points of this map are all the Pareto points which have distance at least epsilon (to be specified)
+        in each component
 
         Mathematical formula
         --------------------
-        Denote by D the set of points which should not dominate, let epsilon be some strictly positive real number
+        Denote by D the set of points which should be avoided, let epsilon be some positive real number
         and n some nadir (i.e. n dominated by all points). Then,
 
         .. math::
@@ -32,10 +32,11 @@ class AvoidPoints(ParetoReflection):
             p(x) = x
 
         else.
+        Notice that each so found Pareto point has distance at least epsilon in each component from every point in D.
 
         Examples
         --------
-        Define the nadir and the points which should dominate
+        Define the nadir and the points which should be avoided
 
         >>> import numpy as np
         >>> nadir, epsilon_avoiding_points, epsilon = np.array([3,7]), np.array([[2,1],[1,5]]), 1
@@ -62,7 +63,7 @@ class AvoidPoints(ParetoReflection):
                  nadir: np.ndarray,
                  epsilon_avoiding_points: np.ndarray,
                  epsilon: Union[float, np.ndarray]):
-        """Specify the nadir and the to be dominated point
+        """Specify the nadir and the to be avoided points
 
         Parameters
         ----------
@@ -80,6 +81,12 @@ class AvoidPoints(ParetoReflection):
             raise ValueError('Nadir and avoiding points need to be 2-dimensional numpy arrays of equal shape!')
 
         # TODO: error handling rest
+
+        if not isinstance(epsilon, float) and epsilon.shape != nadir:
+            raise ValueError('Epsilon must be a float or ')
+
+        if np.any(epsilon < 0):
+            raise ValueError('Epsilon must be positive!')
 
         self.nadir = nadir
         self.epsilon = epsilon
@@ -100,7 +107,8 @@ class AvoidPoints(ParetoReflection):
             value of the epsilon avoiding function
 
         """
-        # TODO: add dimensionality check
+        if len(x.shape) != 1:
+            raise ValueError(f"Input x must be of dimension 1! Shape of x is {x.shape}.")
         for point in self.epsilon_avoiding_points:
             if np.all(point - self.epsilon <= x):
                 return self.nadir

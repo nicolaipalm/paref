@@ -4,11 +4,13 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 
 
 class RestrictByPoint(ParetoReflection):
-    """Restricting the target space (Pareto reflection)
+    """Restrict the Pareto points in the target space by demanding each component to be lower than some value
 
     When to use
     -----------
-    This Pareto reflection should be used if Pareto points are desired which dominate a certain point.
+    This Pareto reflection should be used if Pareto points are desired which dominate a certain point, i.e.
+    when every component of a found Pareto points :math:`x` must satisfy :math:`x_i\\le r_i` for some
+    :math:`r_i \\in \\mathbb{R}`.
 
     What it does
     ------------
@@ -83,6 +85,9 @@ class RestrictByPoint(ParetoReflection):
             value of the restricting function
 
         """
+        if len(x.shape) != 1:
+            raise ValueError(f"Input x must be of dimension 1! Shape of x is {x.shape}.")
+
         if x.shape != self.restricting_point.shape:
             raise ValueError(
                 f'Shapes don\'t match! Shape of x is {x.shape}, shape of restricting point is '
@@ -90,8 +95,8 @@ class RestrictByPoint(ParetoReflection):
 
         if np.any(self.restricting_point < x):
             return self.nadir
-
-        return x
+        else:
+            return x
 
     @property
     def dimension_codomain(self) -> int:

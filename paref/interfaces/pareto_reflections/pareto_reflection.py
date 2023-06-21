@@ -32,7 +32,7 @@ class ParetoReflection:
 
     @abstractmethod
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        """
+        """Call Pareto reflection to input
         Parameters
         ----------
         x : np.ndarray
@@ -49,12 +49,12 @@ class ParetoReflection:
     @property
     @abstractmethod
     def dimension_codomain(self) -> int:
-        """
+        """Dimension of codomain of Pareto reflection
 
         Returns
         -------
         int
-            dimension of domain of Pareto reflection
+            dimension of codomain of Pareto reflection
 
         """
         raise NotImplementedError
@@ -62,12 +62,12 @@ class ParetoReflection:
     @property
     @abstractmethod
     def dimension_domain(self) -> int:
-        """
+        """Dimension of domain of Pareto reflection
 
         Returns
         -------
         int
-            dimension of codomain of Pareto reflection
+            dimension of domain of Pareto reflection
 
         """
         raise NotImplementedError
