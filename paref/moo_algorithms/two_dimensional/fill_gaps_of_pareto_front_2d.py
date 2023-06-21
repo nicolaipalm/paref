@@ -5,6 +5,12 @@ from paref.pareto_reflection_sequences.two_dimensional.fill_gaps_of_pareto_front
 
 
 class FillGapsOfParetoFront2D(GPRMinimizer):
+    """
+
+    .. note::
+
+        When to use?
+    """
     @property
     def sequence_of_pareto_reflections(self) -> SequenceParetoReflections:
         return FillGapsOfParetoFrontSequence2D()

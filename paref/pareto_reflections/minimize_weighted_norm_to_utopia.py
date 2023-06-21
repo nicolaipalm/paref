@@ -7,6 +7,13 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 
 class MinimizeWeightedNormToUtopia(ParetoReflection):
     """Find the Pareto point closest to some utopia point
+    # TODO: not a norm in general rather a polynomial
+
+    ..note::
+
+        # TODO: add
+        This Pareto reflection is highly flexible. TBA (used for finding lots of properties, for application: if
+        utopia point represents only point which we are looking for...)
 
     When to use
     -----------

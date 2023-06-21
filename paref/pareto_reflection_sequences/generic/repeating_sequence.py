@@ -8,22 +8,25 @@ from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 
 
 class RepeatingSequence(SequenceParetoReflections):
-    """Define a sequence by repeating Pareto reflections until a stopping criteria is met
+    """Define a sequence by repeating a list of Pareto reflections
+
+    This is probably the most generic way to define a sequence of Pareto reflections:
+    specify a (finite) list of Pareto reflections and repeat that list.
+    It can be seen as implementing a list of Pareto reflections (which is a sequence) in the
+    sequence of Pareto reflections interface.
 
     When to use
     -----------
-    This sequence should be used if you search for finitely many Pareto points with certain properties
-    reflected by a suitable Pareto reflection.
-    Notice that by repeating the Pareto reflections you iteratively search for the optimum
-    (similar to iteratively minimizing a certain blackbox_function).
+    # TODO: when to use?
 
     What it does
     ------------
-    The sequence simply loops through given Pareto reflections until a defined stopping criteria is met.
-    If the end is reached but
+    The sequence simply loops through given list of Pareto reflections
+    If the end is reached, the sequence starts again from the beginning of the list of reflections.
 
     Examples
     --------
+    # TODO: meaningful example when to use this
     Initialize list of Pareto reflections
 
     >>> import numpy as np
@@ -55,16 +58,10 @@ class RepeatingSequence(SequenceParetoReflections):
     def __init__(self,
                  pareto_reflections: List[ParetoReflection],
                  ):
-        """Specify the stopping criteria and the Pareto reflections to be repeated
-
-        # TODO: add by default simply go once through list
+        """Specify the list of Pareto reflections you want to loop through
 
         Parameters
         ----------
-
-        stopping_criteria : StoppingCriteria
-            stopping criteria defining the end of the sequence
-
         pareto_reflections : List[ParetoReflection]
             Pareto reflections to be repeated stored in a list
         """
@@ -72,12 +69,12 @@ class RepeatingSequence(SequenceParetoReflections):
         self._iter = -1
 
     def next(self, blackbox_function: BlackboxFunction) -> ParetoReflection:
-        """Return the next Pareto reflection of the sequence
+        """Return the next Pareto reflection of the list of Pareto reflections
 
         Returns
         -------
         ParetoReflection
-            next Pareto reflection of the sequence
+            successor Pareto reflection of the sequence
 
         """
         self._iter += 1

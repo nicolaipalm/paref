@@ -8,22 +8,21 @@ from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 
 
 class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
-    """Define a sequence by repeating Pareto reflections until a stopping criteria is met
+    """Define a sequence by moving on to the next Pareto reflection if convergence is reached
 
     When to use
     -----------
-    This sequence should be used if you search for finitely many Pareto points with certain properties
-    reflected by a suitable Pareto reflection.
-    Notice that by repeating the Pareto reflections you iteratively search for the optimum
-    (similar to iteratively minimizing a certain blackbox_function).
+    This sequence should be used if you want to repeat a single Pareto reflection until the Pareto point it
+    is looking for is sufficiently close approximated (to be specified in a stopping criteria).
 
     What it does
     ------------
     The sequence simply loops through given Pareto reflections until a defined stopping criteria is met.
-    If the end is reached but
+    If the end is reached, this sequence returns None, indicating the end of the sequence.
 
     Examples
     --------
+    # TODO: add
     Initialize list of Pareto reflections
 
     >>> import numpy as np
@@ -58,28 +57,26 @@ class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
                  ):
         """Specify the stopping criteria and the Pareto reflections to be repeated
 
-        # TODO: add by default simply go once through list
-
         Parameters
         ----------
 
         stopping_criteria : StoppingCriteria
-            stopping criteria defining the end of the sequence
+            stopping criteria indicating when to move to the next Pareto reflection
 
         pareto_reflections : List[ParetoReflection]
-            Pareto reflections to be repeated stored in a list
+            Pareto reflections stored in a list
         """
         self._pareto_reflections = pareto_reflections
         self._iter = 0
         self._stopping_criteria = stopping_criteria
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
-        """Return the next Pareto reflection of the sequence
+        """Return the next Pareto reflection of the sequence if stopping criteria is met
 
         Returns
         -------
         ParetoReflection
-            next Pareto reflection of the sequence
+            next Pareto reflection of the list or same Pareto reflection as before if stopping criteria is not met
 
         """
         if self._stopping_criteria(blackbox_function):

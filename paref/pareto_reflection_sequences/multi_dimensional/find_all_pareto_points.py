@@ -17,25 +17,7 @@ from paref.pareto_reflections.operations.compose_reflections import ComposeRefle
 
 
 class FindAllParetoPoints(SequenceParetoReflections):
-    """Interface for sequences of Pareto reflections
-
-    Documentation of an implementation of this interface should contain:
-
-    When to use
-    -----------
-    This Pareto reflection should be used if...
-
-    What it does
-    ------------
-    The Pareto points of this map are...
-
-    Mathematical formula
-    --------------------
-
-    Examples
-    --------
-
-    #TODO: this should be in a contributing.md
+    """# TODO: add and if alo is reasonable?
     """
 
     def next(self, blackbox_function: BlackboxFunction) -> ParetoReflection:

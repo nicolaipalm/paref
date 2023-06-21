@@ -2,23 +2,25 @@ import numpy as np
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 
 
-class FindOneParetoPoints(MinimizeWeightedNormToUtopia):
-    """Find a Pareto point which is minimal in some specified component
+class FindEdgePoints(MinimizeWeightedNormToUtopia):
+    """Find the edge points of the Pareto front
+
+    ..warning::
+
+        This Pareto reflection assumes that there exist edge points
 
     When to use
     -----------
-    This Pareto reflection should be used if a Pareto point is desired which lie on the boundary of the Pareto front, i.e.
-    are minimal in one component.
+    This Pareto reflection should be used if the edge points of the Pareto front are searched.
 
     ..note::
 
-        In to dimensions, the edge points of the Pareto front are given by the boundary of the Pareto front.
-        I.p. in two dimensions, this Pareto reflection searches for the edge points of the Pareto front.
+        In to dimensions, the edge points of the Pareto front always exist.
 
     What it does
     ------------
     The Pareto points of this map are the ones which minimize the the weighted sum where one component
-    is given much more weight than the others.
+    is given much smaller weight than the others.
 
     Mathematical formula
     --------------------
@@ -38,7 +40,7 @@ class FindOneParetoPoints(MinimizeWeightedNormToUtopia):
                  dimension: int,
                  epsilon: float = 1e-3,
                  ):
-        """Specify the dimension of the input domain and the component in which the minimum is searched
+        """Specify the dimension of the input domain and the component of which the edge point is searched
 
         ..warning::
 
@@ -51,17 +53,17 @@ class FindOneParetoPoints(MinimizeWeightedNormToUtopia):
             dimension of domain (i.e. dimension of target space of blackbox function)
 
         dimension : int
-            component in which the minimum is searched
+            component of which the edge point is searched
 
         epsilon : float default 1e-3
-            weight on the other components
+            weight on the component
         """
         self.epsilon = epsilon
         self.dimension = dimension
         self._dimension_domain = dimension_domain
         self.potency = np.ones(dimension_domain)
-        scalar = self.epsilon * np.ones(dimension_domain)
-        scalar[self.dimension] = 1
+        scalar = np.ones(dimension_domain)
+        scalar[self.dimension] = epsilon
         self.scalar = scalar
         self.utopia_point = np.zeros(dimension_domain)
 
