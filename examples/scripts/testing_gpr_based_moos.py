@@ -16,7 +16,7 @@ from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections i
 class TestingGPRBasedMOOs:
     def __init__(self,
                  stopping_criteria: StoppingCriteria,
-                 test_function: str = "zdt2",
+                 test_function: str = 'zdt2',
                  sequence_pareto_reflection: Optional[Union[SequenceParetoReflections, ParetoReflection]] = None,
                  input_dimensions: int = 5,
                  max_iter_minimizer: int = 100,
@@ -28,16 +28,16 @@ class TestingGPRBasedMOOs:
         self.sequence = sequence_pareto_reflection
         self.stopping_criteria = stopping_criteria
 
-        test_function_set = ["zdt1", "zdt2"]
+        test_function_set = ['zdt1', 'zdt2']
 
-        if test_function == "zdt2":
+        if test_function == 'zdt2':
             self.function = ZDT2(input_dimensions=input_dimensions)
 
-        elif test_function == "zdt1":
+        elif test_function == 'zdt1':
             self.function = ZDT1(input_dimensions=input_dimensions)
 
         else:
-            raise ValueError(f"Test function must be one of {test_function_set}!")
+            raise ValueError(f'Test function must be one of {test_function_set}!')
 
         # LH evaluation
         [self.function(x) for x in qmc.scale(

@@ -49,4 +49,4 @@ class TestingMinimizers:
     def __call__(self, moo: ParefMOO):
         blackbox_function = TestFunction()
         moo(blackbox_function, stopping_criteria=self.stopping_criteria)
-        print(f"Found minimum: {np.min(blackbox_function.y)} compared to true minimum {0}")
+        print(f'Found minimum: {np.min(blackbox_function.y)} compared to true minimum {0}')

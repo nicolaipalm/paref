@@ -15,22 +15,22 @@ from paref.moo_algorithms.minimizer.differential_evolution_minimizer import Diff
 class TestingOneDimensionalSequences:
     def __init__(self,
                  stopping_criteria: StoppingCriteria,
-                 test_function: str = "zdt2",
+                 test_function: str = 'zdt2',
                  input_dimensions: int = 5,
                  reference_point: np.ndarray = np.array([2, 2])):
         self.input_dimensions = input_dimensions
         self.stopping_criteria = stopping_criteria
 
-        test_function_set = ["zdt1", "zdt2"]
+        test_function_set = ['zdt1', 'zdt2']
 
-        if test_function == "zdt2":
+        if test_function == 'zdt2':
             self.function = ZDT2(input_dimensions=input_dimensions)
 
-        elif test_function == "zdt1":
+        elif test_function == 'zdt1':
             self.function = ZDT1(input_dimensions=input_dimensions)
 
         else:
-            raise ValueError(f"Test function must be one of {test_function_set}!")
+            raise ValueError(f'Test function must be one of {test_function_set}!')
 
         self.real_PF = self.function.return_true_pareto_front()
         self.hypervolume_max = self.function.calculate_hypervolume_of_pareto_front(reference_point=reference_point)

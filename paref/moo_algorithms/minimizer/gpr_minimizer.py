@@ -186,7 +186,7 @@ class GPRMinimizer(ParefMOO):
             f'Found Pareto point: \n x={res} '
             f'\n y={gpr(res)} ')
         if np.any([np.all(dominated) for dominated in (gpr(res) >= blackbox_function.pareto_front)]):
-            print("WARNING: Optimizer did not find a Pareto point! Blackbox function is not evaluated.")
+            print('WARNING: Optimizer did not find a Pareto point! Blackbox function is not evaluated.')
 
         # if np.all(pareto_reflection(gpr(res)) >= pareto_reflection(blackbox_function.y[0])):
         #    print('\nNo Pareto point was found. Algorithmic search stopped.')
