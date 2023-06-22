@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 from scipy.stats import qmc
 
@@ -22,7 +24,7 @@ class DifferentialEvolution:
             function: Callable,
             upper_bounds: np.ndarray,
             lower_bounds: np.ndarray,
-            max_iter: int = 1000,
+            max_iter: int = 10000,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
         res = differential_evolution(
@@ -143,6 +145,7 @@ class GPRMinimizer(ParefMOO):
         gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate)
 
         base_blackbox_function = blackbox_function
+
         pareto_reflections = []
         while isinstance(base_blackbox_function, CompositionWithParetoReflection):
             pareto_reflections.append(base_blackbox_function._pareto_reflection)
@@ -182,6 +185,8 @@ class GPRMinimizer(ParefMOO):
         print(
             f'Found Pareto point: \n x={res} '
             f'\n y={gpr(res)} ')
+        if np.any([np.all(dominated) for dominated in (gpr(res) >= blackbox_function.pareto_front)]):
+            print("WARNING: Optimizer did not find a Pareto point! Blackbox function is not evaluated.")
 
         # if np.all(pareto_reflection(gpr(res)) >= pareto_reflection(blackbox_function.y[0])):
         #    print('\nNo Pareto point was found. Algorithmic search stopped.')
@@ -198,4 +203,5 @@ class GPRMinimizer(ParefMOO):
 
     @property
     def supported_codomain_dimensions(self) -> int:
+        # TODO: dimensionality check and list of int
         return 1

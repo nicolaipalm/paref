@@ -1,7 +1,7 @@
 import numpy as np
 
-from examples.function_library.testing_zdt2 import TestingZDT2
-from examples.function_library.zdt2 import ZDT2
+from examples.blackbox_functions import TestingZDT2
+from examples.blackbox_functions import ZDT2
 from paref.moo_algorithms.multi_dimensional.OUTDATED_find_pareto_point_closest_to_utopia import FindParetoPointClosestToUtopia
 from paref.pareto_reflections.restrict_by_point import RestrictByPoint
 

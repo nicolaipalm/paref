@@ -17,7 +17,7 @@ from paref.pareto_reflections.operations.compose_reflections import ComposeRefle
 
 
 class FindAllParetoPoints(SequenceParetoReflections):
-    """# TODO: add and if alo is reasonable?
+    """# TODO: add and if it is reasonable?
     """
 
     def next(self, blackbox_function: BlackboxFunction) -> ParetoReflection:

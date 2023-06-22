@@ -1,5 +1,5 @@
 import numpy as np
-from examples.function_library.testing_zdt1 import TestingZDT1
+from examples.blackbox_functions import TestingZDT1
 from paref.moo_algorithms.multi_dimensional.avoiding_with_weighted_norm_to_utopia import AvoidingWithWeightedNormToUtopia
 from paref.moo_algorithms.multi_dimensional.OUTDATED_find_pareto_point_closest_to_utopia import FindParetoPointClosestToUtopia
 

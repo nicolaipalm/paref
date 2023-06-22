@@ -6,7 +6,7 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 
 
 class SequenceParetoReflections:
-    """Interface for sequences of Pareto reflections
+    """Interface for pareto_reflections of Pareto reflections
 
     A sequence of Pareto reflections is a mathematical sequence
 

@@ -4,7 +4,7 @@ from paref.helper_functions.return_pareto_front import return_pareto_front
 from paref.interfaces.moo_algorithms.paref_moo import ParefMOO
 from scipy.stats import qmc
 
-from examples.function_library.dtlz2 import DTLZ2
+from examples.blackbox_functions.two_dimensional.dtlz2 import DTLZ2
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 

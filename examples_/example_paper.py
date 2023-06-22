@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 from scipy.stats import qmc
 
-from examples.function_library.zdt1 import ZDT1
+from examples.blackbox_functions import ZDT1
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections

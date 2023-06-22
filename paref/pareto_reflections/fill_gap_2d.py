@@ -1,11 +1,15 @@
-import warnings
-
 import numpy as np
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 
 
 class FillGap2D(MinimizeWeightedNormToUtopia):
     """Fill the gap between two to be specified points in two dimensions
+
+    .. warning::
+
+        Although this Pareto reflection theoretically closes every gap, if the utopia point is far away from
+        the gap, algorithms based on this Pareto reflection tend to be numerically unstable.
+        It is recommended to choose an utopia point which is as close to the gap as possible.
 
     When to use
     -----------

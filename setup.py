@@ -2,10 +2,9 @@ from setuptools import setup
 
 setup(
     name='paref',
-    version='1.0.0',
+    version='0.0.1',
     license='MIT',
-    description='Small package containing implementations and interfaces for weight-based multi-objective '
-                'optimization approaches',
+    description='Pareto reflection based multi-objective optimization',
     author='Nicolai Palm',
     author_email='nicolaipalm@googlemail.com',
     classifiers=[
@@ -18,7 +17,6 @@ setup(
     install_requires=[
         'numpy',
         'scipy',
-        'pymoo',
         'plotly',
         'gpytorch',
         'torch',
@@ -27,7 +25,7 @@ setup(
     ],
     extras_require={
         'dev': ['pre-commit', 'flake8', 'flake8-print'],
-        'examples': ['ipython', 'jupyter'],
+        'examples_': ['ipython', 'jupyter', 'pymoo'],
         'test': ['pytest', 'pytest-cov'],  # "nbval"],
     },
     test_suite='tests',

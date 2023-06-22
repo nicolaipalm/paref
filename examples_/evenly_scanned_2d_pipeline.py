@@ -1,5 +1,5 @@
 import numpy as np
-from examples.function_library.testing_zdt2 import TestingZDT2
+from examples.blackbox_functions import TestingZDT2
 from paref.moo_algorithms.two_dimensional.evenly_scanned_2d import EvenlyScanned2d
 
 input_dimensions = 2

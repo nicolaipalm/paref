@@ -41,12 +41,16 @@ class ConvergenceReached(StoppingCriteria):
             false otherwise
 
         """
-        norm = np.linalg.norm(blackbox_function.evaluations[-1][1] -
-                              blackbox_function.evaluations[-2][1])
+        if len(blackbox_function.evaluations) >= 2:
+            norm = np.linalg.norm(blackbox_function.evaluations[-1][1] -
+                                  blackbox_function.evaluations[-2][1])
 
-        if norm > self._epsilon:
-            return False
+            if norm > self._epsilon:
+                return False
+
+            else:
+                print(f'Convergence reached. The 2-distance of the last two points found is {norm}.')
+                return True
 
         else:
-            print(f'Convergence reached. The 2-distance of the last two points found is {norm}.')
-            return True
+            return False

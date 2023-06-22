@@ -36,15 +36,15 @@ class FindEdgePointsSequence(SequenceParetoReflections):
     def __init__(self, ):
         self._iter = 0
         self._sequence = None
+        self.stopping_criteria = ConvergenceReached()
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
         dimension_domain = blackbox_function.dimension_target_space
         pareto_reflections = [FindEdgePoints(dimension_domain=dimension_domain, dimension=i) for i in
                               range(dimension_domain)]
-        stopping_criteria = ConvergenceReached()
         if self._iter == 0:
             self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,
-                                                         stopping_criteria=stopping_criteria)
+                                                         stopping_criteria=self.stopping_criteria)
             self._iter = 1
 
         return self._sequence.next(blackbox_function)

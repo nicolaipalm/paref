@@ -4,7 +4,6 @@ from typing import Union, List
 import numpy as np
 
 from paref.black_box_functions.design_space.bounds import Bounds
-from paref.helper_functions.return_pareto_front import return_pareto_front
 
 
 class BlackboxFunction:
@@ -89,7 +88,7 @@ class BlackboxFunction:
 
 
         """
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
@@ -220,4 +219,16 @@ class BlackboxFunction:
             Pareto front of evaluations
 
         """
-        return return_pareto_front(self.y)
+        array = self.y
+        pareto_points = []
+        for i, point in enumerate(array):
+            is_pareto = True
+            for j, other in enumerate(array):
+                if i == j:
+                    continue
+                if np.all(point >= other) and np.any(point > other):
+                    is_pareto = False
+                    break
+            if is_pareto:
+                pareto_points.append(point)
+        return np.array(pareto_points)
