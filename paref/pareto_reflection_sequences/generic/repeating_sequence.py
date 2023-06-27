@@ -4,7 +4,6 @@ from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections
-from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 
 
 class RepeatingSequence(SequenceParetoReflections):
@@ -30,8 +29,8 @@ class RepeatingSequence(SequenceParetoReflections):
     Initialize list of Pareto reflections
 
     >>> import numpy as np
-    >>> from paref.pareto_reflections.restricting import RestrictByPoint
-    >>> from paref.pareto_reflection_sequences.stopping_criteria.max_iterations_reached import MaxIterationsReached
+    >>> from paref.pareto_reflections.restrict_by_point import RestrictByPoint
+    >>> from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
     Initialze stopping criteria
 

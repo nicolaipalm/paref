@@ -1,3 +1,4 @@
+import numbers
 from typing import Union
 
 import numpy as np
@@ -62,7 +63,7 @@ class AvoidPoints(ParetoReflection):
     def __init__(self,
                  nadir: np.ndarray,
                  epsilon_avoiding_points: np.ndarray,
-                 epsilon: Union[float, np.ndarray]):
+                 epsilon: Union[numbers.Real, np.ndarray]):
         """Specify the nadir and the to be avoided points
 
         Parameters
@@ -82,8 +83,8 @@ class AvoidPoints(ParetoReflection):
 
         # TBA: error handling rest
 
-        if not isinstance(epsilon, float) and epsilon.shape != nadir:
-            raise ValueError('Epsilon must be a float or ')
+        if not isinstance(epsilon, numbers.Real) and epsilon.shape != nadir:
+            raise ValueError('Epsilon must be a Real Number or a numpy array of same shape as nadir! ')
 
         if np.any(epsilon < 0):
             raise ValueError('Epsilon must be positive!')
