@@ -24,10 +24,13 @@ bench = TestingOneDimensionalSequences(input_dimensions=input_dimensions,
 sequence = FindEdgePointsSequence()  # find edges first in order to have a Pareto front
 bench(sequence)
 
-
-stopping_criteria = MaxIterationsReached(max_iterations=100)
+stopping_criteria = MaxIterationsReached(max_iterations=7)
 
 bench.stopping_criteria = stopping_criteria
 
 sequence = FillGapsOfParetoFrontSequence2D()
 bench(sequence)
+PF = bench.function.pareto_front
+# Sort Pareto points ascending by first component
+PF = PF[PF[:, 0].argsort()]
+print('Distance of Pareto points to the next: ', np.linalg.norm(PF[:-1] - PF[1:], axis=1))

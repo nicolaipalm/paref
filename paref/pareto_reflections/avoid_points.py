@@ -80,7 +80,7 @@ class AvoidPoints(ParetoReflection):
         if nadir.shape != epsilon_avoiding_points.shape and nadir.shape != epsilon_avoiding_points[0].shape:
             raise ValueError('Nadir and avoiding points need to be 2-dimensional numpy arrays of equal shape!')
 
-        # TODO: error handling rest
+        # TBA: error handling rest
 
         if not isinstance(epsilon, float) and epsilon.shape != nadir:
             raise ValueError('Epsilon must be a float or ')

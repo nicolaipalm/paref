@@ -1,1 +1,1 @@
-graphics and overview of all algos
+graphics and overview (einbindedn) of all algos

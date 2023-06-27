@@ -34,7 +34,7 @@ class AvoidParetoFront(SequenceParetoReflections):
     Examples
     --------
 
-    #TODO: add
+    #TBA: add
     """
 
     def __init__(self,

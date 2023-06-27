@@ -24,7 +24,7 @@ class Find1ParetoPointsForAllComponentsSequence(NextWhenStoppingCriteriaMet):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
 
     """
 

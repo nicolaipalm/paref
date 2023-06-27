@@ -64,7 +64,7 @@ class ParefMOO:
 
     Examples
     --------
-    # TODO: implement algo, implement by sequence, apply to sequence
+    # TBA: implement algo, implement by sequence, apply to sequence
 
 
     """
@@ -94,7 +94,7 @@ class ParefMOO:
         """
         raise NotImplementedError
 
-    # TODO: how to supported domain? Or needed?
+    # TBA: how to supported domain? Or needed?
     @property
     @abstractmethod
     def supported_codomain_dimensions(self) -> Optional[List[int]]:
@@ -144,8 +144,12 @@ class ParefMOO:
 
         if sequence_of_pareto_reflections is None:
             while not stopping_criteria(blackbox_function):
-                # TODO: monitoring
+                # TBA: monitoring: value, if PP?
+                number_evaluations = len(blackbox_function.evaluations)
                 self.apply_moo_operation(blackbox_function)
+                if len(blackbox_function.evaluations) == number_evaluations:
+                    print('WARNING: algorithm did not evaluate or store the evaluation of the blackbox function!')
+
 
         else:
             self.apply_to_sequence(blackbox_function,
@@ -194,6 +198,7 @@ class ParefMOO:
                                                            moo_sequence_of_pareto_reflections)
 
         while not stopping_criteria(blackbox_function):
+            number_evaluations = len(blackbox_function.evaluations)
             if isinstance(sequence_pareto_reflections, SequenceParetoReflections):
                 # compose: caution what if one returns None
                 pareto_reflection = sequence_pareto_reflections.next(blackbox_function)
@@ -213,6 +218,8 @@ class ParefMOO:
                     'sequence_pareto_reflections must be an instance of sequence '
                     'of Pareto reflections or a single Pareto reflection!')
             self.apply_moo_operation(composition_function)
+            if len(blackbox_function.evaluations) == number_evaluations:
+                print('WARNING: algorithm did not evaluate or store the evaluation of the blackbox function!')
 
     @property
     def sequence_of_pareto_reflections(self) -> Union[SequenceParetoReflections, ParetoReflection, None]:

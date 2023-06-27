@@ -13,7 +13,7 @@ class ScanEvenly2D(GPRMinimizer):
                                                         Find1ParetoPoints(dimension_domain=2, dimension=1),
 
                                                         ])
-        # TODO: grid search or one pareto points plus fill gaps
+        # TBA: grid search or one pareto points plus fill gaps
         raise NotImplementedError
 
     @property

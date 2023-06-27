@@ -22,7 +22,7 @@ class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
     Initialize list of Pareto reflections
 
     >>> import numpy as np

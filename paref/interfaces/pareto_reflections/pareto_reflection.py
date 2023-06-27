@@ -27,7 +27,7 @@ class ParetoReflection:
     Examples
     --------
 
-    TODO: into contribution
+    TBA: into contribution
     """
 
     @abstractmethod

@@ -25,7 +25,7 @@ class FillGapsOfParetoFront2D(GPRMinimizer):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
 
 
     """

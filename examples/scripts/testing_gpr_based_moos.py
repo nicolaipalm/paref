@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, List
 
 import numpy as np
 import plotly.graph_objects as go
@@ -50,7 +50,13 @@ class TestingGPRBasedMOOs:
         self.hypervolume_max = self.function.calculate_hypervolume_of_pareto_front(reference_point=reference_point)
         self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
-    def __call__(self, moo: ParefMOO):
+    def __call__(self,
+                 moo: ParefMOO,
+                 mark_points: Optional[List] = None,
+                 additional_traces: Optional[List[go.Scatter]] = None,
+                 ):
+
+        self.lh_evaluations = len(self.function.evaluations)
         if self.sequence is None:
             moo(blackbox_function=self.function,
                 stopping_criteria=self.stopping_criteria)
@@ -67,25 +73,45 @@ class TestingGPRBasedMOOs:
         y = np.array([evaluation[1] for evaluation in self.function.evaluations])
 
         data = [
-            go.Scatter(x=self.real_PF.T[0], y=self.real_PF.T[1], name='Real Pareto front'),
-            go.Scatter(x=y[self.lh_evaluations:].T[0], y=y[self.lh_evaluations:].T[1], mode='markers',
+            go.Scatter(x=self.real_PF.T[0],
+                       y=self.real_PF.T[1],
+                       line=dict(width=4),
+                       name='Real Pareto front'),
+            go.Scatter(x=y[self.lh_evaluations:].T[0],
+                       y=y[self.lh_evaluations:].T[1],
+                       mode='markers',
+                       marker=dict(size=10),
                        name='Evaluations'),
-            go.Scatter(x=y[:self.lh_evaluations].T[0], y=y[:self.lh_evaluations].T[1], mode='markers',
+            go.Scatter(x=y[:self.lh_evaluations].T[0],
+                       y=y[:self.lh_evaluations].T[1],
+                       mode='markers',
                        name='Initial Evaluations'),
-            go.Scatter(x=PF.T[0], y=PF.T[1], mode='markers', marker=dict(
-                color='red', size=8), name='Found Pareto front'),
         ]
+
+        if mark_points is not None:
+            data.append(go.Scatter(x=mark_points[1].T[0], y=mark_points[1].T[1],
+                                   mode='markers',
+                                   marker=dict(size=10, symbol='x'),
+                                   name=mark_points[0],
+                                   )
+                        )
+
+        if additional_traces is not None:
+            for additional_trace in additional_traces:
+                data.append(additional_trace)
 
         fig1 = go.Figure(data=data)
 
         fig1.update_layout(
-            width=800,
-            height=600,
+            width=500,
+            height=500,
             plot_bgcolor='rgba(0,0,0,0)',
-            title=f'zdt2: {self.input_dimensions}-dim input with rel. HV: '
-                  f'{hypervolume_weight / self.hypervolume_max * 100}%',
+            legend=dict(
+                x=0.1,
+                y=0.9,)
         )
 
         fig1.show()
+        fig1.write_image(f'../../../docs/graphics/plots/moo-algorithms/{type(moo).__name__}.svg')
 
         return self.function

@@ -46,7 +46,7 @@ class BlackboxFunction:
         f:[0,1]\\times [0,1]\\to \mathbb{R}^2,f(x)=(x_2^2,x_1-x_2)
 
     Then, the pythonic blackbox function will be implemented as follows
-    # TODO: example
+    # TBA: example
 
     .. note::
 
@@ -180,7 +180,7 @@ class BlackboxFunction:
 
     @x.setter
     def x(self, value):
-        # TODO: needed?
+        # TBA: needed?
         for index, evaluation in enumerate(self._evaluations):
             evaluation[0] = value[index]
 
@@ -198,7 +198,7 @@ class BlackboxFunction:
 
     @y.setter
     def y(self, value):
-        # TODO: needed?
+        # TBA: needed?
         for index, evaluation in enumerate(self._evaluations):
             evaluation[1] = value[index]
 

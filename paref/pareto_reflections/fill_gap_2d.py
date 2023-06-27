@@ -33,7 +33,7 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
 
     Examples
     --------
-    TODO: Add
+    TBA: Add
     """
 
     def __init__(self,
@@ -70,6 +70,8 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
         y = point_1 - point_2  # helper
         v = np.array([1, -(y[0] / y[1])])  # normal vector
         lamb = (utopia_point[0] - m[0]) / v[0]  # parameter of utopia point projected to normal
+        if (utopia_point[1] - m[1]) / v[1] > lamb:
+            lamb = (utopia_point[1] - m[1]) / v[1]
 
         self.potency = potency * np.ones(dimension_domain)
         self.scalar = (1 / v)

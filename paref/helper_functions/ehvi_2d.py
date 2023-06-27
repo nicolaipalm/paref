@@ -3,7 +3,7 @@ from scipy import stats
 
 
 def ehvi_2d(PF, r, mu, sigma):
-    # TODO: does not work properly, i.e. does not depend on reference point as it should: ref point too small does not
+    # TBA: does not work properly, i.e. does not depend on reference point as it should: ref point too small does not
     #  make EHVI = 0!
     n = PF.shape[0]
     S1 = np.array([r[0], -np.inf])

@@ -30,7 +30,7 @@ class Find1ParetoPoints(MinimizeWeightedNormToUtopia):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
     """
 
     def __init__(self,

@@ -30,7 +30,7 @@ class SequenceParetoReflections:
     Examples
     --------
 
-    #TODO: this should be in a contributing.md
+    #TBA: this should be in a contributing.md
     """
 
     @abstractmethod

@@ -11,7 +11,7 @@ from paref.moo_algorithms.minimizer.surrogates import GPR
 
 
 class ExpectedHypervolumeImprovement2d(ParefMOO):
-    # TODO: adapt
+    # TBA: adapt
     def __init__(self,
                  upper_bounds_x: np.ndarray,
                  lower_bounds_x: np.ndarray,

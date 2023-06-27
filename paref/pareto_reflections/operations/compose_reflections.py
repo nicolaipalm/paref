@@ -3,7 +3,7 @@ import numpy as np
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 
 
-# TODO: as method of reflections
+# TBA: as method of reflections
 
 class ComposeReflections(ParetoReflection):
     """Compose two Pareto reflections and obtain a new Pareto reflection

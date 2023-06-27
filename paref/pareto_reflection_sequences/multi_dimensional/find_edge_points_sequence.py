@@ -29,7 +29,7 @@ class FindEdgePointsSequence(SequenceParetoReflections):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
 
     """
 

@@ -35,7 +35,7 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
 
     """
 

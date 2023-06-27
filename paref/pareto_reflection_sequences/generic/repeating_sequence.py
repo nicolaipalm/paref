@@ -17,7 +17,7 @@ class RepeatingSequence(SequenceParetoReflections):
 
     When to use
     -----------
-    # TODO: when to use?
+    # TBA: when to use?
 
     What it does
     ------------
@@ -26,7 +26,7 @@ class RepeatingSequence(SequenceParetoReflections):
 
     Examples
     --------
-    # TODO: meaningful example when to use this
+    # TBA: meaningful example when to use this
     Initialize list of Pareto reflections
 
     >>> import numpy as np

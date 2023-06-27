@@ -24,7 +24,7 @@ class DifferentialEvolution:
             function: Callable,
             upper_bounds: np.ndarray,
             lower_bounds: np.ndarray,
-            max_iter: int = 10000,
+            max_iter: int = 1000,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
         res = differential_evolution(
@@ -122,9 +122,9 @@ class GPRMinimizer(ParefMOO):
 
 
         """
-        # TODO: when found points are too close stop!
-        # TODO: control mechanism: when algo doesnt work give message and what went wrong
-        # TODO: monitoring: stop time, evaluations found, if training process of gpr converged, ALL WITH hints
+        # TBA: when found points are too close stop!
+        # TBA: control mechanism: when algo doesnt work give message and what went wrong
+        # TBA: monitoring: stop time, evaluations found, if training process of gpr converged, ALL WITH hints
 
         if not isinstance(blackbox_function.design_space, Bounds):
             raise ValueError(f'Design space of blackbox function must be an instance of by Bounds! Design space is of'
@@ -155,7 +155,7 @@ class GPRMinimizer(ParefMOO):
         train_y = base_blackbox_function.y
 
         print(
-            f'Training of the GPR...\n'
+            'Training of the GPR...\n'
         )
         gpr.train(train_x=train_x, train_y=train_y)
         print('\n finished!\n')
@@ -203,5 +203,5 @@ class GPRMinimizer(ParefMOO):
 
     @property
     def supported_codomain_dimensions(self) -> int:
-        # TODO: dimensionality check and list of int
+        # TBA: dimensionality check and list of int
         return 1

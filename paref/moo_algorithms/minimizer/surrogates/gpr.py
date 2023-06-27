@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 class ExactGP0(gpytorch.models.ExactGP):
     """
-    # TODO: add
+    # TBA: add
     """
 
     def __init__(self, train_x: torch.Tensor, train_y: torch.Tensor, likelihood):
@@ -122,7 +122,7 @@ class Gpr0Torch:
             #      (i + 1, self._training_iter, loss.item(),
             #       model.covar_module.base_kernel.lengthscale.item(),
             #       model.likelihood.noise.item()))
-            # TODO_later: delete raw in hyper parameters since it is transformed
+            # TBA_later: delete raw in hyper parameters since it is transformed
             # Appending hyper parameter
             for name, parameter in model.named_parameters():
                 if model.constraint_for_parameter_name(name) is not None:

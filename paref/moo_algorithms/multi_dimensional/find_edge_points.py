@@ -19,7 +19,7 @@ class FindEdgePoints(GPRMinimizer):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
 
 
     """

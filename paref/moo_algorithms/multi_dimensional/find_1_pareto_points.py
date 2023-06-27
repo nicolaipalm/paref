@@ -17,7 +17,7 @@ class Find1ParetoPoints(GPRMinimizer):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
 
 
     """

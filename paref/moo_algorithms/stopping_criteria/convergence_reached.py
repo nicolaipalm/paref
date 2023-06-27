@@ -15,7 +15,7 @@ class ConvergenceReached(StoppingCriteria):
 
     Examples
     --------
-    # TODO: add
+    # TBA: add
     """
 
     def __init__(self,
