@@ -33,7 +33,12 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autosummary',
     'myst_parser',
+    'nbsphinx',
+    'sphinx_copybutton',
+    'sphinx_gallery.load_style',
 ]
+
+nbsphinx_execute = 'never'
 
 autoclass_content = 'both'
 
