@@ -10,7 +10,7 @@ class DifferentialEvolutionMinimizer(ParefMOO):
     def apply_moo_operation(self, blackbox_function: BlackboxFunction) -> None:
         minimizer = DifferentialEvolution()
         underlying_blackbox_function = blackbox_function
-        while isinstance(underlying_blackbox_function,CompositionWithParetoReflection):
+        while isinstance(underlying_blackbox_function, CompositionWithParetoReflection):
             underlying_blackbox_function = underlying_blackbox_function._blackbox_function
 
         length_evaluations = len(underlying_blackbox_function.evaluations)

@@ -1,8 +1,8 @@
 import numpy as np
-
-from paref.interfaces import BlackboxFunction
 from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
+
+from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 
 
 class DTLZ2(BlackboxFunction):

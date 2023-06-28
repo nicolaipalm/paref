@@ -5,10 +5,10 @@ import numpy as np
 
 from paref.black_box_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
+from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections
-from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 from paref.pareto_reflections.operations.compose_sequences import ComposeSequences
 
 
@@ -150,7 +150,6 @@ class ParefMOO:
                 if len(blackbox_function.evaluations) == number_evaluations:
                     print('WARNING: algorithm did not evaluate or store the evaluation of the blackbox function!')
 
-
         else:
             self.apply_to_sequence(blackbox_function,
                                    sequence_of_pareto_reflections,
@@ -225,20 +224,20 @@ class ParefMOO:
     def sequence_of_pareto_reflections(self) -> Union[SequenceParetoReflections, ParetoReflection, None]:
         """Optional: Underlying sequence of MOO algorithm
 
-        We can extend every MOO algorithm by applying it to a composition of the blackbox function and a Pareto reflection
-        in each iteration.
-        Implementing this property (i.e. a sequence of or a single Pareto reflection) will extent the underlying MOO algorithm
-        in this fashion.
+        We can extend every MOO algorithm by applying it to a composition of the blackbox function and a Pareto
+        reflection in each iteration.
+        Implementing this property (i.e. a sequence of or a single Pareto reflection) will extent the underlying MOO
+        algorithm in this fashion.
 
         .. note::
 
             This is an optional parameter.
-            If a single Pareto reflection is implemented, then, the underlying MOO algorithm applied to some blackbox function
-            will be applied to the composition of blackbox function with this Pareto reflection when called. This does not change
-            the underlying :meth:`moo operation method
+            If a single Pareto reflection is implemented, then, the underlying MOO algorithm applied to some blackbox
+            function will be applied to the composition of blackbox function with this Pareto reflection when called.
+            This does not change the underlying :meth:`moo operation method
             <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_moo_operation>`!
-            Similarly, if a sequence of reflections is implemented, then, the algorithm is applied to the composition with the
-            next reflection obtained from the sequence.
+            Similarly, if a sequence of reflections is implemented, then, the algorithm is applied to the composition
+            with the next reflection obtained from the sequence.
             The sequence will be initialized *once* when the algorithm is called.
 
         Returns
@@ -255,8 +254,8 @@ class CompositionWithParetoReflection(BlackboxFunction):
 
     This class constructs a new blackbox function :math:`p\\circ f` out of a blackbox function :math:`f` and a Pareto
     reflection :math:`p`.
-    In particular, its design space is given by the design space of the underlying blackbox function and its target space
-    dimension is given by the dimension of the codomain of the Pareto reflection.
+    In particular, its design space is given by the design space of the underlying blackbox function and its target
+    space dimension is given by the dimension of the codomain of the Pareto reflection.
 
     .. note::
 
@@ -276,6 +275,7 @@ class CompositionWithParetoReflection(BlackboxFunction):
         pareto_reflection : ParetoReflection
             Pareto reflection
         """
+        super().__init__()
         if blackbox_function.dimension_target_space != pareto_reflection.dimension_domain:
             raise ValueError(
                 f'Dimension of target space ({blackbox_function.dimension_target_space}) of blackbox function and '

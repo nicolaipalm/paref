@@ -3,9 +3,6 @@
 # guarantee
 # randomize weights in order to dont get stuck
 
-from abc import abstractmethod
-from typing import Optional
-
 import numpy as np
 
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction

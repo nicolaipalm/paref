@@ -1,13 +1,12 @@
 import numpy as np
 
-from paref.interfaces.moo_algorithms.paref_moo import ParefMOO
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
-from paref.interfaces.optimizers.minimizer import Minimizer
-from paref.optimizers.minimizers.differential_evolution import DifferentialEvolution
-from paref.helper_functions.return_pareto_front import return_pareto_front
+from paref.interfaces.moo_algorithms.paref_moo import ParefMOO
+from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
+from paref.moo_algorithms.minimizer.differential_evolution_minimizer import DifferentialEvolution
+from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
+from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
 from paref.pareto_reflections.expected_hypervolume_2d import ExpectedHypervolume2d
-from paref.moo_algorithms.stopping_criteria import MaxIterationsReached
-from paref.moo_algorithms.minimizer.surrogates import GPR
 
 
 class ExpectedHypervolumeImprovement2d(ParefMOO):
@@ -20,7 +19,7 @@ class ExpectedHypervolumeImprovement2d(ParefMOO):
                  max_iter_minimizer: int = 100,
                  max_evaluations_moo: int = 20,
                  training_iter: int = 2000,
-                 minimizer: Minimizer = DifferentialEvolution(),
+                 minimizer=DifferentialEvolution(),
                  learning_rate: float = 0.05):
         self._minimizer = minimizer
         self._upper_bounds = upper_bounds_x
@@ -32,18 +31,19 @@ class ExpectedHypervolumeImprovement2d(ParefMOO):
         self._max_evaluations_moo = max_evaluations_moo
         self._reference_point = reference_point
 
-    def __call__(self, blackbox_function: BlackboxFunction = None):
+    def __call__(self, blackbox_function: BlackboxFunction = None,
+                 stopping_criteria: StoppingCriteria = MaxIterationsReached):
         gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate)
 
         iteration_step = 1
         stopping_criteria = MaxIterationsReached(max_iterations=self._max_evaluations_moo)
-        stop = stopping_criteria()
+        stop = stopping_criteria(blackbox_function)
         while not stop:
             train_x = blackbox_function.x
 
             train_y = blackbox_function.y
 
-            pareto_front = return_pareto_front(train_y)
+            pareto_front = blackbox_function.pareto_front
             print(
                 f'{iteration_step} Training of the GPR...\n'
             )
@@ -68,7 +68,7 @@ class ExpectedHypervolumeImprovement2d(ParefMOO):
 
             iteration_step += 1
 
-            stop = stopping_criteria()
+            stop = stopping_criteria(blackbox_function)
 
     @property
     def name(self) -> str:

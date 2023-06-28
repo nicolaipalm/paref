@@ -2,7 +2,7 @@ import numpy as np
 from scipy import stats
 
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
-from paref.moo_algorithms.minimizer.surrogates import GPR
+from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
 
 
 def ehvi_2d(PF, r, mu, sigma):

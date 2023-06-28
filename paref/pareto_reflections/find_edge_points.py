@@ -1,4 +1,7 @@
+from typing import Union
+
 import numpy as np
+
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 
 
@@ -35,11 +38,8 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
     # TBA: add
     """
 
-    def __init__(self,
-                 dimension_domain: int,
-                 dimension: int,
-                 epsilon: float = 1e-3,
-                 ):
+    def __init__(self, dimension_domain: int, dimension: int, utopia_point: np.ndarray,
+                 potency: Union[np.ndarray, float], scalar: np.ndarray, epsilon: float = 1e-3):
         """Specify the dimension of the input domain and the component of which the edge point is searched
 
         ..warning::
@@ -58,6 +58,7 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
         epsilon : float default 1e-3
             weight on the component
         """
+        super().__init__(utopia_point, potency, scalar)
         self.epsilon = epsilon
         self.dimension = dimension
         self._dimension_domain = dimension_domain

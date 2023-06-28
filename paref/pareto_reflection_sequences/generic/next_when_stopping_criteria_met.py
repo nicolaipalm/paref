@@ -26,8 +26,9 @@ class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
     Initialize list of Pareto reflections
 
     >>> import numpy as np
-    >>> from paref.pareto_reflections.restricting import RestrictByPoint
-    >>> from paref.pareto_reflection_sequences.stopping_criteria.max_iterations_reached import MaxIterationsReached
+    >>> from paref.pareto_reflections.restrict_by_point import RestrictByPoint
+    >>> from paref.pareto_reflection_sequences.generic.repeating_sequence import RepeatingSequence
+    >>> from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
 
     Initialze stopping criteria
 

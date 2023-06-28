@@ -1,4 +1,3 @@
-from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import SequenceParetoReflections
 from paref.moo_algorithms.minimizer.gpr_minimizer import GPRMinimizer
 from paref.moo_algorithms.stopping_criteria.convergence_reached import ConvergenceReached
 from paref.pareto_reflection_sequences.generic.next_when_stopping_criteria_met import NextWhenStoppingCriteriaMet
@@ -7,7 +6,7 @@ from paref.pareto_reflections.find_1_pareto_points import Find1ParetoPoints
 
 class ScanEvenly2D(GPRMinimizer):
     @property
-    def sequence_of_pareto_reflections(self) -> SequenceParetoReflections:
+    def sequence_of_pareto_reflections(self):  # -> SequenceParetoReflections:
         NextWhenStoppingCriteriaMet(stopping_criteria=ConvergenceReached(),
                                     pareto_reflections=[Find1ParetoPoints(dimension_domain=2, dimension=0),
                                                         Find1ParetoPoints(dimension_domain=2, dimension=1),
