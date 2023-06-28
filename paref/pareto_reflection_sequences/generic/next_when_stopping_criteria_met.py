@@ -46,7 +46,7 @@ class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
     met
 
     >>> sequence.next().__class__.__name__
-    Restricting
+    RestrictByPoint
 
     >>> sequence.next()
     None

@@ -19,7 +19,7 @@ class Find1ParetoPoints(MinimizeWeightedNormToUtopia):
 
     What it does
     ------------
-    The Pareto points of this map are the ones which minimize the the weighted sum where one component
+    The Pareto points of this map are the ones which minimize the weighted sum where one component
     is given much more weight than the others.
 
     Mathematical formula

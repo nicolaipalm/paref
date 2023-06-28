@@ -5,7 +5,7 @@ from paref.pareto_reflection_sequences.generic.repeating_sequence import Repeati
 from paref.pareto_reflections.restrict_by_point import RestrictByPoint
 
 
-def test_reflecting_example_case():
+def test_repeating_sequence_example_case():
     pareto_reflecting_functions = [RestrictByPoint(nadir=np.ones(1), restricting_point=np.ones(1))]
     sequence = RepeatingSequence(pareto_reflections=pareto_reflecting_functions)
 
