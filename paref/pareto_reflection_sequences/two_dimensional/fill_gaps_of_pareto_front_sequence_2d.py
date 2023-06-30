@@ -1,6 +1,7 @@
 from typing import Optional
 
 import numpy as np
+
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections
@@ -23,8 +24,8 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
 
     When to use
     -----------
-    Use this sequence if you want to successively close the gaps in the approximate Pareto front (the Pareto front of the
-    evaluations).
+    Use this sequence if you want to successively close the gaps in the approximate Pareto front (the Pareto front of
+    the evaluations).
     This means Pareto points are searched which lie in the *middle* of two Pareto points.
 
     What it does
