@@ -38,5 +38,3 @@ The official release is available at PyPi:
     :link: ./description/howto.md
 
     Check out the user guide for more information regarding Parefs functionality.
-
-

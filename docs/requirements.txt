@@ -1,5 +1,5 @@
-pydata-sphinx-theme~=0.13.3
-sphinx_mdinclude~=0.5.3
 myst_parser
 nbsphinx
+pydata-sphinx-theme~=0.13.3
 sphinx_copybutton
+sphinx_mdinclude~=0.5.3
