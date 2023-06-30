@@ -1,10 +1,17 @@
 from setuptools import setup
 
+
+def readme():
+    with open('README.md') as f:
+        return f.read()
+
+
 setup(
     name='paref',
     version='0.1.0',
     license='MIT',
     description='Pareto reflection based multi-objective optimization',
+    long_description=readme(),
     author='Nicolai Palm',
     author_email='nicolaipalm@googlemail.com',
     classifiers=[
