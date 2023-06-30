@@ -1,7 +1,5 @@
 # Pareto reflections
 
-> 💡 Read [this]() in order to understand how to implement a Pareto reflection!
-
 **What are Pareto reflections?**
 
 **How do we use Pareto reflections?**

@@ -35,12 +35,14 @@ extensions = [
     'myst_parser',
     'nbsphinx',
     'sphinx_copybutton',
-    'sphinx_gallery.load_style',
+    'sphinx_design',
 ]
 
 nbsphinx_execute = 'never'
 
 autoclass_content = 'both'
+
+myst_enable_extensions = ["colon_fence"]
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']

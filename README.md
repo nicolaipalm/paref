@@ -16,7 +16,6 @@ This package contains
 - a series of ready-to-use [MOO algorithms](table below) corresponding to frequently targeted properties
 - a framework for you to implement your problem specific MOO algorithm
 - generic and intuitive [interfaces]() for MOO algorithms, blackbox functions and more such that solving an MOO problem with Paref requires minimal effort
-- documentation including [how-to guides](), [examples](), [check sheets]() and Parefs' [architecture]() so that getting started with and using Paref becomes easy
 
 See the official [documentation](https://github.com/) for more information.
 
@@ -39,13 +38,7 @@ You can clone this repository by running the following command:
 ```
 git clone https://github.com/nicolaipalm/paref
 cd paref
-pip install
-```
-
-In your python terminal run (hello world where left side of w is pareto front)
-
-```python
-from paref.
+pip install .
 ```
 
 ## Usage
