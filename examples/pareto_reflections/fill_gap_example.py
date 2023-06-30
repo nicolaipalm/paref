@@ -10,7 +10,7 @@ reference_point = 3 * np.ones(2)
 nadir = 10 * np.ones(2)
 utopia_point = np.zeros(2)
 
-point_1 = np.array([0,1])
+point_1 = np.array([0, 1])
 point_2 = np.array([0.63, 0.6])
 
 # stopping criteria of MOO algorithm given by maximum iterations
