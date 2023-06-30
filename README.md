@@ -1,16 +1,33 @@
 [![Python Test & Lint](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml/badge.svg)](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml)
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg?style=plastic)](https://www.python.org/downloads/)
-# Paref
 
-With Paref you can build and use problem tailored multi-objective optimization algorithms.
+
+[documentation]()//[notebooks]()
+
+# Paref - using and building problem tailored MOO
+
+A multi-objective optimization (MOO) problem comes with an idea of what **[
+properties](#what-are-properties-of-pareto-points)** identified (Pareto) points must satisfy.
+The fact that these characteristics are fulfilled is what makes a MOO successful in the first place.
+Why not construct a MOO algorithm which searches exactly for those properties?
+With the language of PAreto REFlections this is now possible.
+This package contains
+
+- a series of ready-to-use [MOO algorithms](table below) corresponding to frequently targeted properties
+- a framework for you to implement your problem specific MOO algorithm
+- generic and intuitive [interfaces]() for MOO algorithms, blackbox functions and more such that solving an MOO problem with Paref requires minimal effort
+- documentation including [how-to guides](), [examples](), [check sheets]() and Parefs' [architecture]() so that getting started with and using Paref becomes easy
+
+See the official [documentation](https://github.com/) for more information.
 
 ## Content
+
 - [Installation](#installation)
-- [Getting started](#getting_started)
 - [Usage](#usage)
-- [Step-by-step guide](#step_by_step_guide)
-- [Architecture](#architecture)
+- [What are properties of Pareto points?](#what-are-properties-of-pareto-points)
+
 ## Installation
+
 The official release is available at PyPi:
 
 ```
@@ -25,50 +42,85 @@ cd paref
 pip install
 ```
 
-## Getting started
+In your python terminal run (hello world where left side of w is pareto front)
 
-
-We refer to the [documentation](...) for
-
-
+```python
+from paref.
+```
 
 ## Usage
-A multi-objective optimization problem comes with an idea of what property identified (Pareto) points should contain.
-Why not construct a multi-objective optimization algorithm which searches precisely for those points?
-With the language of PAreto REFlections this is now possible.
-Paref provides a generic interface for general constructions of multi-objective optimization algorithms (see picture) based on Pareto reflections.
 
-### Basic
-- paref additionally offers a multitude of ready-to-use multi-objective optimization algorithms
-- each algorithm attempts to return Pareto points with specific properties and is based on mathematical proofs
-- based on your individual preference which Pareto points you are looking for choose the one which fits your task best
-- Convince yourself of the properties by running different multi-objective optimization algorithms in the example module.
+> 💡 See the [how-to guides]() for a more detailled description.
 
-### [Advanced](theory in paper):
-- implement all parts of a multi-objective optimization algorithm (i.e. Pareto reflections, sequences of such and optimizers) by yourself or (partly) use some of the already implemented instances
-- join them to form your individual multi-objective optimization algorithm by using Parefs generic interface
+Solving an MOO problem with Paref consists of the following steps
 
-Check out Parefs [documentation]() to learn about the individual properties of every MOO algorithm and Pareto reflection.
+0. [Define design and target space]()
+1. Define desired [properties](#what-are-properties-of-pareto-points) of Pareto points
+2. Initialize corresponding [MOO algorithm](link moo algos)
+3. [Implement and initialize bbf](link how to implement bbf)
+4. [Apply problem tailored MOO algorithm to blackbox function](link how to apply moo)
 
-(add short animation of the search process to visualize the MOO algorithms properties)
+This may look as follows:
 
+0. We use a mathematical test function with three input dimensions all between zero and one (i.e. design space is given by three-dimensional unit cube) and with two output dimensions (i.e. target space is the real plane)
+1. We want to have an idea of the "dimension" of the Pareto front (i.e. the Pareto points representing the minima in
+   components) with minimum number of evaluations
+2. Accordingly, we choose the [FindEdgePoints]() algorithm:
 
-## Step-by-step guide
+```python
+from paref.moo_algorithms.multi_dimensional.find_edge_points import FindEdgePoints
+moo = FindEdgePoints()
+```
 
-### Apply an algorithm to a MOO problem
-[Graphic workflow]
+3. We [implement](how-to-implement) and initialize the blackbox function in the Paref blackbox function interface
 
-with coding example (every example in examples folder is built that way)
+```python
+import numpy as np
+from paref.black_box_functions.design_space.bounds import Bounds
+from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 
-### Build your own algorithm
-[Graphic workflow]
+class TestFunction(BlackboxFunction):
+    def __call__(self, x: np.ndarray) -> np.ndarray:
+        y = np.array([np.sum(x**2),x[0]])
+        self._evaluations.append([x, y])
+        return y
 
-with coding example
+    @property
+    def dimension_design_space(self) -> int:
+        return 3
 
-## Architecture
+    @property
+    def dimension_target_space(self) -> int:
+        return 2
 
-## Check sheet for proper use of Surrogate based optimization
+    @property
+    def design_space(self) -> Bounds:
+        return Bounds(upper_bounds=np.ones(self.dimension_design_space),
+                      lower_bounds=-np.zeros(self.dimension_design_space))
 
-[] Are the components of input and output within the same scale? Action: Normalization of input and output data
-[] Do you have enough training data (Rule of thumb: 3 dots per input dimension; Ex: 10 input dimensions and 30 samples)? Action: Extend initial (LH) sampling
-[] Was the training successful? Action: inspect trainingsprocess if error converged; if not raise the number of training iteration (Rule of thumb: at least 2000 training iterations)
+blackbox_function = TestFunction()
+```
+
+4. We apply the MOO algorithm to the blackbox function with a maximum number of five iterations and print the so found Pareto front:
+```python
+from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
+moo(blackbox_function = blackbox_function,
+    stopping_criteria = MaxIterationsReached(max_iterations=5))
+print(f"Calculated Pareto front: {blackbox_function.pareto_front}")
+```
+
+## What are properties of Pareto points?
+A MOO problem comes with an idea of what properties identified (Pareto) points must satisfy.
+The fact that these characteristics are fulfilled is what makes a MOO successful in the first place.
+
+In mathematical terms, we understand properties of Pareto points as being element of a
+(mostly implicit defined) subset of the Pareto front.
+
+They include but are certainly not limited to the following:
+
+|              Property               |                                       Graphic                                        | Example | Algorithm(s) |Sequence|Pareto reflection|
+|:-----------------------------------:|:------------------------------------------------------------------------------------:|:------------:|:------------:|:-----:|:-----:|
+|         Being an edge point         |     ![Edge point](./docs/graphics/plots/reflections/FindEdgePointsSequence.svg)      |||||
+|            Filling a gap            |             ![Fill gap](./docs/graphics/plots/reflections/FillGap2D.svg)             |||||
+|      Being evenly distributed       | ![Edge point](./docs/graphics/plots/reflections/FillGapsOfParetoFrontSequence2D.svg) |||||
+| Being constrained to a defined area |        ![Fill gap](./docs/graphics/plots/reflections/RestrictByPoint.svg)         |||||
