@@ -12,6 +12,7 @@ setup(
     license='MIT',
     description='Pareto reflection based multi-objective optimization',
     long_description=readme(),
+    long_description_content_type='text/markdown',
     author='Nicolai Palm',
     author_email='nicolaipalm@googlemail.com',
     classifiers=[
