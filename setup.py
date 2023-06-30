@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='paref',
-    version='0.1.0',
+    version='0.1.5',
     license='MIT',
     description='Pareto reflection based multi-objective optimization',
     long_description=readme(),
@@ -19,6 +19,7 @@ setup(
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
+        'Development Status :: 3 - Alpha'
     ],
     python_requires='>=3.6',
     install_requires=[
