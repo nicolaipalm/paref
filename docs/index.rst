@@ -32,9 +32,9 @@ The official release is available at PyPi:
 .. card:: Getting started
     :link: ./notebooks/main_example_small.ipynb
 
-    Get started with Paref.
+    Get started with Paref!
 
 .. card:: User Guide
     :link: ./description/howto.md
 
-    Check out the user guide for more information regarding Parefs functionality.
+    Check out the user guide for more information regarding Parefs functionality!
