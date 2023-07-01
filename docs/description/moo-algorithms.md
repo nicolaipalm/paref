@@ -1,6 +1,6 @@
 # Parefs' MOO algorithms
 
-Paref provides a series of ready to use *generic* (mainly minimization algorithms) 
+Paref provides a series of ready to use *generic* (mainly minimization algorithms)
 and *problem tailored* (i.e. targeting certain properties) MOO algorithms implemented in the ``ParefMOO`` interface.
 
 Currently, Paref includes implementations of the following MOO algorithms
