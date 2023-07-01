@@ -9,7 +9,7 @@ def test_reflecting_example_case():
     assert ((pareto_reflection(np.ones(2)) == nadir).all())
 
 
-def test_dominating_case():
+def test_non_dominating_case():
     nadir, epsilon_avoiding_points, epsilon = np.array([3, 7]), np.array([[1, 5], [2, 1]]), 1
     pareto_reflection = AvoidPoints(nadir=nadir, epsilon_avoiding_points=epsilon_avoiding_points, epsilon=epsilon)
 
@@ -17,7 +17,7 @@ def test_dominating_case():
     assert ((pareto_reflection(case) == nadir).all())
 
 
-def test_non_dominating_case():
+def test_dominating_case():
     nadir, epsilon_avoiding_points, epsilon = np.array([3, 7]), np.array([5, 1]), 1
     pareto_reflection = AvoidPoints(nadir=nadir, epsilon_avoiding_points=epsilon_avoiding_points, epsilon=epsilon)
 
