@@ -36,7 +36,9 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
     TBA: Add
     """
 
-    def __init__(self, point_1: np.ndarray, point_2: np.ndarray, utopia_point: np.ndarray, scalar: np.ndarray,
+    def __init__(self, point_1: np.ndarray,
+                 point_2: np.ndarray,
+                 utopia_point: np.ndarray,
                  potency: int = 6):
         """Specify the gap and some utopia point
 
@@ -54,7 +56,6 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
         potency : int default 6
             potency of underlying weighted norm
         """
-        super().__init__(utopia_point, potency, scalar)
         if point_1.shape != (self.dimension_domain,) or point_2.shape != (
                 self.dimension_domain,) or utopia_point.shape != (self.dimension_domain,):
             raise ValueError('Both points and utopia points must be 1 dimensional arrays of length 2! Shape of '
