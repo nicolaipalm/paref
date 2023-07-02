@@ -11,11 +11,11 @@ properties](#what-are-properties-of-pareto-points)** identified (Pareto) points 
 The fact that these characteristics are fulfilled is what makes a MOO successful in the first place.
 Why not construct a MOO algorithm which searches exactly for those properties?
 With the language of PAreto REFlections this is now possible.
-This package contains
+This package contains...
 
 - a series of ready-to-use [MOO algorithms](https://github.com/nicolaipalm/paref/tree/main/paref/moo_algorithms) corresponding to frequently targeted properties
 - a framework for you to implement your problem tailored MOO algorithm
-- generic and intuitive [interfaces](https://github.com/nicolaipalm/paref/tree/main/paref/interfaces) for MOO algorithms, blackbox functions and more such that solving an MOO problem with Paref requires minimal effort
+- generic and intuitive [interfaces](https://github.com/nicolaipalm/paref/tree/main/paref/interfaces) for MOO algorithms, black-box functions and more, so solving a MOO problem with user-defined properties with Paref requires only minimal effort
 
 See the official [documentation](https://paref.readthedocs.io/en/latest/) for more information.
 
