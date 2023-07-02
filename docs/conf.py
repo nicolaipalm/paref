@@ -12,15 +12,14 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../'))
 
+sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'paref'
 copyright = '2023, Nicolai Palm'
 author = 'Nicolai Palm'
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -36,6 +35,7 @@ extensions = [
     'nbsphinx',
     'sphinx_copybutton',
     'sphinx_design',
+    'IPython.sphinxext.ipython_console_highlighting',
 ]
 
 nbsphinx_execute = 'never'
@@ -43,6 +43,12 @@ nbsphinx_execute = 'never'
 autoclass_content = 'both'
 
 myst_enable_extensions = ['colon_fence']
+
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
+
+autodoc_default_options = {
+    'special-members': '__call__',
+}
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
@@ -58,7 +64,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'pydata_sphinx_theme'
-#html_theme = "sphinxawesome_theme"
+# html_theme = "sphinxawesome_theme"
 html_theme_path = ['_themes', ]
 
 html_theme_options = {
