@@ -1,6 +1,5 @@
-from typing import Union
-
 import numpy as np
+
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 
 
