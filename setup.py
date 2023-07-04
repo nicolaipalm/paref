@@ -1,24 +1,30 @@
 from setuptools import setup
 
+
+def readme():
+    with open('README.md') as f:
+        return f.read()
+
+
 setup(
     name='paref',
-    version='1.0.0',
+    version='0.1.7',
     license='MIT',
-    description='Small package containing implementations and interfaces for weight-based multi-objective '
-                'optimization approaches',
+    description='Pareto reflection based multi-objective optimization',
+    long_description=readme(),
+    long_description_content_type='text/markdown',
     author='Nicolai Palm',
     author_email='nicolaipalm@googlemail.com',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Development Status:: 1 - Planning'
+        'Development Status :: 3 - Alpha'
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.9',
     install_requires=[
         'numpy',
         'scipy',
-        'pymoo',
         'plotly',
         'gpytorch',
         'torch',
@@ -27,8 +33,8 @@ setup(
     ],
     extras_require={
         'dev': ['pre-commit', 'flake8', 'flake8-print'],
-        'examples': ['ipython', 'jupyter'],
-        'test': ['pytest', 'pytest-cov'],  # "nbval"],
+        'examples': ['ipython', 'jupyter', 'pymoo'],
+        'test': ['pytest', 'pytest-cov'],
     },
     test_suite='tests',
 )
