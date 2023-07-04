@@ -21,7 +21,7 @@ setup(
         'Operating System :: OS Independent',
         'Development Status :: 3 - Alpha'
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.9',
     install_requires=[
         'numpy',
         'scipy',
@@ -33,8 +33,8 @@ setup(
     ],
     extras_require={
         'dev': ['pre-commit', 'flake8', 'flake8-print'],
-        'examples_': ['ipython', 'jupyter', 'pymoo'],
-        'test': ['pytest', 'pytest-cov'],  # "nbval"],
+        'examples': ['ipython', 'jupyter', 'pymoo'],
+        'test': ['pytest', 'pytest-cov'],
     },
     test_suite='tests',
 )
