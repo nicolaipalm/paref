@@ -10,7 +10,7 @@ from paref.pareto_reflections.fill_gap_2d import FillGap2D
 class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
     """Fill the gaps in the Pareto front already found
 
-    ..warning::
+    .. warning::
 
         If the approximate Pareto front is far away from the true Pareto front, then, this algorithm might
         tries to get closer to the true Pareto front in advance of filling the gaps.
@@ -83,7 +83,6 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
 
         # If utopia point is not given, set it as lower edge of points where gap should be closed
         if self.utopia_point is None:
-            # self.utopia_point = np.min(blackbox_function.y, axis=0)
             utopia_point = np.min(np.array(PF[max_norm_index:max_norm_index + 2]), axis=0)
 
         else:

@@ -36,19 +36,14 @@ extensions = [
     'sphinx_copybutton',
     'sphinx_design',
     'IPython.sphinxext.ipython_console_highlighting',
+    'sphinx.ext.autosectionlabel',
 ]
 
 nbsphinx_execute = 'never'
 
-# autoclass_content = 'both'
-
 myst_enable_extensions = ['colon_fence']
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
-
-# autodoc_default_options = {
-#    'special-members': '__call__',
-# }
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
@@ -64,7 +59,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'pydata_sphinx_theme'
-# html_theme = "sphinxawesome_theme"
 html_theme_path = ['_themes', ]
 
 html_theme_options = {
@@ -89,7 +83,7 @@ autodoc_default_options = {
     'special-members': '__call__',
     'undoc-members': True,
 }
-autoclass_content = 'class'
+autoclass_content = 'both'
 autodoc_inherit_docstrings = False
 
 # -- Read the Docs ---------------------------------------------------------------------------------
