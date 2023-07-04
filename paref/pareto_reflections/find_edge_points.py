@@ -8,7 +8,7 @@ from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWe
 class FindEdgePoints(MinimizeWeightedNormToUtopia):
     """Find the edge points of the Pareto front
 
-    ..warning::
+    .. warning::
 
         This Pareto reflection assumes that there exist edge points
 
@@ -16,7 +16,7 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
     -----------
     This Pareto reflection should be used if the edge points of the Pareto front are searched.
 
-    ..note::
+    .. note::
 
         In to dimensions, the edge points of the Pareto front always exist.
 
@@ -41,7 +41,7 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
     def __init__(self, dimension_domain: int, dimension: int, epsilon: float = 1e-3):
         """Specify the dimension of the input domain and the component of which the edge point is searched
 
-        ..warning::
+        .. warning::
 
             The smaller epsilon, the better. However, picking an epsilon too small may lead to an
             unstable optimization.

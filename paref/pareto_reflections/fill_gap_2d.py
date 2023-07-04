@@ -15,7 +15,7 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
     -----------
     This Pareto reflection should be used if a Pareto point is desired which lies between two specified points
 
-    ..note::
+    .. note::
 
         This function works best if the two points are Pareto optimal.
 

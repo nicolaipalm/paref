@@ -8,7 +8,7 @@ class FindEdgePoints(GPRMinimizer):
 
 
 
-    ..note::
+    .. note::
 
         Use this algorithm if you want to find the edge points of the Pareto front, if they exist.
         *Notice:* In two dimensions, they always exist. However, in general they are likely to not exist.

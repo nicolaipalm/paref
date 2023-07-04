@@ -10,7 +10,7 @@ from paref.pareto_reflections.avoid_points import AvoidPoints
 class AvoidParetoFront(SequenceParetoReflections):
     """Avoid the Pareto front of the evaluations plus some epsilon
 
-    ..warning::
+    .. warning::
 
         This sequence should only be used if the Pareto points found in each evaluation of the moo
         are too close together (since it
