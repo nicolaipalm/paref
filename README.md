@@ -2,7 +2,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg?style=plastic)](https://www.python.org/downloads/)
 
 
-[documentation]()//[notebooks]()
+[documentation](https://paref.readthedocs.io/en/latest/)//[notebooks](https://github.com/nicolaipalm/paref/tree/main/docs/notebooks)
 
 # Paref - using and building problem tailored MOO
 
@@ -11,14 +11,13 @@ properties](#what-are-properties-of-pareto-points)** identified (Pareto) points 
 The fact that these characteristics are fulfilled is what makes a MOO successful in the first place.
 Why not construct a MOO algorithm which searches exactly for those properties?
 With the language of PAreto REFlections this is now possible.
-This package contains
+This package contains...
 
-- a series of ready-to-use [MOO algorithms](table below) corresponding to frequently targeted properties
-- a framework for you to implement your problem specific MOO algorithm
-- generic and intuitive [interfaces]() for MOO algorithms, blackbox functions and more such that solving an MOO problem with Paref requires minimal effort
-- documentation including [how-to guides](), [examples](), [check sheets]() and Parefs' [architecture]() so that getting started with and using Paref becomes easy
+- a series of ready-to-use [MOO algorithms](https://github.com/nicolaipalm/paref/tree/main/paref/moo_algorithms) corresponding to frequently targeted properties
+- a framework for you to implement your problem tailored MOO algorithm
+- generic and intuitive [interfaces](https://github.com/nicolaipalm/paref/tree/main/paref/interfaces) for MOO algorithms, black-box functions and more, so solving a MOO problem with user-defined properties with Paref requires only minimal effort
 
-See the official [documentation](https://github.com/) for more information.
+See the official [documentation](https://paref.readthedocs.io/en/latest/) for more information.
 
 ## Content
 
@@ -34,45 +33,29 @@ The official release is available at PyPi:
 pip install paref
 ```
 
-You can clone this repository by running the following command:
-
-```
-git clone https://github.com/nicolaipalm/paref
-cd paref
-pip install
-```
-
-In your python terminal run (hello world where left side of w is pareto front)
-
-```python
-from paref.
-```
-
 ## Usage
-
-> 💡 See the [how-to guides]() for a more detailled description.
 
 Solving an MOO problem with Paref consists of the following steps
 
-0. [Define design and target space]()
-1. Define desired [properties](#what-are-properties-of-pareto-points) of Pareto points
-2. Initialize corresponding [MOO algorithm](link moo algos)
-3. [Implement and initialize bbf](link how to implement bbf)
-4. [Apply problem tailored MOO algorithm to blackbox function](link how to apply moo)
+0. Define design and target space
+1. Define desired properties of Pareto points
+2. Initialize corresponding MOO algorithm
+3. Implement and initialize bbf
+4. Apply problem tailored MOO algorithm to blackbox function
 
 This may look as follows:
 
 0. We use a mathematical test function with three input dimensions all between zero and one (i.e. design space is given by three-dimensional unit cube) and with two output dimensions (i.e. target space is the real plane)
 1. We want to have an idea of the "dimension" of the Pareto front (i.e. the Pareto points representing the minima in
    components) with minimum number of evaluations
-2. Accordingly, we choose the [FindEdgePoints]() algorithm:
+2. Accordingly, we choose the ``FindEdgePoints`` algorithm:
 
 ```python
 from paref.moo_algorithms.multi_dimensional.find_edge_points import FindEdgePoints
 moo = FindEdgePoints()
 ```
 
-3. We [implement](how-to-implement) and initialize the blackbox function in the Paref blackbox function interface
+3. We implement and initialize the blackbox function in the Paref blackbox function interface
 
 ```python
 import numpy as np
@@ -118,9 +101,9 @@ In mathematical terms, we understand properties of Pareto points as being elemen
 
 They include but are certainly not limited to the following:
 
-|              Property               |                                       Graphic                                        | Example | Algorithm(s) |Sequence|Pareto reflection|
-|:-----------------------------------:|:------------------------------------------------------------------------------------:|:------------:|:------------:|:-----:|:-----:|
-|         Being an edge point         |     ![Edge point](./docs/graphics/plots/reflections/FindEdgePointsSequence.svg)      |||||
-|            Filling a gap            |             ![Fill gap](./docs/graphics/plots/reflections/FillGap2D.svg)             |||||
-|      Being evenly distributed       | ![Edge point](./docs/graphics/plots/reflections/FillGapsOfParetoFrontSequence2D.svg) |||||
-| Being constrained to a defined area |        ![Fill gap](./docs/graphics/plots/reflections/RestrictByPoint.svg)         |||||
+|              Property               |                                       Graphic                                        | Example |                        Algorithm(s)                         |          Sequence           |  Pareto reflection   |
+|:-----------------------------------:|:------------------------------------------------------------------------------------:|:-------:|:-----------------------------------------------------------:|:---------------------------:|:--------------------:|
+|         Being an edge point         |     ![Edge point](./docs/graphics/plots/reflections/FindEdgePointsSequence.svg)      |         |                     ``FindEdgePoints``                      | ``FindEdgePointsSequence``  |                      |
+|            Filling a gap            |             ![Fill gap](./docs/graphics/plots/reflections/FillGap2D.svg)             |         |                                                             |                             |    ``FillGap2D``     |
+|      Being evenly distributed       | ![Edge point](./docs/graphics/plots/reflections/FillGapsOfParetoFrontSequence2D.svg) |         | ``FindEdgePoints`` followed by ``FillGapsOfParetoFront2D``  |                             |                      |
+| Being constrained to a defined area |          ![Fill gap](./docs/graphics/plots/reflections/RestrictByPoint.svg)          |         |                                                             |                             | ``RestrictByPoint``  |

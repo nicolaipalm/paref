@@ -12,7 +12,7 @@ class Find1ParetoPoints(MinimizeWeightedNormToUtopia):
     This Pareto reflection should be used if a Pareto point is desired which lie on the boundary of the Pareto front,
     i.e. are minimal in one component.
 
-    ..note::
+    .. note::
 
         In to dimensions, the edge points of the Pareto front are given by the boundary of the Pareto front.
         I.p. in two dimensions, this Pareto reflection searches for the edge points of the Pareto front.
@@ -35,11 +35,12 @@ class Find1ParetoPoints(MinimizeWeightedNormToUtopia):
     # TBA: add
     """
 
-    def __init__(self, dimension_domain: int, dimension: int, utopia_point: np.ndarray,
-                 potency: Union[np.ndarray, float], scalar: np.ndarray, epsilon: float = 1e-3):
+    def __init__(self, dimension_domain: int,
+                 dimension: int,
+                 epsilon: float = 1e-3):
         """Specify the dimension of the input domain and the component in which the minimum is searched
 
-        ..warning::
+        .. warning::
 
             The smaller epsilon, the better. However, picking an epsilon too small may lead to an
             unstable optimization.
@@ -55,7 +56,6 @@ class Find1ParetoPoints(MinimizeWeightedNormToUtopia):
         epsilon : float default 1e-3
             weight on the other components
         """
-        super().__init__(utopia_point, potency, scalar)
         self.epsilon = epsilon
         self.dimension = dimension
         self._dimension_domain = dimension_domain

@@ -12,15 +12,14 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../'))
 
+sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'paref'
 copyright = '2023, Nicolai Palm'
 author = 'Nicolai Palm'
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -35,12 +34,14 @@ extensions = [
     'myst_parser',
     'nbsphinx',
     'sphinx_copybutton',
-    'sphinx_gallery.load_style',
+    'sphinx_design',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'sphinx.ext.autosectionlabel',
 ]
 
 nbsphinx_execute = 'never'
 
-autoclass_content = 'both'
+myst_enable_extensions = ['colon_fence']
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
@@ -48,7 +49,7 @@ autoclass_content = 'both'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -56,7 +57,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'pydata_sphinx_theme'
-# html_theme = "sphinxawesome_theme"
 html_theme_path = ['_themes', ]
 
 html_theme_options = {
@@ -70,3 +70,19 @@ html_title = 'Paref'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+
+# -- Autodoc ---------------------------------------------------------------------------------------
+autosummary_generate = True
+autodoc_default_options = {
+    'show-inheritance': True,
+    'members': True,
+    'member-order': 'groupwise',
+    'special-members': '__call__',
+    'undoc-members': True,
+}
+autoclass_content = 'both'
+autodoc_inherit_docstrings = False
+
+# -- Read the Docs ---------------------------------------------------------------------------------
+master_doc = 'index'

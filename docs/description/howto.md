@@ -3,7 +3,7 @@
 <details>
   <summary>What is the purpose of applying an MOO algorithm to a MOO problem?</summary>
 
-In MOO problems we commonly consider a [blackbox function](#implement-your-blackbox-function) with multiple conflicting
+In MOO problems we commonly consider a [blackbox function](https://en.wikipedia.org/wiki/Black_box) with multiple conflicting
 targets.
 We are interested in its [Pareto front](https://en.wikipedia.org/wiki/Pareto_front).
 Since the function of interest is a *blackbox* function, determining the whole Pareto front
@@ -29,6 +29,8 @@ Applying an MOO algorithm in Paref requires some steps:
   > - what values of those design parameters do I accept?
   > - what are my target parameters? Which of them do I want to include?
 
+
+
 #### Define desired properties
 
   > This could be answering the following questions:
@@ -36,23 +38,27 @@ Applying an MOO algorithm in Paref requires some steps:
   > - Do I want the Pareto points to be evenly distributed?
   > - Do I want as many Pareto points as possible or am I only interested in a single Pareto point?
   > - Do I want as less evaluations of the blackbox function as possible (i.e. if the blackbox function is expensive to evaluate)?
-  > See [this](#what-are-properties-of-pareto-points) for a list of possible properties.
+
+
 
 #### Initialize corresponding MOO algorithm
 
-  > [Pick]() some or [construct your own]() MOO algorithm corresponding to your targeted properties
-  > and initialize an instance of that MOO algorithm.
-  > See the generic [ParefMOO]() interface of MOO algorithms.
+  > See the tutorials for more information.
+
+
 
 #### Implement and initialize blackbox function
 
-  > See [this](#blackbox-function) for more information about the blackbox function and how to implement it.
+  > See the tutorials for more information.
+
+
 
 #### Apply problem tailored MOO algorithm to blackbox function
 
-  > In order to apply some MOO algorithm simply [call](method call) the algorithm to the blackbox function and some [stoppping criteria](stopping criteria)
+  > In order to apply some MOO algorithm simply call the algorithm to the blackbox function and some stopping criterion
   > (indicating when the algorithm should terminate).
-  > The evaluations can then be accessed within the [blackbox function evaluation property](.evaluations).
+  > The evaluations can then be accessed within the blackbox function ``blackbox_function.evaluations`` or
+  > ``blackbox_function.x`` (for the input values) or ``blackbox_function.y`` (for the output values) property.
 
 <details>
   <summary>Example</summary>
@@ -60,14 +66,14 @@ Applying an MOO algorithm in Paref requires some steps:
    0. We use a mathematical test function with three input dimensions all between zero and one (i.e. design space is given by three-dimensional unit cube) and with two output dimensions (i.e. target space is the real plane)
    1. We want to have an idea of the "dimension" of the Pareto front (i.e. the Pareto points representing the minima in
       components) with minimum number of evaluations
-   2. Accordingly, we choose the [FindEdgePoints]() algorithm:
+   2. Accordingly, we choose the ``FindEdgePoints`` algorithm:
 
   ```python
   from paref.moo_algorithms.multi_dimensional.find_edge_points import FindEdgePoints
   moo = FindEdgePoints()
   ```
 
-3. We implement and initialize the blackbox function in the Paref blackbox function interface
+3. We implement and initialize the blackbox function in Parefs' blackbox function interface
 
 ```python
 import numpy as np
@@ -119,6 +125,8 @@ In particular, this allows us
 
 </details>
 
+
+
 ### Implement your blackbox function
 
 <details>
@@ -140,7 +148,7 @@ Accordingly, the blackbox function consists of the following information
 <details>
   <summary>How to implement a blackbox function in Paref?</summary>
 
-Implementing a blackbox function in Paref is given by implementing the [blackbox_function]() interface.
+Implementing a blackbox function in Paref is given by implementing the ``BlackboxFunction`` interface.
 This requires implementing the above information:
 - the dimension of the design space within the ``dimension_design_space(self) -> int`` property
 - the accepted design values within the ``def design_space(self) -> Union[Bounds]`` property
@@ -200,13 +208,15 @@ Implementing a blackbox function into a Parefs interface allows us to
 
  </details>
 
+
+
 ### Construct a problem tailored MOO algorithm
 <details>
   <summary>What is a Problem tailored MOO algorithm?</summary>
 
 A problem tailored MOO algorithm is a MOO algorithm tailored to your individual expectation on the outcome
 of the algorithm.
-Paref focuses on the [properties]() of Pareto points you target and provides you with implementations and construction
+Paref focuses on the properties of Pareto points you target and provides you with implementations and construction
 rules of algorithms which target those properties.
 
 </details>
@@ -214,11 +224,11 @@ rules of algorithms which target those properties.
 <details>
   <summary>How to construct a problem tailored MOO algorithm?</summary>
 
-Constructing a problem tailored MOO algorithm is based on the concept of [Pareto reflections]().
-Accordingly, in order to construct a problem tailored MOO algorithm, you need to specify the [(sequence of)]()
-[Pareto reflection(s)]() which reflect your targeted properties.
+Constructing a problem tailored MOO algorithm is based on the concept of Pareto reflections.
+Accordingly, in order to construct a problem tailored MOO algorithm, you need to specify the (sequence of)
+Pareto reflection(s) which reflect your targeted properties.
 After initializing the sequence/reflection you apply an existing MOO to a blackbox function and the sequence using the
-[``apply_to_sequence``]() method of that
+``apply_to_sequence`` method of that
 MOO algorithm.
 
 </details>
@@ -228,28 +238,26 @@ MOO algorithm.
   <summary>What is a Paref MOO algorithm?</summary>
 
   We consider an MOO algorithm as an iterative algirthmic search for Pareto points of some blackbox function.
-Paref MOOs in addition incorporate the concept of constructing a MOO algorithm from a ([sequence]() of) [Pareto reflections]() in order to tailor MOO algorithms
+Paref MOOs in addition incorporate the concept of constructing a MOO algorithm from a (sequence of) Pareto reflections in order to tailor MOO algorithms
 to user defined requirements.
  </details>
 
 <details>
   <summary>How to implement an MOO algorithm in Paref?</summary>
 
-Constructing a classical MOO algorithm in Paref is given by implementing the [``ParefMOO``]() interface.
+Constructing a classical MOO algorithm in Paref is given by implementing the ``ParefMOO`` interface.
 This requires implementing the following properties/methods:
 
-- [``def apply_moo_operation(self,
+- ``def apply_moo_operation(self,
                             blackbox_function: BlackboxFunction,
-                            ) -> None``]()
-- [``def supported_codomain_dimensions(self) -> Optional[List[int]]``]()
+                            ) -> None``
+- ``def supported_codomain_dimensions(self) -> Optional[List[int]]``
 
 
-Constructing a new MOO from a ([sequence]() of) [Pareto reflections]() is given by implementing
+Constructing a new MOO from a (sequence of) Pareto reflections is given by implementing
 the
-[
 ``
 def sequence_of_pareto_reflections(self) -> Union[SequenceParetoReflections, ParetoReflection, None]``
-]()
 property of an already existing MOO algorithm.
 All of the underlying functionality is already taken care of by the ``ParefMOO`` interface.
 
@@ -268,19 +276,3 @@ user friendly
 intuitive
 functionality under the hood
  </details>
-
-### Implement and apply a sequence of Pareto reflections
-<details>
-  <summary>What is a sequence of Pareto reflections?</summary>
-
-</details>
-
-<details>
-  <summary>How to implement a sequence of Pareto reflections?</summary>
-
-</details>
-
-<details>
-  <summary>Why do we use sequences of Pareto reflections?</summary>
-
-</details>

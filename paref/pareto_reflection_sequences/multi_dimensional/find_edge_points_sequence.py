@@ -11,7 +11,7 @@ from paref.pareto_reflections.find_edge_points import FindEdgePoints
 class FindEdgePointsSequence(SequenceParetoReflections):
     """Find all edge points of the Pareto front
 
-    ..warning::
+    .. warning::
 
         This Pareto reflection assumes that there exist edge points
 

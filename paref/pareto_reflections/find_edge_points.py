@@ -1,5 +1,3 @@
-from typing import Union
-
 import numpy as np
 
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
@@ -8,7 +6,7 @@ from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWe
 class FindEdgePoints(MinimizeWeightedNormToUtopia):
     """Find the edge points of the Pareto front
 
-    ..warning::
+    .. warning::
 
         This Pareto reflection assumes that there exist edge points
 
@@ -16,13 +14,13 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
     -----------
     This Pareto reflection should be used if the edge points of the Pareto front are searched.
 
-    ..note::
+    .. note::
 
         In to dimensions, the edge points of the Pareto front always exist.
 
     What it does
     ------------
-    The Pareto points of this map are the ones which minimize the the weighted sum where one component
+    The Pareto points of this map are the ones which minimize the weighted sum where one component
     is given much smaller weight than the others.
 
     Mathematical formula
@@ -38,11 +36,10 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
     # TBA: add
     """
 
-    def __init__(self, dimension_domain: int, dimension: int, utopia_point: np.ndarray,
-                 potency: Union[np.ndarray, float], scalar: np.ndarray, epsilon: float = 1e-3):
+    def __init__(self, dimension_domain: int, dimension: int, epsilon: float = 1e-3):
         """Specify the dimension of the input domain and the component of which the edge point is searched
 
-        ..warning::
+        .. warning::
 
             The smaller epsilon, the better. However, picking an epsilon too small may lead to an
             unstable optimization.
@@ -58,7 +55,6 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
         epsilon : float default 1e-3
             weight on the component
         """
-        super().__init__(utopia_point, potency, scalar)
         self.epsilon = epsilon
         self.dimension = dimension
         self._dimension_domain = dimension_domain

@@ -107,7 +107,7 @@ class ParefMOO:
 
         .. warning::
 
-            If all dimensions are supported, then, this property must return None!
+            If all dimensions are supported, then, this property must return ``None``!
 
         Returns
         -------
@@ -255,7 +255,7 @@ class CompositionWithParetoReflection(BlackboxFunction):
     This class constructs a new blackbox function :math:`p\\circ f` out of a blackbox function :math:`f` and a Pareto
     reflection :math:`p`.
     In particular, its design space is given by the design space of the underlying blackbox function and its target
-    space dimension is given by the dimension of the codomain of the Pareto reflection.
+    space dimension is given by the dimension of the codomain dimension of the Pareto reflection.
 
     .. note::
 

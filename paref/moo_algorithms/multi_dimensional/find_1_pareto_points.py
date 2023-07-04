@@ -9,7 +9,7 @@ class Find1ParetoPoints(GPRMinimizer):
 
 
 
-    ..note::
+    .. note::
 
         Use this algorithm if you want to find a 1 Pareto point (i.e. a minimum in some component)
         for each component, f.e. in order to estimate the dimension of the Pareto front.

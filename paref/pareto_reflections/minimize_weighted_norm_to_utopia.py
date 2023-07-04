@@ -9,7 +9,7 @@ class MinimizeWeightedNormToUtopia(ParetoReflection):
     """Find the Pareto point closest to some utopia point
     # TBA: not a norm in general rather a polynomial
 
-    ..note::
+    .. note::
 
         # TBA: add
         This Pareto reflection is highly flexible. TBA (used for finding lots of properties, for application: if

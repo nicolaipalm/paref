@@ -8,10 +8,10 @@ class ScanEvenly2D(GPRMinimizer):
     @property
     def sequence_of_pareto_reflections(self):  # -> SequenceParetoReflections:
         NextWhenStoppingCriteriaMet(stopping_criteria=ConvergenceReached(),
-                                    pareto_reflections=[Find1ParetoPoints(dimension_domain=2, dimension=0),
-                                                        Find1ParetoPoints(dimension_domain=2, dimension=1),
-
-                                                        ])
+                                    pareto_reflections=[
+                                        Find1ParetoPoints(dimension_domain=2, dimension=0),
+                                        Find1ParetoPoints(dimension_domain=2, dimension=1),
+                                        ])
         # TBA: grid search or one pareto points plus fill gaps
         raise NotImplementedError
 
