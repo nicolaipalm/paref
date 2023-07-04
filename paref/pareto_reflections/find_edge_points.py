@@ -1,5 +1,3 @@
-from typing import Union
-
 import numpy as np
 
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
@@ -22,7 +20,7 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
 
     What it does
     ------------
-    The Pareto points of this map are the ones which minimize the the weighted sum where one component
+    The Pareto points of this map are the ones which minimize the weighted sum where one component
     is given much smaller weight than the others.
 
     Mathematical formula
