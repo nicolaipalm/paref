@@ -40,15 +40,15 @@ extensions = [
 
 nbsphinx_execute = 'never'
 
-autoclass_content = 'both'
+# autoclass_content = 'both'
 
 myst_enable_extensions = ['colon_fence']
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
-autodoc_default_options = {
-    'special-members': '__call__',
-}
+# autodoc_default_options = {
+#    'special-members': '__call__',
+# }
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
@@ -78,3 +78,19 @@ html_title = 'Paref'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+
+# -- Autodoc ---------------------------------------------------------------------------------------
+autosummary_generate = True
+autodoc_default_options = {
+    'show-inheritance': True,
+    'members': True,
+    'member-order': 'groupwise',
+    'special-members': '__call__',
+    'undoc-members': True,
+}
+autoclass_content = 'class'
+autodoc_inherit_docstrings = False
+
+# -- Read the Docs ---------------------------------------------------------------------------------
+master_doc = 'index'

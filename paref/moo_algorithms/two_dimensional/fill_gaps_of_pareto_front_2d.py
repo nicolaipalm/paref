@@ -7,14 +7,13 @@ from paref.pareto_reflection_sequences.two_dimensional.fill_gaps_of_pareto_front
 class FillGapsOfParetoFront2D(GPRMinimizer):
     """Fill gaps of Pareto front in two dimensions
 
-
-
-    ..note::
+    .. note::
 
         Use this algorithm if you want to fill (by middle point) the gaps between the currently found Pareto front
         (Pareto front of the evaluations).
 
-    ..warning::
+
+    .. warning::
 
         The algorithm calculates an utopia point under the hood by setting it to the minimum of the components of the
         evaluations.

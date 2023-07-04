@@ -11,16 +11,17 @@ Welcome to Paref's documentation
       algorithms <./description/moo-algorithms.md>
       sequences <./description/sequences.md>
       reflections <./description/reflections.md>
-      api-reference <./description/api.rst>
+      api-reference <./api.rst>
+      modules <./source/modules.rst>
 
 Paref is a Python package for algorithmic *problem tailored* multi-objective optimization.
-This package contains:
+This package contains...
 
 * a series of ready-to-use MOO algorithms corresponding to frequently targeted properties
 
 * a framework for you to implement and apply your problem tailored MOO algorithm
 
-* generic and intuitive interfaces for MOO algorithms, blackbox functions and more such that solving an MOO problem with Paref requires minimal effort
+* generic and intuitive interfaces for MOO algorithms, black-box functions and more, so solving a MOO problem with user-defined properties with Paref requires only minimal effort
 
 The official release is available at PyPi:
 
