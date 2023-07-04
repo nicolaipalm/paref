@@ -12,7 +12,6 @@ Welcome to Paref's documentation
       sequences <./description/sequences.md>
       reflections <./description/reflections.md>
       api-reference <./api.rst>
-      modules <./source/modules.rst>
 
 Paref is a Python package for algorithmic *problem tailored* multi-objective optimization.
 This package contains...
