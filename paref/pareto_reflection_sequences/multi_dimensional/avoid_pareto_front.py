@@ -13,8 +13,7 @@ class AvoidParetoFront(SequenceParetoReflections):
     .. warning::
 
         This sequence should only be used if the Pareto points found in each evaluation of the moo
-        are too close together (since it
-        may cause stability issues in the optimization).
+        are too close together (since it may cause stability issues in the optimization).
         Then, this sequence is meant to be used as sequence of Pareto reflections parameter in the
         :py:meth:`apply to sequence method
         <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_to_sequence>`.
@@ -37,9 +36,7 @@ class AvoidParetoFront(SequenceParetoReflections):
     #TBA: add
     """
 
-    def __init__(self,
-                 nadir: np.ndarray,
-                 epsilon: Union[float, np.ndarray]):
+    def __init__(self, nadir: np.ndarray, epsilon: Union[float, np.ndarray]):
         self.nadir = nadir
         self.epsilon = epsilon
 
