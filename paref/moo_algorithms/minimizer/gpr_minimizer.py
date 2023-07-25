@@ -1,14 +1,13 @@
+from typing import Callable
+
 import numpy as np
+from scipy.optimize import differential_evolution
 from scipy.stats import qmc
 
-from paref.interfaces.moo_algorithms.paref_moo import ParefMOO, CompositionWithParetoReflection
-from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.black_box_functions.design_space.bounds import Bounds
+from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
+from paref.interfaces.moo_algorithms.paref_moo import ParefMOO, CompositionWithParetoReflection
 from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
-
-from typing import Callable
-from scipy.optimize import differential_evolution
-
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 
 
