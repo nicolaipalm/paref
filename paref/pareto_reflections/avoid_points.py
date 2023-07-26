@@ -74,7 +74,7 @@ class AvoidPoints(ParetoReflection):
         epsilon_avoiding_points : np.ndarray
             avoided points stored in 2-dimensional array with first dimension corresponding to the points
 
-        epsilon : Union[float, np.ndarray])
+        epsilon : Union[numbers.Real, np.ndarray])
             value which is subtracted from avoided points
         """
 
@@ -83,8 +83,8 @@ class AvoidPoints(ParetoReflection):
 
         # TBA: error handling rest
 
-        if not isinstance(epsilon, numbers.Real) and epsilon.shape != nadir:
-            raise ValueError('Epsilon must be a Real Number or a numpy array of same shape as nadir! ')
+        if not isinstance(epsilon, numbers.Real) and epsilon.shape != nadir.shape:
+            raise ValueError('Epsilon must be a Real Number or a numpy array of same shape as nadir!')
 
         if np.any(epsilon < 0):
             raise ValueError('Epsilon must be positive!')

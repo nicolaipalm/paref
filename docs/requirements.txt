@@ -1,4 +1,4 @@
-ipython~=7.34
+ipython==8.14.0
 myst-parser~=2.0.0
 nbsphinx~=0.9.2
 pydata-sphinx-theme~=0.13.3
