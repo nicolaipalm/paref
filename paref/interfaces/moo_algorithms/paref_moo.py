@@ -9,6 +9,7 @@ from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections
+from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
 from paref.pareto_reflections.operations.compose_sequences import ComposeSequences
 
 
@@ -187,7 +188,8 @@ class ParefMOO:
 
         """
         if with_underlying_sequence:
-            moo_sequence_of_pareto_reflections = self.sequence_of_pareto_reflections
+            moo_sequence_of_pareto_reflections = self.sequence_of_pareto_reflections  # This always returns None in
+            # our example cases
 
         else:
             moo_sequence_of_pareto_reflections = None
@@ -203,6 +205,8 @@ class ParefMOO:
                 pareto_reflection = sequence_pareto_reflections.next(blackbox_function)
                 if pareto_reflection is None:
                     print('End of sequence reached. Algorithm stopped.')
+                    if isinstance(stopping_criteria, MaxIterationsReached):
+                        stopping_criteria._iteration_step -= 1
                     break
                 else:
                     composition_function = CompositionWithParetoReflection(blackbox_function=blackbox_function,

@@ -50,6 +50,5 @@ class MaxIterationsReached(StoppingCriteria):
         if self._iteration_step < self._max_iterations:
             self._iteration_step += 1
             return False
-
         else:
             return True
