@@ -282,7 +282,8 @@ class CompositionWithParetoReflection(BlackboxFunction):
                 f'domain ({pareto_reflection.dimension_domain}) of Pareto reflection must match!')
         self._blackbox_function = blackbox_function
         self._pareto_reflection = pareto_reflection
-        self._evaluations = blackbox_function._evaluations
+        self._evaluations = [[evaluation[0], pareto_reflection(evaluation[1])] for evaluation in
+                             blackbox_function._evaluations]
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
         """Apply the composition to an input

@@ -39,7 +39,7 @@ class TestingOneDimensionalSequences:
     def __call__(self,
                  sequence: Union[SequenceParetoReflections, ParetoReflection],
                  mark_points: Optional[List] = None,
-                 additional_traces: Optional[List[go.Scatter]] = None,):
+                 additional_traces: Optional[List[go.Scatter]] = None, ):
         moo = DifferentialEvolutionMinimizer()
         moo.apply_to_sequence(blackbox_function=self.function,
                               sequence_pareto_reflections=sequence,
@@ -78,11 +78,11 @@ class TestingOneDimensionalSequences:
             height=500,
             plot_bgcolor='rgba(0,0,0,0)',
             legend=dict(
-                x=0.9,
-                y=0.9,)
+                x=0.6,
+                y=0.9, )
         )
 
         fig1.show()
-        fig1.write_image(f'../../docs/graphics/plots/reflections/{type(sequence).__name__}.svg')
+        # fig1.write_image(f'../../docs/graphics/plots/reflections/{type(sequence).__name__}.svg')
 
         return self.function

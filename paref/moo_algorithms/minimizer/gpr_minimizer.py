@@ -192,11 +192,11 @@ class GPRMinimizer(ParefMOO):
         #        [gpr(x) for x in blackbox_function.x]), axis=1) <= self._min_distance_to_evaluated_points):
         #    print('\nFound Pareto point is too close to some already evaluated point.')
 
-        print('Evaluating blackbox blackbox_function...')
+        print('Evaluating blackbox function...')
         blackbox_function(res)
         print('finished!')
-        print('Value of blackbox blackbox_function: ', blackbox_function.y[-1])
-        print('Difference to estimation: ', gpr(res) - blackbox_function.y[-1])
+        print('Value of blackbox function: ', base_blackbox_function.y[-1])
+        print('Difference to estimation: ', gpr(res) - base_blackbox_function.y[-1])
 
     @property
     def supported_codomain_dimensions(self) -> int:

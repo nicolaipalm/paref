@@ -144,7 +144,7 @@ class BlackboxFunction:
         Returns
         -------
         List
-            list of evaluations: each element if of the form [input,value of blackbox function at input]
+            list of evaluations: each element of the form [input,value of blackbox function at input]
 
 
         """

@@ -108,10 +108,10 @@ class TestingGPRBasedMOOs:
             plot_bgcolor='rgba(0,0,0,0)',
             legend=dict(
                 x=0.1,
-                y=0.9,)
+                y=0.9, )
         )
 
         fig1.show()
-        fig1.write_image(f'../../../docs/graphics/plots/moo-algorithms/{type(moo).__name__}.svg')
+        # fig1.write_image(f'../../../docs/graphics/plots/moo-algorithms/{type(moo).__name__}.svg')
 
         return self.function

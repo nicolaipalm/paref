@@ -18,7 +18,7 @@ class TestFunction(BlackboxFunction):
         super().__init__()
         # LH evaluation
         [self(x) for x in qmc.scale(
-            qmc.LatinHypercube(d=self.dimension_design_space).random(n=20),
+            qmc.LatinHypercube(d=self.dimension_design_space).random(n=40),
             self.design_space.lower_bounds,
             self.design_space.upper_bounds,
         )]
