@@ -1,14 +1,14 @@
 from typing import List, Optional
 
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
-from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
+from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import SequenceParetoReflections
 from paref.moo_algorithms.stopping_criteria.convergence_reached import ConvergenceReached
 from paref.pareto_reflection_sequences.generic.next_when_stopping_criteria_met import NextWhenStoppingCriteriaMet
 from paref.pareto_reflections.find_1_pareto_points import Find1ParetoPoints
 
 
-class Find1ParetoPointsForAllComponentsSequence(NextWhenStoppingCriteriaMet):
+class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
     """Find a one Pareto point for each component
 
     When to use
@@ -29,8 +29,7 @@ class Find1ParetoPointsForAllComponentsSequence(NextWhenStoppingCriteriaMet):
 
     """
 
-    def __init__(self, pareto_reflections: List[ParetoReflection], stopping_criteria: StoppingCriteria):
-        super().__init__(pareto_reflections, stopping_criteria)
+    def __init__(self,):
         self._iter = 0
         self._sequence = None
 
