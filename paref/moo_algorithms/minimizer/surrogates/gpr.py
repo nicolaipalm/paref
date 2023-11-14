@@ -1,8 +1,11 @@
 import gpytorch
-import numpy as np
 import torch
 from matplotlib import pyplot as plt
 from tqdm import tqdm
+import numpy as np
+
+from paref.moo_algorithms.minimizer.surrogates.preprocessing import preprocess_x, preprocess_y, postprocess_y, \
+    postprocess_std
 
 
 class ExactGP0(gpytorch.models.ExactGP):
@@ -32,9 +35,10 @@ class Gpr0Torch:
         # with learned white noise
         self._likelihood = gpytorch.likelihoods.GaussianLikelihood()
         self._model = None
+        self.hyperparameters = None
 
     def predict_torch(
-        self, pred_x: torch.Tensor
+            self, pred_x: torch.Tensor
     ) -> gpytorch.distributions.MultivariateNormal:
         """
         Doing predictions based on the models and the prediction data.
@@ -68,8 +72,12 @@ class Gpr0Torch:
         # "Loss" for GPs - the marginal log likelihood
         mll = gpytorch.mlls.ExactMarginalLogLikelihood(self._likelihood, model)
 
+        # store hyperparameters of the training
+        hyper_parameter = {name: [] for name, _ in model.named_parameters()}
+        hyper_parameter['loss'] = []
+
         # Start the training
-        for i in tqdm(range(self._training_iter)):
+        for _ in tqdm(range(self._training_iter)):
             # Zero gradients from previous iteration
             optimizer.zero_grad()
             # Output from _model
@@ -79,11 +87,26 @@ class Gpr0Torch:
             loss.backward()
 
             optimizer.step()
+            for name, parameter in model.named_parameters():
+                if model.constraint_for_parameter_name(name) is not None:
+                    hyper_parameter[name].append(
+                        model.constraint_for_parameter_name(name)
+                        .transform(parameter)
+                        .item()
+                    )
+
+                else:
+                    hyper_parameter[name].append(parameter.item())
+
+            # Appending loss
+            hyper_parameter['loss'].append(loss.item())
+
+        self.hyperparameters = hyper_parameter  # store hyperparameters
         self._model = model
         return True
 
     def _train_with_attention(
-        self, train_x: torch.Tensor, train_y: torch.Tensor
+            self, train_x: torch.Tensor, train_y: torch.Tensor
     ) -> dict:
         # Initialize likelihood (with no constraints) and _model
         """
@@ -108,7 +131,7 @@ class Gpr0Torch:
         hyper_parameter['loss'] = []
 
         # Start the training
-        for i in tqdm(range(self._training_iter)):
+        for _ in tqdm(range(self._training_iter)):
             # Zero gradients from previous iteration
             optimizer.zero_grad()
             # Output from _model
@@ -149,7 +172,7 @@ class Gpr0Torch:
         return True
 
     def load_state(
-        self, state_path: str, train_x: torch.Tensor, train_y: torch.Tensor
+            self, state_path: str, train_x: torch.Tensor, train_y: torch.Tensor
     ) -> bool:
         """
         Load a set of hyperparameters together with the training set(!) into the models.
@@ -162,12 +185,23 @@ class Gpr0Torch:
 
 
 class GPR:
-    def __init__(self, training_iter: int = 1000, learning_rate=0.1):
+    def __init__(self, training_iter: int = 1000, learning_rate=0.1, preprocess=True):
         self._models = None
         self._training_iter = training_iter
         self._learning_rate = learning_rate
+        self._data_x = None
+        self._data_y = None
+        self.preprocess = preprocess
 
     def train(self, train_x: np.ndarray, train_y: np.ndarray):
+        # prepossessing
+        if self.preprocess:
+            self._data_x = train_x
+            self._data_y = train_y
+            train_x = preprocess_x(train_x, train_x)
+            train_y = preprocess_y(train_y, train_y)
+
+        # training
         train_x = torch.Tensor(train_x)
         models = []
         for output in train_y.T:
@@ -180,51 +214,51 @@ class GPR:
         self._models = models
         return True
 
-    def train_with_attention(self, train_x: np.ndarray, train_y: np.ndarray):
-        train_x = torch.Tensor(train_x)
-        models = []
-        for output in train_y.T:
-            train_y = torch.Tensor(output)
-            model = Gpr0Torch(
-                training_iter=self._training_iter, learning_rate=self._learning_rate
-            )
-            hyper_parameters = model._train_with_attention(train_x, train_y)
-            ####
-            f, axs = plt.subplots(
-                2, int(len(hyper_parameters) / 2 + 1), figsize=(12, 8)
-            )
-            f.suptitle('Hyper parameters')
-            ticker_x = 0
-            ticker_y = 0
-            print(hyper_parameters.keys())
-            for hyper_parameter in hyper_parameters.keys():
-                axs[ticker_x, ticker_y].plot(hyper_parameters.get(hyper_parameter))
-                axs[ticker_x, ticker_y].set(
-                    xlabel='training_iter', ylabel=hyper_parameter
-                )
-                ticker_x += 1
-                ticker_x = ticker_x % 2
-                if ticker_x == 0:
-                    ticker_y += 1
-                    ticker_x = 0
-            plt.show()
-            ####
-
-            # model.train_torch(train_x, train_y)
-            models.append(model)
-
-        self._models = models
-
-        return True
-
     def __call__(self, x: np.ndarray) -> np.ndarray:
+        # preprocess x
+        if self.preprocess:
+            x = preprocess_x(x, self._data_x)
         x = torch.Tensor([x.tolist()])
-        return np.array(
-            [model.predict_torch(x).mean.numpy()[0] for model in self._models]
-        ).T
+
+        if self.preprocess:
+            return postprocess_y(np.array(
+                [model.predict_torch(x).mean.numpy()[0] for model in self._models]
+            ).T, self._data_y)  # return postprocessed y
+
+        else:
+            return np.array(
+                [model.predict_torch(x).mean.numpy()[0] for model in self._models]
+            ).T
 
     def std(self, x: np.ndarray) -> np.ndarray:
+        if self.preprocess:
+            x = preprocess_x(x, self._data_x)
         x = torch.Tensor([x.tolist()])
-        return np.array(
-            [model.predict_torch(x).stddev.numpy()[0] for model in self._models]
-        ).T
+
+        if self.preprocess:
+            return postprocess_std(np.array(
+                [model.predict_torch(x).stddev.numpy()[0] for model in self._models]
+            ).T, self._data_y)  # return postprocessed std
+
+        else:
+            return np.array(
+                [model.predict_torch(x).stddev.numpy()[0] for model in self._models]
+            ).T
+
+    @property
+    def info(self):
+        return [gpr.hyperparameters for gpr in self._models]
+
+    def plot_loss(self):
+        fig, axs = plt.subplots(1, len(self._models))
+        fig.suptitle('Loss of GPR model(s)')
+        if len(self._models) > 1:
+            for i in range(len(self._models)):
+                axs[i].plot(self._models[i].hyperparameters['loss'])
+                axs[i].set_title(f'GPR model {i}')
+
+            axs[0].set(xlabel='Training iteration', ylabel='loss')
+        else:
+            axs.plot(self._models[0].hyperparameters['loss'])
+            axs.set(xlabel='Training iteration', ylabel='loss')
+        plt.show()

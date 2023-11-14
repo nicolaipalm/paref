@@ -14,3 +14,5 @@ bench = TestingGPRBasedMOOs(input_dimensions=5,
 # Apply MOO
 moo = Find1ParetoPoints()
 bench(moo)
+
+moo._gpr.plot_loss()

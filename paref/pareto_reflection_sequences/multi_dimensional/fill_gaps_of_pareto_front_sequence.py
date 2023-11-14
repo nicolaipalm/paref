@@ -54,6 +54,7 @@ class FillGapsOfParetoFrontSequence(SequenceParetoReflections):
             fill gap Pareto reflection corresponding to the greatest gap in Pareto front of the evaluations
 
         """
+        # TODO: bug find correct points
         PF = blackbox_function.pareto_front
         # Sort Pareto points ascending by first component
         PF = PF[PF[:, 0].argsort()]

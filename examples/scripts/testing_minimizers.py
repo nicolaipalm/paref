@@ -10,7 +10,7 @@ from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIte
 
 
 def function(x: np.ndarray):
-    return np.sum(x ** 2)
+    return np.sum((x ** 2 * np.array([2 ** i for i in range(len(x))])))
 
 
 class TestFunction(BlackboxFunction):
@@ -22,6 +22,7 @@ class TestFunction(BlackboxFunction):
             self.design_space.lower_bounds,
             self.design_space.upper_bounds,
         )]
+        print(self.y)
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
         y = np.array([function(x)])

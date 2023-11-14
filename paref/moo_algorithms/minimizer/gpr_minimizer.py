@@ -1,8 +1,11 @@
+from time import sleep
 from typing import Callable
 
 import numpy as np
 from scipy.optimize import differential_evolution
 from scipy.stats import qmc
+from warnings import warn
+from tabulate import tabulate
 
 from paref.black_box_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
@@ -80,7 +83,8 @@ class GPRMinimizer(ParefMOO):
                  training_iter: int = 2000,
                  learning_rate: float = 0.05,
                  min_required_evaluations: int = 20,
-                 min_distance_to_evaluated_points: float = 2e-2):
+                 min_distance_to_evaluated_points: float = 2e-2,
+                 preprocess: bool = True):
         """Initialize the algorithms hyperparameters
 
         Parameters
@@ -106,6 +110,8 @@ class GPRMinimizer(ParefMOO):
         self._learning_rate = learning_rate
         self._min_distance_to_evaluated_points = min_distance_to_evaluated_points
         self._min_required_evaluations = min_required_evaluations
+        self.preprocess = preprocess
+        self._gpr = None
 
     def apply_moo_operation(self,
                             blackbox_function: BlackboxFunction,
@@ -128,8 +134,10 @@ class GPRMinimizer(ParefMOO):
                              f'type {blackbox_function.design_space}.')
 
         if self._min_required_evaluations < 20:
-            print(
-                'WARNING: minimum number of evaluations is 20! The minimum number of evaluations is, thus, set to 20!')
+            warn(
+                'minimum number of evaluations is 20! The minimum number of evaluations is, thus, set to 20!',
+                UserWarning)
+            sleep(1)
 
         if len(blackbox_function.evaluations) < self._min_required_evaluations:
             [blackbox_function(x) for x in qmc.scale(
@@ -139,7 +147,7 @@ class GPRMinimizer(ParefMOO):
                 blackbox_function.design_space.upper_bounds,
             )]  # add samples according to latin hypercube scheme
 
-        gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate)
+        gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate, preprocess=self.preprocess)
 
         base_blackbox_function = blackbox_function
 
@@ -150,13 +158,13 @@ class GPRMinimizer(ParefMOO):
 
         train_x = base_blackbox_function.x
         train_y = base_blackbox_function.y
-
+        print('\n----------------------')
         print(
-            'Training of the GPR...\n'
+            'Training...\n'
         )
         gpr.train(train_x=train_x, train_y=train_y)
-        print('\n finished!\n')
-        print('Starting minimization...')
+        self._gpr = gpr
+        print('\nStarting Optimization...')
 
         if len(pareto_reflections) != 0:
             pareto_reflection = pareto_reflections[0]
@@ -178,12 +186,15 @@ class GPRMinimizer(ParefMOO):
         else:
             raise ValueError('Design space property of blackbox function must be an instance of Bounds!')
 
-        print('finished!')
         print(
-            f'Found Pareto point: \n x={res} '
-            f'\n y={gpr(res)} ')
-        if np.any([np.all(dominated) for dominated in (gpr(res) >= blackbox_function.pareto_front)]):
-            print('WARNING: Optimizer did not find a Pareto point! Blackbox function is not evaluated.')
+            f'\n Found Pareto point: \n x={res} '
+            f'\n prediction={gpr(res)} '
+            f'\n standard deviation={gpr.std(res)}')
+        if np.any([np.all(dominated) for dominated in (gpr(res) >= gpr(blackbox_function.x))]):
+            warn(
+                'Optimizer did not find a Pareto point! \n'
+                'Try more minimizer iterations (max_iter_minimizer).', RuntimeWarning)
+            sleep(1)
 
         # if np.all(pareto_reflection(gpr(res)) >= pareto_reflection(blackbox_function.y[0])):
         #    print('\nNo Pareto point was found. Algorithmic search stopped.')
@@ -192,11 +203,18 @@ class GPRMinimizer(ParefMOO):
         #        [gpr(x) for x in blackbox_function.x]), axis=1) <= self._min_distance_to_evaluated_points):
         #    print('\nFound Pareto point is too close to some already evaluated point.')
 
-        print('Evaluating blackbox function...')
+        print('\nEvaluating blackbox function...')
         blackbox_function(res)
-        print('finished!')
         print('Value of blackbox function: ', base_blackbox_function.y[-1])
-        print('Difference to estimation: ', gpr(res) - base_blackbox_function.y[-1])
+        print('Difference to estimation: ', gpr(res) - base_blackbox_function.y[-1],'\n')
+        if base_blackbox_function.y[-1] not in base_blackbox_function.pareto_front:
+            print(blackbox_function.pareto_front)
+            warn(
+                'Found Point is not Pareto optimal! \n'
+                'Try more training iterations (training_iter) '
+                'and/or more evaluations of the bbf (min_required_evaluations).'
+                'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
+            sleep(1)
 
     @property
     def supported_codomain_dimensions(self) -> int:
