@@ -41,10 +41,10 @@ class FindEdgePointsSequence(SequenceParetoReflections):
         """
         Parameters
         ----------
-        
+
         epsilon : float default 1e-3
             weight on the components
-        
+
         .. warning::
 
             The smaller epsilon, the better. However, picking an epsilon too small may lead to an
