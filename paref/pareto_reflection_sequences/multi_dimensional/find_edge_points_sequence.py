@@ -33,15 +33,28 @@ class FindEdgePointsSequence(SequenceParetoReflections):
 
     """
 
-    def __init__(self, ):
+    def __init__(self, epsilon: float = 1e-3):
         self._iter = 0
         self._sequence = None
         self.stopping_criteria = ConvergenceReached()
+        self.epsilon = epsilon
+        """
+        Parameters
+        ----------
+        
+        epsilon : float default 1e-3
+            weight on the components
+        
+        .. warning::
+
+            The smaller epsilon, the better. However, picking an epsilon too small may lead to an
+            unstable optimization.
+        """
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
         dimension_domain = blackbox_function.dimension_target_space
-        pareto_reflections = [FindEdgePoints(dimension_domain=dimension_domain, dimension=i) for i in
-                              range(dimension_domain)]
+        pareto_reflections = [FindEdgePoints(dimension_domain=dimension_domain, dimension=i, epsilon=self.epsilon) for i
+                              in range(dimension_domain)]
         if self._iter == 0:
             self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,
                                                          stopping_criteria=self.stopping_criteria)
