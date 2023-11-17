@@ -4,6 +4,7 @@ from typing import Union, List
 import numpy as np
 
 from paref.black_box_functions.design_space.bounds import Bounds
+from paref.interfaces.decorators import initialize_empty_evaluations, store_evaluation_bbf
 
 
 class BlackboxFunction:
@@ -62,11 +63,14 @@ class BlackboxFunction:
 
 
     """
-
-    def __init__(self):
-        """Initialize storage for evaluations of the blackbox function
+    def __init_subclass__(cls):
+        """Ensure storing of evaluations in every subclass
+        and initialize empty evaluations list in subclasses
         """
-        self._evaluations = []
+        super().__init_subclass__()
+        cls.__init__ = initialize_empty_evaluations(cls.__init__)
+        cls.__call__ = store_evaluation_bbf(cls.__call__)
+
 
     @abstractmethod
     def __call__(self, x: np.ndarray) -> np.ndarray:

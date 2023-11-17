@@ -69,6 +69,8 @@ class ParefMOO:
 
     """
 
+
+
     @abstractmethod
     def apply_moo_operation(self,
                             blackbox_function: BlackboxFunction,
@@ -220,6 +222,9 @@ class ParefMOO:
             if len(blackbox_function.evaluations) == number_evaluations:
                 print('WARNING: algorithm did not evaluate or store the evaluation of the blackbox function!')
 
+        self._evaluated_sequence = sequence_pareto_reflections
+        self._best_fits = self.evaluated_sequence.best_fits(blackbox_function.y)
+
     @property
     def sequence_of_pareto_reflections(self) -> Union[SequenceParetoReflections, ParetoReflection, None]:
         """Optional: Underlying sequence of MOO algorithm
@@ -247,6 +252,20 @@ class ParefMOO:
 
         """
         return None
+
+    @property
+    def evaluated_sequence(self) -> Union[SequenceParetoReflections, ParetoReflection, None]:
+        """
+
+        Returns
+        -------
+
+        """
+        return self._evaluated_sequence
+
+    @property
+    def best_fits(self) -> np.ndarray:
+        return self._best_fits
 
 
 class CompositionWithParetoReflection(BlackboxFunction):

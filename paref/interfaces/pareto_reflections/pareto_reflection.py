@@ -71,3 +71,26 @@ class ParetoReflection:
 
         """
         raise NotImplementedError
+
+    def best_fits(self, points: np.ndarray) -> np.ndarray:
+        """Return the Pareto points of Pareto reflection restricted to some evaluations
+
+        Returns
+        -------
+        np.ndarray
+            (Pareto) points of Pareto reflection restricted to points array
+
+        """
+        array = [self(point) for point in points]
+        pareto_points_indices = []
+        for i, point in enumerate(array):
+            is_pareto = True
+            for j, other in enumerate(array):
+                if i == j:
+                    continue
+                if np.all(point >= other) and np.any(point > other):
+                    is_pareto = False
+                    break
+            if is_pareto:
+                pareto_points_indices.append(i)
+        return np.array([points[i] for i in pareto_points_indices])
