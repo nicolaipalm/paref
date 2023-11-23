@@ -185,7 +185,7 @@ class Gpr0Torch:
 
 
 class GPR:
-    def __init__(self, training_iter: int = 1000, learning_rate=0.1, preprocess=True):
+    def __init__(self, training_iter: int = 1000, learning_rate=0.05, preprocess=True):
         self._models = None
         self._training_iter = training_iter
         self._learning_rate = learning_rate
@@ -212,7 +212,18 @@ class GPR:
             model.train_torch(train_x, train_y)
             models.append(model)
         self._models = models
+
+        # Check if training converged
+        losses = np.array([hp['loss'] for hp in self.info])
+        losses_last = np.array([hp['loss'][int(self._training_iter * 0.9):] for hp in self.info])
+
+        self._model_convergence = (np.max(losses_last, axis=1) - np.min(losses_last, axis=1)) / (
+                    np.max(losses, axis=1) - np.min(losses, axis=1))*9
         return True
+
+    @property
+    def model_convergence(self):
+        return self._model_convergence
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
         # preprocess x

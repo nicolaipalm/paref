@@ -5,7 +5,6 @@ import numpy as np
 from scipy.optimize import differential_evolution
 from scipy.stats import qmc
 from warnings import warn
-from tabulate import tabulate
 
 from paref.black_box_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
@@ -163,6 +162,12 @@ class GPRMinimizer(ParefMOO):
             'Training...\n'
         )
         gpr.train(train_x=train_x, train_y=train_y)
+        if np.any(gpr.model_convergence > 0.1):
+            warn(
+                'GPR may have not converge! \n'
+                'Try more training iterations (training_iter parameter).'
+                'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
+            sleep(1)
         self._gpr = gpr
         print('\nStarting Optimization...')
 
@@ -206,7 +211,7 @@ class GPRMinimizer(ParefMOO):
         print('\nEvaluating blackbox function...')
         blackbox_function(res)
         print('Value of blackbox function: ', base_blackbox_function.y[-1])
-        print('Difference to estimation: ', gpr(res) - base_blackbox_function.y[-1],'\n')
+        print('Difference to estimation: ', gpr(res) - base_blackbox_function.y[-1], '\n')
         if base_blackbox_function.y[-1] not in base_blackbox_function.pareto_front:
             print(blackbox_function.pareto_front)
             warn(

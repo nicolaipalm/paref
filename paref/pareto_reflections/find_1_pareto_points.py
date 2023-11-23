@@ -63,6 +63,7 @@ class Find1ParetoPoints(MinimizeWeightedNormToUtopia):
         scalar[self.dimension] = 1
         self.scalar = scalar
         self.utopia_point = np.zeros(dimension_domain)
+        # TODO: set epsilon such that other components have less than 1 percent influence
 
     @property
     def dimension_codomain(self) -> int:

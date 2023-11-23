@@ -26,7 +26,8 @@ class MinGParetoReflection(ParetoReflection):
         self.bbf = bbf
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        epsilon = 1e-2
+        # TODO: automatically set optimal epsilon
+        epsilon = 1e-3
         return self.g(x) + epsilon * np.sum(x)
 
     @property

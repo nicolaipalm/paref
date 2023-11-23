@@ -33,10 +33,10 @@ class FindEdgePointsSequence(SequenceParetoReflections):
 
     """
 
-    def __init__(self, epsilon: float = 1e-3):
+    def __init__(self, epsilon: float = 1e-3, stopping_criteria: ConvergenceReached = ConvergenceReached()):
         self._iter = 0
         self._sequence = None
-        self.stopping_criteria = ConvergenceReached()
+        self.stopping_criteria = stopping_criteria
         self.epsilon = epsilon
         """
         Parameters

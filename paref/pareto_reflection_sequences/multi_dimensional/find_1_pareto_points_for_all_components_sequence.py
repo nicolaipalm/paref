@@ -29,10 +29,11 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
 
     """
 
-    def __init__(self, epsilon: float = 1e-3):
+    def __init__(self, epsilon: float = 1e-3, stopping_criteria: ConvergenceReached = ConvergenceReached()):
         self._iter = 0
         self._sequence = None
         self.epsilon = epsilon
+        self.stopping_criteria = stopping_criteria
         """
         Parameters
         ----------
@@ -50,10 +51,9 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
         dimension_domain = blackbox_function.dimension_target_space
         pareto_reflections = [Find1ParetoPoints(dimension_domain=dimension_domain, dimension=i, epsilon=self.epsilon)
                               for i in range(dimension_domain)]
-        stopping_criteria = ConvergenceReached()
         if self._iter == 0:
             self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,
-                                                         stopping_criteria=stopping_criteria)
+                                                         stopping_criteria=self.stopping_criteria)
             self._iter = 1
 
         return self._sequence.next(blackbox_function)

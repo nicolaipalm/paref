@@ -164,7 +164,7 @@ class ParefMOO:
                           stopping_criteria: StoppingCriteria,
                           with_underlying_sequence: bool = True,
                           ):
-        """Apply the algorithm the composition of a blackbox function with a (sequence of) Pareto reflection(s)
+        """Apply the algorithm to the composition of a blackbox function with a (sequence of) Pareto reflection(s)
 
         Calling this method, applies to algorithm to the composition of the blackbox function with the pareto reflection
         (if a single Pareto reflection is provided) and with the next Pareto reflection obtained by the sequence (if a
@@ -255,16 +255,26 @@ class ParefMOO:
 
     @property
     def evaluated_sequence(self) -> Union[SequenceParetoReflections, ParetoReflection, None]:
-        """
+        """Return the previous sequence of Pareto reflections
 
         Returns
         -------
+        Union[SequenceParetoReflections, ParetoReflection, None]
+            previous sequence of Pareto reflections
 
         """
         return self._evaluated_sequence
 
     @property
     def best_fits(self) -> np.ndarray:
+        """The Pareto points fitting the algorithms choice of Pareto points best
+
+        Returns
+        -------
+        np.ndarray
+            Pareto points fitting the algorithms choice of Pareto points best
+
+        """
         return self._best_fits
 
 

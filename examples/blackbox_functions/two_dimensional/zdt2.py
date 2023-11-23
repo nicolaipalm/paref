@@ -9,12 +9,10 @@ from pymoo.indicators.hv import Hypervolume
 class ZDT2(BlackboxFunction):
     def __init__(self, input_dimensions: int = 5):
         self._input_dimensions = input_dimensions
-        super().__init__()
         self.problem = get_problem('zdt2', n_var=input_dimensions)
         self.bounds = Bounds(upper_bounds=np.ones(input_dimensions), lower_bounds=np.zeros(input_dimensions))
 
     def __call__(self, x):
-        self._evaluations.append([x, self.problem.evaluate(x)])
         return self.problem.evaluate(x)
 
     @property

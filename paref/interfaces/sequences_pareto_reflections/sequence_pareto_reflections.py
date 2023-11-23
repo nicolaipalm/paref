@@ -61,7 +61,7 @@ class SequenceParetoReflections:
 
     @property
     def used_pareto_reflections(self) -> List[ParetoReflection]:
-        """
+        """Used Pareto reflections in the sequence in the respective order
 
         Returns
         -------

@@ -93,4 +93,4 @@ class ParetoReflection:
                     break
             if is_pareto:
                 pareto_points_indices.append(i)
-        return np.array([points[i] for i in pareto_points_indices])
+        return np.unique(np.array([points[i] for i in pareto_points_indices]),axis=0)
