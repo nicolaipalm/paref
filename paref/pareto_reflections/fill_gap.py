@@ -65,6 +65,7 @@ class FillGap(MinimizeWeightedNormToUtopia):
         self._dimension_domain = dimension_domain
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
+        # TODO: normalization s.t. epsilon is small enough
         return np.sum(x) * self.epsilon + self.g(x)
 
     @property

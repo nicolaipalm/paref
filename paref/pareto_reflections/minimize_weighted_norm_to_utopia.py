@@ -57,7 +57,10 @@ class MinimizeWeightedNormToUtopia(ParetoReflection):
     2
     """
 
-    def __init__(self, utopia_point: np.ndarray, potency: Union[np.ndarray, float], scalar: np.ndarray):
+    def __init__(self,
+                 utopia_point: np.ndarray,
+                 potency: Union[np.ndarray, float],
+                 scalar: np.ndarray):
         """Specify the utopia point, the potency and the scalar used in the weighted p-norm
 
         Parameters
@@ -68,7 +71,6 @@ class MinimizeWeightedNormToUtopia(ParetoReflection):
         potency :
         np.ndarray
             potency (i.e. value of p for the used p-norm)
-            # TBA: not p norm but p norm power p
         scalar :
         np.ndarray
             scalar vector stored in 1 dimensional array of length n
@@ -80,7 +82,7 @@ class MinimizeWeightedNormToUtopia(ParetoReflection):
     def __call__(self, x: np.ndarray) -> np.ndarray:
         if len(x.shape) != 1:
             raise ValueError(f'Input x must be of dimension 1! Shape of x is {x.shape}.')
-        return np.sum((self.scalar*(x-self.utopia_point))**self.potency)
+        return np.linalg.norm(self.scalar*(x-self.utopia_point), ord=self.potency)
 
     @property
     def dimension_codomain(self) -> int:

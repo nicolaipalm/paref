@@ -7,6 +7,7 @@ from paref.moo_algorithms.minimizer.gpr_minimizer import GPRMinimizer
 from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
 from paref.moo_algorithms.multi_dimensional.find_1_pareto_points import Find1ParetoPoints
 from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.pareto_reflections.find_maximal_pareto_point import FindMaximalParetoPoints
 from paref.pareto_reflections.minimize_g import MinGParetoReflection
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
@@ -51,7 +52,7 @@ class ExpressSearch:
                 gpr.train(train_x=blackbox_function.x, train_y=blackbox_function.y)
                 if np.all(gpr.model_convergence < 0.05):
                     print(f'Optimal Training iterations: {i}')
-                    gpr.plot_loss()
+                    # gpr.plot_loss()
                     training_iter = i
                     break
 
@@ -86,9 +87,8 @@ class ExpressSearch:
 
         self._one_points = moo_one_points.best_fits
 
-        moo_max_point_reflection = MinimizeWeightedNormToUtopia(utopia_point=self._bbf.y.min(axis=0),
-                                                                scalar=np.ones(self._bbf.dimension_target_space),
-                                                                potency=4)
+        moo_max_point_reflection = FindMaximalParetoPoints(blackbox_function=self._bbf,)
+
         if self._constraints is not None:
             moo_max_point_reflection = ComposeReflections(self._constraints, moo_max_point_reflection)
 

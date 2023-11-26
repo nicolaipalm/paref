@@ -1,9 +1,10 @@
 import numpy as np
 
-from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
+from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
+from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 
 
-class FindEdgePoints(MinimizeWeightedNormToUtopia):
+class FindEdgePoints(ParetoReflection):
     """Find the edge points of the Pareto front
 
     .. warning::
@@ -36,7 +37,10 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
     # TBA: add
     """
 
-    def __init__(self, dimension_domain: int, dimension: int, epsilon: float = 1e-3):
+    def __init__(self,
+                 blackbox_function: BlackboxFunction,
+                 dimension: int,
+                 epsilon: float = 1e-3):
         """Specify the dimension of the input domain and the component of which the edge point is searched
 
         .. warning::
@@ -46,8 +50,8 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
 
         Parameters
         ----------
-        dimension_domain : int
-            dimension of domain (i.e. dimension of target space of blackbox function)
+        blackbox_function : BlackboxFunction
+            blackbox function to which this reflection is applied
 
         dimension : int
             component of which the edge point is searched
@@ -57,12 +61,22 @@ class FindEdgePoints(MinimizeWeightedNormToUtopia):
         """
         self.epsilon = epsilon
         self.dimension = dimension
-        self._dimension_domain = dimension_domain
-        self.potency = np.ones(dimension_domain)
-        scalar = np.ones(dimension_domain)
+        self._dimension_domain = blackbox_function.dimension_target_space
+        self.potency = np.ones(self._dimension_domain)
+        scalar = np.ones(self._dimension_domain)
         scalar[self.dimension] = epsilon
         self.scalar = scalar
-        self.utopia_point = np.zeros(dimension_domain)
+        self.utopia_point = np.zeros(self._dimension_domain)
+
+        if len(blackbox_function.y) == 0:
+            self._normalization_factor = 1
+        else:
+            self._normalization_factor = (np.abs(np.min(blackbox_function.y, axis=0)) + 1)
+        # TODO: normalzation might be a problem in the future
+        # normalize such that components are (approximately) in the range [0,1]
+
+    def __call__(self, x: np.ndarray) -> np.ndarray:
+        return np.sum(self.scalar * x / self._normalization_factor)
 
     @property
     def dimension_codomain(self) -> int:

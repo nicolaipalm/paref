@@ -53,8 +53,8 @@ class FindEdgePointsSequence(SequenceParetoReflections):
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
         dimension_domain = blackbox_function.dimension_target_space
-        pareto_reflections = [FindEdgePoints(dimension_domain=dimension_domain, dimension=i, epsilon=self.epsilon) for i
-                              in range(dimension_domain)]
+        pareto_reflections = [FindEdgePoints(blackbox_function=blackbox_function, dimension=i, epsilon=self.epsilon) for
+                              i in range(dimension_domain)]
         if self._iter == 0:
             self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,
                                                          stopping_criteria=self.stopping_criteria)

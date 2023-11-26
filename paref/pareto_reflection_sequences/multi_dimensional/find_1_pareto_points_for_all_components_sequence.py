@@ -49,7 +49,7 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
         dimension_domain = blackbox_function.dimension_target_space
-        pareto_reflections = [Find1ParetoPoints(dimension_domain=dimension_domain, dimension=i, epsilon=self.epsilon)
+        pareto_reflections = [Find1ParetoPoints(blackbox_function=blackbox_function, dimension=i, epsilon=self.epsilon)
                               for i in range(dimension_domain)]
         if self._iter == 0:
             self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,

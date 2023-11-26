@@ -10,6 +10,7 @@ from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIte
 from paref.pareto_reflection_sequences.multi_dimensional.find_1_pareto_points_for_all_components_sequence import \
     Find1ParetoPointsForAllComponentsSequence
 from paref.pareto_reflection_sequences.multi_dimensional.find_edge_points_sequence import FindEdgePointsSequence
+from paref.pareto_reflections.find_maximal_pareto_point import FindMaximalParetoPoints
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 
 from tabulate import tabulate
@@ -18,7 +19,7 @@ from tabulate import tabulate
 class GprBbf(BlackboxFunction):
     def __init__(self, bbf: BlackboxFunction, training_iter=2000, learning_rate=0.05):
         self._bbf = bbf
-        self._evaluations = []
+        self._evaluations = bbf.evaluations.copy()
         self._gpr = GPR(training_iter=training_iter, learning_rate=learning_rate)
         self._gpr.train(train_x=bbf.x, train_y=bbf.y)
 
@@ -48,7 +49,7 @@ class Info:
         * minima: the estimated minima of each component (Info.minima)
     """
 
-    def __init__(self, blackbox_function: BlackboxFunction, training_iter=2000, learning_rate=0.01):
+    def __init__(self, blackbox_function: BlackboxFunction, training_iter=2000, learning_rate=0.05):
         """
 
         Parameters
@@ -100,12 +101,8 @@ class Info:
                             enumerate(self._surrogate.x[-self._blackbox_function.dimension_target_space:])]
 
         # Search for maximal Pareto point
-        maximal_pareto_point_reflection = MinimizeWeightedNormToUtopia(utopia_point=self._minima,
-                                                                       potency=5,
-                                                                       scalar=np.ones(
-                                                                           self._surrogate.dimension_target_space))
+        maximal_pareto_point_reflection = FindMaximalParetoPoints(blackbox_function=self._surrogate)
         self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
-
                                           sequence_pareto_reflections=maximal_pareto_point_reflection,
                                           stopping_criteria=MaxIterationsReached(max_iterations=1))
         self.maximal_pareto_point = maximal_pareto_point_reflection.best_fits(self._surrogate.y)[-1]
@@ -113,11 +110,10 @@ class Info:
 
         # Search for closest to theoretical global optimum
         global_optimum_pareto_point_reflection = MinimizeWeightedNormToUtopia(utopia_point=self._minima,
-                                                                              potency=5,
+                                                                              potency=2,
                                                                               scalar=np.ones(
                                                                                   self._surrogate.dimension_target_space))
         self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
-
                                           sequence_pareto_reflections=global_optimum_pareto_point_reflection,
                                           stopping_criteria=MaxIterationsReached(max_iterations=1))
         self.global_optimum_pareto_point = maximal_pareto_point_reflection.best_fits(self._surrogate.y)[-1]
@@ -137,6 +133,9 @@ class Info:
 
         # Concave/convex
         basis = sp.linalg.orth((self.edge_points - self.edge_points[0]).T).T
+        # TODO: global optimum check fails -> dimension as if global optimum exists
+
+        # TODO: make scaling in par refl: values (esp potence) must be within same order of magnitude
         self.dimension_pf = len(basis)  # approximation of dimension of Pareto front
         projected_point = np.sum(
             np.array([np.dot(self.maximal_pareto_point - self.edge_points[0], basis_vector) * basis_vector
@@ -163,7 +162,7 @@ class Info:
 
         # is there a trade-off
         self.global_optimum = False
-        if np.sum([np.linalg.norm(edge_point - edge_point[0]) for edge_point in self.edge_points]) < 1e-3:
+        if np.average([np.linalg.norm(edge_point - edge_point[0]) for edge_point in self.edge_points]) < 1e-3:
             self.global_optimum = True
 
         print("""Done! You can access the following information about your Pareto front:

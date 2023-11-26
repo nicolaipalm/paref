@@ -23,7 +23,7 @@ class DifferentialEvolution:
             function: Callable,
             upper_bounds: np.ndarray,
             lower_bounds: np.ndarray,
-            max_iter: int = 1000,
+            max_iter: int = 2000,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
         res = differential_evolution(
@@ -213,7 +213,6 @@ class GPRMinimizer(ParefMOO):
         print('Value of blackbox function: ', base_blackbox_function.y[-1])
         print('Difference to estimation: ', gpr(res) - base_blackbox_function.y[-1], '\n')
         if base_blackbox_function.y[-1] not in base_blackbox_function.pareto_front:
-            print(blackbox_function.pareto_front)
             warn(
                 'Found Point is not Pareto optimal! \n'
                 'Try more training iterations (training_iter) '
