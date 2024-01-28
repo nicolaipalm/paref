@@ -23,7 +23,7 @@ class DifferentialEvolution:
             function: Callable,
             upper_bounds: np.ndarray,
             lower_bounds: np.ndarray,
-            max_iter: int = 2000,
+            max_iter: int = 300,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
         res = differential_evolution(
@@ -125,8 +125,8 @@ class GPRMinimizer(ParefMOO):
 
         """
         # TBA: when found points are too close stop!
-        # TBA: control mechanism: when algo doesnt work give message and what went wrong
-        # TBA: monitoring: stop time, evaluations found, if training process of gpr converged, ALL WITH hints
+        # TBA: control mechanism: when algo doesn't work give message about what went wrong
+        # TBA: monitoring: stop time, evaluations found, if training process of gpr converged, all with hints
 
         if not isinstance(blackbox_function.design_space, Bounds):
             raise ValueError(f'Design space of blackbox function must be an instance of by Bounds! Design space is of'
@@ -157,14 +157,15 @@ class GPRMinimizer(ParefMOO):
 
         train_x = base_blackbox_function.x
         train_y = base_blackbox_function.y
-        print('\n----------------------')
+        print('\n=========================================================='
+              '\n==========================================================')
         print(
             'Training...\n'
         )
         gpr.train(train_x=train_x, train_y=train_y)
         if np.any(gpr.model_convergence > 0.1):
             warn(
-                'GPR may have not converge! \n'
+                'GPRs may have not converged! \n'
                 'Try more training iterations (training_iter parameter).'
                 'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
             sleep(1)

@@ -80,7 +80,8 @@ class NextWhenStoppingCriteriaMet(SequenceParetoReflections):
             next Pareto reflection of the list or same Pareto reflection as before if stopping criteria is not met
 
         """
-        if self._stopping_criteria(blackbox_function):
+        if self._stopping_criteria(blackbox_function) and len(self.used_pareto_reflections) >= 1:
+            # if stopping criteria is met, move on to the next Pareto reflection unless it is the first iteration
             self._iter += 1
 
         if self._iter == len(self._pareto_reflections):

@@ -63,7 +63,6 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
                              f'\n point_1: {point_1.shape} '
                              f'\n point_1: {point_2.shape}')
 
-        dimension_domain = self.dimension_domain
         m = 1 / 2 * (point_1 + point_2)  # middle point
         y = point_1 - point_2  # helper
         v = np.array([1, -(y[0] / y[1])])  # normal vector
@@ -71,7 +70,7 @@ class FillGap2D(MinimizeWeightedNormToUtopia):
         if (utopia_point[1] - m[1]) / v[1] > lamb:
             lamb = (utopia_point[1] - m[1]) / v[1]
 
-        self.potency = potency * np.ones(dimension_domain)
+        self.potency = potency
         self.scalar = (1 / v)
         self.utopia_point = m + lamb * v  # utopia point projected to normal st previous utopia point is dominated
 

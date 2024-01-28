@@ -1,15 +1,13 @@
-from typing import Optional
-
 import numpy as np
 
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import \
     SequenceParetoReflections
-from paref.pareto_reflections.fill_gap_2d import FillGap2D
+from paref.pareto_reflections.fill_gap import FillGap
 
 
 class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
-    """Fill the gaps in the Pareto front already found
+    """Close the gaps in the previously determined Pareto front (in two dimensions)
 
     .. warning::
 
@@ -40,24 +38,7 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
 
     """
 
-    def __init__(self,
-                 utopia_point: Optional[np.ndarray] = None,
-                 potency: int = 6,
-                 ):
-        """Specify some utopia point
-
-        Parameters
-        ----------
-        utopia_point : Optional[np.ndarray] default None
-            optional utopia point
-
-        potency : int default 6
-            potency of underlying weighted norm
-        """
-        self.utopia_point = utopia_point
-        self.potency = potency
-
-    def next(self, blackbox_function: BlackboxFunction) -> FillGap2D:
+    def next(self, blackbox_function: BlackboxFunction) -> FillGap:
         """Return a :py:class:`fill gap <paref.pareto_reflections.fill_gap_2d.FillGap2D>` Pareto reflection
 
         Parameters
@@ -82,14 +63,6 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
         # Calculate points with maximal distance
         max_norm_index = np.argmax(np.linalg.norm(PF[:-1] - PF[1:], axis=1))
 
-        # If utopia point is not given, set it as lower edge of points where gap should be closed
-        if self.utopia_point is None:
-            utopia_point = np.min(np.array(PF[max_norm_index:max_norm_index + 2]), axis=0)
-
-        else:
-            utopia_point = self.utopia_point
-
-        return FillGap2D(point_1=PF[max_norm_index + 1],
-                         point_2=PF[max_norm_index],
-                         utopia_point=utopia_point,
-                         potency=self.potency)
+        return FillGap(blackbox_function=blackbox_function,
+                       gap_points=PF[max_norm_index:max_norm_index + 2],
+                       )

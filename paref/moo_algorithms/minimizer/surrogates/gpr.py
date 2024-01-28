@@ -215,10 +215,10 @@ class GPR:
 
         # Check if training converged
         losses = np.array([hp['loss'] for hp in self.info])
-        losses_last = np.array([hp['loss'][int(self._training_iter * 0.9):] for hp in self.info])
+        losses_last = np.array([hp['loss'][int(self._training_iter * 0.5):] for hp in self.info])
 
         self._model_convergence = (np.max(losses_last, axis=1) - np.min(losses_last, axis=1)) / (
-                    np.max(losses, axis=1) - np.min(losses, axis=1))*9
+                    np.max(losses, axis=1) - np.min(losses, axis=1))*2
         return True
 
     @property

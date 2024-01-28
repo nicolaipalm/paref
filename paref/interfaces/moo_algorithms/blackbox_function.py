@@ -63,6 +63,7 @@ class BlackboxFunction:
 
 
     """
+
     def __init_subclass__(cls):
         """Ensure storing of evaluations in every subclass
         and initialize empty evaluations list in subclasses
@@ -70,7 +71,6 @@ class BlackboxFunction:
         super().__init_subclass__()
         cls.__init__ = initialize_empty_evaluations(cls.__init__)
         cls.__call__ = store_evaluation_bbf(cls.__call__)
-
 
     @abstractmethod
     def __call__(self, x: np.ndarray) -> np.ndarray:

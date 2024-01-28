@@ -10,7 +10,7 @@ from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIte
 from paref.pareto_reflection_sequences.multi_dimensional.find_1_pareto_points_for_all_components_sequence import \
     Find1ParetoPointsForAllComponentsSequence
 from paref.pareto_reflection_sequences.multi_dimensional.find_edge_points_sequence import FindEdgePointsSequence
-from paref.pareto_reflections.find_maximal_pareto_point import FindMaximalParetoPoints
+from paref.pareto_reflections.find_maximal_pareto_point import FindMaximalParetoPoint
 from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
 
 from tabulate import tabulate
@@ -47,6 +47,14 @@ class Info:
         * topology: the shape of your Pareto front (Info.topology)
         * suggestion_pareto_points: suggestions for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
         * minima: the estimated minima of each component (Info.minima)
+
+
+    .. warning::
+
+        Paref's Express search is still under development and testing.
+        If you run into any problems, errors or have suggestions how to make it *user-friendlier*, please contact me
+        or open an issue on GitHub. Many thanks!
+
     """
 
     def __init__(self, blackbox_function: BlackboxFunction, training_iter=2000, learning_rate=0.05):
@@ -75,7 +83,8 @@ class Info:
         Call this method whenever you have evaluated the blackbox function at some design.
         """
 
-        print('Obtaining information about the approximate Pareto front...')
+        print('==========================================='
+              '\nObtaining information about the approximate Pareto front...')
         self._surrogate = GprBbf(self._blackbox_function, self._training_iter, self._learning_rate)
 
         # mean of std
@@ -87,7 +96,7 @@ class Info:
         )], axis=0)
 
         # Search for minima in components
-        minima_sequence = Find1ParetoPointsForAllComponentsSequence(stopping_criteria=MaxIterationsReached(1))
+        minima_sequence = Find1ParetoPointsForAllComponentsSequence()
         self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
                                           sequence_pareto_reflections=minima_sequence,
                                           stopping_criteria=MaxIterationsReached(
@@ -101,7 +110,7 @@ class Info:
                             enumerate(self._surrogate.x[-self._blackbox_function.dimension_target_space:])]
 
         # Search for maximal Pareto point
-        maximal_pareto_point_reflection = FindMaximalParetoPoints(blackbox_function=self._surrogate)
+        maximal_pareto_point_reflection = FindMaximalParetoPoint(blackbox_function=self._surrogate)
         self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
                                           sequence_pareto_reflections=maximal_pareto_point_reflection,
                                           stopping_criteria=MaxIterationsReached(max_iterations=1))
@@ -121,7 +130,7 @@ class Info:
 
         # Search for edge points
         if self._blackbox_function.dimension_target_space > 2:
-            edge_points_sequence = FindEdgePointsSequence(stopping_criteria=MaxIterationsReached(1))
+            edge_points_sequence = FindEdgePointsSequence()
             self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
                                               sequence_pareto_reflections=edge_points_sequence,
                                               stopping_criteria=MaxIterationsReached(
@@ -133,9 +142,7 @@ class Info:
 
         # Concave/convex
         basis = sp.linalg.orth((self.edge_points - self.edge_points[0]).T).T
-        # TODO: global optimum check fails -> dimension as if global optimum exists
 
-        # TODO: make scaling in par refl: values (esp potence) must be within same order of magnitude
         self.dimension_pf = len(basis)  # approximation of dimension of Pareto front
         projected_point = np.sum(
             np.array([np.dot(self.maximal_pareto_point - self.edge_points[0], basis_vector) * basis_vector
@@ -161,14 +168,16 @@ class Info:
             self.concave_degree_description = 'Very concave'
 
         # is there a trade-off
+        # TODO: global optimum check might fail: testing on real use-cases
         self.global_optimum = False
-        if np.average([np.linalg.norm(edge_point - edge_point[0]) for edge_point in self.edge_points]) < 1e-3:
+        if np.average([np.linalg.norm(edge_point - edge_point[0]) for edge_point in
+                       self.edge_points[1:]]) < 1e-3:
             self.global_optimum = True
 
         print("""Done! You can access the following information about your Pareto front:
         * model fitness: how well the model approximates the bbf, how to improve it and how certain its estimation is (Info.model_fitness)
         * topology: the shape of your Pareto front (Info.topology)
-        * suggestion_pareto_points: suggestions for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
+        * suggestion: for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
         * minima: the estimated minima of each component (Info.minima)
         """)
 
@@ -204,13 +213,13 @@ class Info:
         The suggestion mainly focuses on the approximate shape of the Pareto front and its implication
         for the trade-offs between the components.
         """
-        # TODO: adapt to interface of express
         if self.global_optimum:
-            print(
-                'There is most probably an (almost) global optimum. '
-                'This means your target objectives are not conflicting '
-                'and any Pareto point will be that global optimum. '
-                'You can use any MOO algorithm provided in Paref to find that point.')
+            print("""
+            There is most probably an (almost) global optimum.
+            This means your target objectives are not conflicting
+            and any Pareto point will be that global optimum.
+            You can use any MOO algorithm provided in Paref to find that point.
+            """)
 
         elif self._concave_degree < 0.5:
             print("""Your objectives appear to be conflicting, so there are real trade-offs.
@@ -241,9 +250,6 @@ class Info:
                             'Std': [self.maximal_pareto_point_std.tolist()],
                             'Dominates x% of evaluations': [self._better_than_evaluations(self.maximal_pareto_point)]},
                            headers='keys'))
-            print("""
-            You can get the corresponding design by using ...
-            """)
 
         elif self._concave_degree < 1.03:
             print("""
@@ -254,7 +260,6 @@ class Info:
             Accordingly, all Pareto points will be (almost) equally good and it is up to you to
             decide which components are more relevant.
             I suggest you use (priority search) to take into account your preference for certain components.
-            You can get the corresponding design by using ...
             """)
 
         elif self._concave_degree < 1.3:
@@ -275,7 +280,6 @@ class Info:
             I propose
             {self._minima_pareto_points[np.argmax([self._better_than_evaluations(minima) for minima in self._minima_pareto_points])]}
             because it dominates the most evaluations.
-            You can get the corresponding design by using ...
 
             A Pareto point representing a real trade-off in all components I've found is
             """)
@@ -283,9 +287,6 @@ class Info:
                             'Std': [self.maximal_pareto_point_std.tolist()],
                             'Dominates x% of evaluations': [self._better_than_evaluations(self.maximal_pareto_point)]},
                            headers='keys'))
-            print("""
-            You can get the corresponding design by using ...
-            """)
 
         else:
             print("""
@@ -306,7 +307,6 @@ class Info:
             I propose
             {self._minima_pareto_points[np.argmax([self._better_than_evaluations(minima) for minima in self._minima_pareto_points])]}
             because it dominates the most evaluations.
-            You can get the corresponding design by using ...
             """)
 
     @property
@@ -323,26 +323,34 @@ class Info:
         losses_last = np.array([hp['loss'][int(self._training_iter * 0.9):] for hp in self._surrogate._gpr.info])
 
         model_convergence = (np.max(losses_last, axis=1) - np.min(losses_last, axis=1)) / (
-                    np.max(losses, axis=1) - np.min(losses, axis=1))*9
+                np.max(losses, axis=1) - np.min(losses, axis=1)) * 9
 
         # TODO: this might be prone to errors. Try a relative convergence criterion instead.
         if np.all(model_convergence < 0.05):
-            print('The model has converged. The training iterations seem to be sufficient.')
+            print(
+                """
+                The model has converged. The training iterations seem to be sufficient.
+                """
+            )
         else:
-            print('The model has not converged. I suggest you increase the number of training iterations.')
+            print("""
+                The model has not converged. I suggest you increase the number of training iterations.
+                """)
 
         if np.any(self.percent_mean_std > 10):
-            print(
-                'The uncertainty of your model seems to be high. '
-                'Accordingly, you might need more evaluations to obtain good results. '
-                'I suggest you allow each algorithm the maximal number of evaluations '
-                'by using the max_iterations stopping criterion.')
+            print("""
+                The uncertainty of your model seems to be high.
+                Accordingly, you might need more evaluations to obtain good results.
+                I suggest you allow each algorithm the maximal number of evaluations
+                by using the max_iterations stopping criterion.
+                """)
         else:
-            print(
-                'The uncertainty of your model seems to be low. '
-                'Accordingly, you might only need few evaluations to obtain good results. '
-                'I suggest you allow each algorithm the minimal number of evaluations '
-                'by using the convergence_reached stopping criterion.')
+            print("""
+                The uncertainty of your model seems to be low.
+                Accordingly, you might only need few evaluations to obtain good results.
+                I suggest you allow each algorithm the minimal number of evaluations
+                by using the convergence_reached stopping criterion.
+                """)
 
         print(tabulate({'Component': range(self._blackbox_function.dimension_target_space),
                         f'Average uncertainty (%) at {self._training_iter} training iterations':
@@ -357,3 +365,7 @@ class Info:
                 i += 1
 
         return i / len(self._blackbox_function.y) * 100  # in percent
+
+    @property
+    def model(self) -> GPR:
+        return self._surrogate._gpr

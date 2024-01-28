@@ -1,3 +1,6 @@
+import itertools
+import warnings
+
 import numpy as np
 
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
@@ -7,7 +10,11 @@ from paref.pareto_reflections.fill_gap import FillGap
 
 
 class FillGapsOfParetoFrontSequence(SequenceParetoReflections):
-    """Fill the gaps in the Pareto front already found
+    """Close the gaps in the previously determined Pareto front
+
+    .. warning::
+
+        This sequence is still under development and might not work properly.
 
     When to use
     -----------
@@ -39,6 +46,7 @@ class FillGapsOfParetoFrontSequence(SequenceParetoReflections):
 
         """
         self.epsilon = epsilon
+        warnings.warn('This sequence is still under development and might not work properly!')
 
     def next(self, blackbox_function: BlackboxFunction) -> FillGap:
         """Return a :py:class:`fill gap <paref.pareto_reflections.fill_gap_2d.FillGap2D>` Pareto reflection
@@ -54,15 +62,23 @@ class FillGapsOfParetoFrontSequence(SequenceParetoReflections):
             fill gap Pareto reflection corresponding to the greatest gap in Pareto front of the evaluations
 
         """
-        # TODO: bug find correct points
-        PF = blackbox_function.pareto_front
-        # Sort Pareto points ascending by first component
-        PF = PF[PF[:, 0].argsort()]
+        pareto_front = np.unique(blackbox_function.pareto_front, axis=0)
 
-        # Calculate points with maximal distance
-        max_norm_index = np.argmax(np.linalg.norm(PF[:-1] - PF[1:], axis=1))
+        # TODO: bug - max min distance to centers does not return greatest gap;
+        #  need projection to hyperplane and then max min
+        # calculate (overlapping) simplices
+        simplices = np.array(
+            list(itertools.combinations(range(len(pareto_front)), blackbox_function.dimension_target_space)))
 
-        return FillGap(dimension_domain=blackbox_function.dimension_target_space,
-                       gap_points=np.array([PF[max_norm_index], PF[max_norm_index + 1]]),
-                       epsilon=self.epsilon
+        # calculate centers of simplices
+        centers = np.array(
+            [np.sum(pareto_front[simplex], axis=0) / blackbox_function.dimension_target_space for simplex in simplices])
+
+        # calculate distances of points to centers
+        min_distances_to_centers = np.array(
+            [np.min(np.linalg.norm(pareto_front - center, axis=1)) for center in centers])
+        index = np.argmax(min_distances_to_centers)
+
+        return FillGap(blackbox_function=blackbox_function,
+                       gap_points=pareto_front[simplices[index]],
                        )

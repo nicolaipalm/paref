@@ -1,9 +1,11 @@
 import numpy as np
-from paref.pareto_reflections.minimize_weighted_norm_to_utopia import MinimizeWeightedNormToUtopia
+
+from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
+from paref.pareto_reflections.minimize_g import MinGParetoReflection
 import scipy as sp
 
 
-class FillGap(MinimizeWeightedNormToUtopia):
+class FillGap(MinGParetoReflection):
     """Fill the gap spanned by m points of dimension m
 
 
@@ -33,9 +35,8 @@ class FillGap(MinimizeWeightedNormToUtopia):
     """
 
     def __init__(self,
-                 dimension_domain: int,
-                 gap_points: np.ndarray,
-                 epsilon: float = 0.01):
+                 blackbox_function: BlackboxFunction,
+                 gap_points: np.ndarray,):
         """Specify the gap and some utopia point
 
         Parameters
@@ -50,9 +51,11 @@ class FillGap(MinimizeWeightedNormToUtopia):
             epsilon of underlying weighted norm
 
         """
+        self._counter = 0
+        self.bbf = blackbox_function
+        dimension_domain = blackbox_function.dimension_target_space
         if len(gap_points) != dimension_domain:
             raise ValueError('The number of gap defining points must be equal to the dimension of the domain.')
-        self.epsilon = epsilon
         self.gap_points = gap_points
         self.center = np.sum(gap_points, axis=0) / len(gap_points)
 
@@ -61,17 +64,3 @@ class FillGap(MinimizeWeightedNormToUtopia):
         self.orthogonal_basis = sp.linalg.orth(span.T).T
         self.g = lambda x: np.linalg.norm(np.sum(np.array([np.dot(x - self.center, basis_vector) * basis_vector
                                                            for basis_vector in self.orthogonal_basis]), axis=0))
-
-        self._dimension_domain = dimension_domain
-
-    def __call__(self, x: np.ndarray) -> np.ndarray:
-        # TODO: normalization s.t. epsilon is small enough
-        return np.sum(x) * self.epsilon + self.g(x)
-
-    @property
-    def dimension_codomain(self) -> int:
-        return 1
-
-    @property
-    def dimension_domain(self) -> int:
-        return self._dimension_domain

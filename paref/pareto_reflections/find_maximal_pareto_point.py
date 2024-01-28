@@ -4,7 +4,7 @@ from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 
 
-class FindMaximalParetoPoints(ParetoReflection):
+class FindMaximalParetoPoint(ParetoReflection):
     """Find a Pareto point which represents a trade-off in all components
 
     When to use

@@ -1,10 +1,9 @@
-from typing import List, Optional
+from typing import Optional
 
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import SequenceParetoReflections
-from paref.moo_algorithms.stopping_criteria.convergence_reached import ConvergenceReached
-from paref.pareto_reflection_sequences.generic.next_when_stopping_criteria_met import NextWhenStoppingCriteriaMet
+from paref.pareto_reflection_sequences.generic.repeating_sequence import RepeatingSequence
 from paref.pareto_reflections.find_1_pareto_points import Find1ParetoPoints
 
 
@@ -29,11 +28,10 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
 
     """
 
-    def __init__(self, epsilon: float = 1e-3, stopping_criteria: ConvergenceReached = ConvergenceReached()):
+    def __init__(self, epsilon: float = 1e-3):
         self._iter = 0
         self._sequence = None
         self.epsilon = epsilon
-        self.stopping_criteria = stopping_criteria
         """
         Parameters
         ----------
@@ -49,11 +47,10 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
         dimension_domain = blackbox_function.dimension_target_space
-        pareto_reflections = [Find1ParetoPoints(blackbox_function=blackbox_function, dimension=i, epsilon=self.epsilon)
+        pareto_reflections = [Find1ParetoPoints(dimension=i, blackbox_function=blackbox_function)
                               for i in range(dimension_domain)]
         if self._iter == 0:
-            self._sequence = NextWhenStoppingCriteriaMet(pareto_reflections=pareto_reflections,
-                                                         stopping_criteria=self.stopping_criteria)
+            self._sequence = RepeatingSequence(pareto_reflections=pareto_reflections)
             self._iter = 1
 
         return self._sequence.next(blackbox_function)

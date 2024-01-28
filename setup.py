@@ -33,7 +33,7 @@ setup(
     ],
     extras_require={
         'dev': ['pre-commit', 'flake8', 'flake8-print'],
-        'examples': ['ipython', 'jupyter', 'pymoo'],
+        'functional_tests': ['ipython', 'jupyter', 'pymoo'],
         'test': ['pytest', 'pytest-cov'],
     },
     test_suite='tests',
