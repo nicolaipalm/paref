@@ -244,9 +244,9 @@ with gr.Blocks(css=css) as demo:
                     gr.Markdown(label='Description', value='Determine the Pareto point '
                                                            'which fills the gap between target space '
                                                            'dimension(=2 in this example) many points.'
-                                                           'In this example largest gap is automatically chosen.'
+                                                           'In this example the largest gap is automatically chosen.'
                                                            '\n**WARNING**: '
-                                                           'you need at least two evaluations prior to this!')
+                                                           'you need at least two Pareto points prior to this!')
                 btn = gr.Button(value='Run MOO')
                 btn.click(
                     lambda x: model.run_moo(FillGapsOfParetoFrontSequence2D(), x),

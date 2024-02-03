@@ -2,8 +2,9 @@ from abc import abstractmethod
 from typing import Union, List
 
 import numpy as np
+from scipy.stats import qmc
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.decorators import initialize_empty_evaluations, store_evaluation_bbf
 
 
@@ -47,18 +48,25 @@ class BlackboxFunction:
         f:[0,1]\\times [0,1]\\to \mathbb{R}^2,f(x)=(x_2^2,x_1-x_2)
 
     Then, the pythonic blackbox function will be implemented as follows
-    # TBA: example
+
+    >>> class BlackboxFunctionExample(BlackboxFunction):
+    >>>     def __call__(self, x: np.ndarray) -> np.ndarray:
+    >>>         return np.array([x[1] ** 2, x[0] - x[1]])
+    >>>
+    >>>     @property
+    >>>     def dimension_design_space(self) -> int:
+    >>>         return 2
+    >>>
+    >>>     @property
+    >>>     def dimension_target_space(self) -> int:
+    >>>         return 2
+
 
     .. note::
 
         In most cases, the closed mathematical blackbox functions are not known. Instead,
         it can only be evaluated at a given input. In that case "evaluating" is
-        implemented in the
-
-        .. code-block:: python
-
-            __call__(self, x: np.ndarray) -> np.ndarray
-
+        implemented in the ``__call__(self, x: np.ndarray) -> np.ndarray``
         method below.
 
 
@@ -75,10 +83,6 @@ class BlackboxFunction:
     @abstractmethod
     def __call__(self, x: np.ndarray) -> np.ndarray:
         """Apply blackbox function to input and store the tuple (input,output) in self._evaluations
-
-        .. warning::
-            When blackbox function is called the list of input and output, i.e. [x,f(x)] must be
-            appended  to  self._evaluations!
 
         Parameters
         ----------
@@ -147,8 +151,8 @@ class BlackboxFunction:
 
         Returns
         -------
-        List
-            list of evaluations: each element of the form [input,value of blackbox function at input]
+        np.ndarray
+            numpy array of evaluations: each element of the form [input,value of blackbox function at input]
 
 
         """
@@ -213,6 +217,62 @@ class BlackboxFunction:
         """
         self._evaluations = []
 
+    def perform_lhc(self, n: int) -> None:
+        """Perform Latin Hypercube Sampling
+
+        The `latin hypercube sampling <https://en.wikipedia.org/wiki/Latin_hypercube_samplingL>`_ (LHC) is
+        a stratified (random) sampling method.
+        It is often used as a powerful initial sampling method in order to explore the design space.
+
+
+        Parameters
+        ----------
+        n : int
+            number of LHC samples
+
+        """
+        if isinstance(self.design_space, Bounds):
+            [self(x) for x in qmc.scale(
+                qmc.LatinHypercube(d=self.dimension_design_space).random(
+                    n=n - len(self.evaluations)),
+                self.design_space.lower_bounds,
+                self.design_space.upper_bounds,
+            )]  # add samples according to latin hypercube scheme
+
+        else:
+            raise ValueError('Design space property of blackbox function must be an instance of Bounds!')
+
+    def save(self, path: str) -> None:
+        """Save evaluations to npy-file
+
+        For each evaluation, the input and output are concatenated and stored in a row of the npy-file.
+
+        Parameters
+        ----------
+        path : str
+            path to file
+
+        """
+        np.save(path, np.concatenate((self.x, self.y), axis=1))
+
+    def load(self, path: str) -> None:
+        """Load evaluations from npy-file
+
+        Parameters
+        ----------
+        path : str
+            path to file
+
+        """
+        evals = np.load(path)
+        if evals.shape[1] != self.dimension_design_space + self.dimension_target_space:
+            raise ValueError(f'Loaded evaluations do not match target resp. design space dimension'
+                             f'({self.dimension_design_space} resp. {self.dimension_target_space})!')
+
+        else:
+            self.evaluations = [[evaluation[:self.dimension_design_space], evaluation[self.dimension_design_space:]] for
+                                evaluation in evals]
+
     @property
     def pareto_front(self) -> np.ndarray:
         """Return Pareto front of evaluation
@@ -220,7 +280,7 @@ class BlackboxFunction:
         Returns
         -------
         np.ndarray
-            Pareto front of evaluations
+            Pareto front of target vectors of evaluations
 
         """
         array = self.y

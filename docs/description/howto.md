@@ -77,12 +77,13 @@ Applying an MOO algorithm in Paref requires some steps:
 
 ```python
 import numpy as np
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
+
 
 class TestFunction(BlackboxFunction):
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        y = np.array([np.sum(x**2),x[0]])
+        y = np.array([np.sum(x ** 2), x[0]])
         self._evaluations.append([x, y])
         return y
 
@@ -98,6 +99,7 @@ class TestFunction(BlackboxFunction):
     def design_space(self) -> Bounds:
         return Bounds(upper_bounds=np.ones(self.dimension_design_space),
                       lower_bounds=-np.zeros(self.dimension_design_space))
+
 
 blackbox_function = TestFunction()
 ```
@@ -168,8 +170,9 @@ Accordingly, we are given the following information
 
 ```python
 import numpy as np
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
+
 
 class TestFunction(BlackboxFunction):
     def __call__(self, x: np.ndarray) -> np.ndarray:

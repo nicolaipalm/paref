@@ -1,6 +1,6 @@
 import numpy as np
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from pymoo.factory import get_problem
 from pymoo.indicators.hv import Hypervolume
@@ -13,7 +13,7 @@ class ZDT1(BlackboxFunction):
         self.bounds = Bounds(upper_bounds=np.ones(input_dimensions), lower_bounds=np.zeros(input_dimensions))
 
     def __call__(self, x):
-        return self.problem.evaluate(x)
+        return self.problem.evaluate(x)+np.array([0,0])
 
     @property
     def dimension_design_space(self) -> int:
@@ -28,7 +28,7 @@ class ZDT1(BlackboxFunction):
         return self.bounds
 
     def return_true_pareto_front(self, ):
-        return self.problem.pareto_front()
+        return self.problem.pareto_front()+np.array([0,0])
 
     def calculate_hypervolume_of_pareto_front(self, reference_point: np.ndarray):
         metric = Hypervolume(ref_point=reference_point, normalize=False)

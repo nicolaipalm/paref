@@ -12,8 +12,9 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
 
     When to use
     -----------
-    Use this sequence if you want to determine a one Pareto point (i.e. minimal in some component) of your Pareto front
-    for each component, f.e. if you want to know the size of the Pareto front.
+    Use this sequence if you want to determine a one Pareto point (i.e. a Pareto point which is minimal
+    in some component) of your Pareto front for each component,
+    e.g. if you want to know the size of the Pareto front.
 
     What it does
     ------------
@@ -21,29 +22,11 @@ class Find1ParetoPointsForAllComponentsSequence(SequenceParetoReflections):
     :py:class:`search for one Pareto points <paref.pareto_reflections.find_one_pareto_points.Find1ParetoPoints>`
     Pareto reflection to all components until the search converges.
     Notice: *Only* in two dimensions, the one Pareto points are precisely the edge points.
-
-    Examples
-    --------
-    # TBA: add
-
     """
 
-    def __init__(self, epsilon: float = 1e-3):
+    def __init__(self,):
         self._iter = 0
         self._sequence = None
-        self.epsilon = epsilon
-        """
-        Parameters
-        ----------
-
-        epsilon : float default 1e-3
-            weight on the components
-
-        .. warning::
-
-            The smaller epsilon, the better. However, picking an epsilon too small may lead to an
-            unstable optimization.
-        """
 
     def next(self, blackbox_function: BlackboxFunction) -> Optional[ParetoReflection]:
         dimension_domain = blackbox_function.dimension_target_space

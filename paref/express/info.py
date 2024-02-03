@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 from scipy.stats import qmc
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.moo_algorithms.minimizer.differential_evolution_minimizer import DifferentialEvolutionMinimizer
 from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
@@ -17,6 +17,10 @@ from tabulate import tabulate
 
 
 class GprBbf(BlackboxFunction):
+    """Approximate a blackbox function with a Gaussian process regression (GPR) in the BlackboxFunction interface
+
+    """
+
     def __init__(self, bbf: BlackboxFunction, training_iter=2000, learning_rate=0.05):
         self._bbf = bbf
         self._evaluations = bbf.evaluations.copy()
@@ -40,18 +44,22 @@ class GprBbf(BlackboxFunction):
 
 
 class Info:
-    # Purpose: information about Pareto front
-    """Obtain relevant information about the Pareto front of a blackbox function
+    """Obtain relevant information about the Pareto front of a blackbox function and model fitness at the current stage
 
-        * model fitness: how well the model approximates the bbf, how to improve it and how certain its estimation is (Info.model_fitness)
-        * topology: the shape of your Pareto front (Info.topology)
-        * suggestion_pareto_points: suggestions for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
-        * minima: the estimated minima of each component (Info.minima)
+        * topology:
+            the shape of your Pareto front (Info.topology)
+        * suggestion_pareto_points:
+            suggestions for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
+        * minima:
+            the estimated minima of each component (Info.minima)
+        * model fitness:
+            how well the model approximates the bbf, how to improve it and
+            how certain its estimation is (Info.model_fitness)
 
 
     .. warning::
 
-        Paref's Express search is still under development and testing.
+        Paref's Info class is still under development.
         If you run into any problems, errors or have suggestions how to make it *user-friendlier*, please contact me
         or open an issue on GitHub. Many thanks!
 
@@ -176,7 +184,7 @@ class Info:
 
         print("""Done! You can access the following information about your Pareto front:
         * model fitness: how well the model approximates the bbf, how to improve it and how certain its estimation is (Info.model_fitness)
-        * topology: the shape of your Pareto front (Info.topology)
+        * topology: topological information of your Pareto front (Info.topology)
         * suggestion: for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
         * minima: the estimated minima of each component (Info.minima)
         """)
@@ -192,7 +200,7 @@ class Info:
 
     @property
     def topology(self):
-        """Topological information about the Pareto front
+        """Obtain topological information about the Pareto front
 
         Is there are global optimum?
         Is the Pareto front rather convex or concave or linear?
@@ -215,7 +223,7 @@ class Info:
         """
         if self.global_optimum:
             print("""
-            There is most probably an (almost) global optimum.
+            There is probably an (almost) global optimum.
             This means your target objectives are not conflicting
             and any Pareto point will be that global optimum.
             You can use any MOO algorithm provided in Paref to find that point.
@@ -236,8 +244,8 @@ class Info:
             {self._minima}
             """)
             print("""
-            You can get the corresponding design by applying
-            """)  # How much better?
+            You can use the paref.Express.search_for_best_real_trade_off algorithm to find that Pareto point.
+            """)
 
         elif self._concave_degree < 0.97:
             print("""
@@ -256,10 +264,11 @@ class Info:
             Your objectives appear to be conflicting, so there are real trade-offs.
             Your Pareto front appears to be (almost) a plane.
             This means that improvements in one component will result in
-            relatively equal losses in other components.
+            almost equal losses in other components.
             Accordingly, all Pareto points will be (almost) equally good and it is up to you to
             decide which components are more relevant.
-            I suggest you use (priority search) to take into account your preference for certain components.
+            I suggest you use the paref.Express.priority_search algorithm
+            to take into account your preference for certain components.
             """)
 
         elif self._concave_degree < 1.3:
@@ -267,8 +276,9 @@ class Info:
             Your objectives appear to be conflicting, so there are real trade-offs.
             Your Pareto front appears to be concave.
             This means that any improvement in one component will result in a greater loss in the other components.
-            Accordingly, I suggest that you focus on a single component and
-            choose the Pareto point that minimises that component.
+            Accordingly, I suggest that you focus on a single component by using
+            the Paref.Express.search_for_minima algorithm or to use the paref.Express.priority_search algorithm
+            to take into account your preference for certain components.
             Here are the estimated Pareto points that minimise a component
             """)
 
@@ -276,12 +286,15 @@ class Info:
                 [[i, minima.tolist(), self._minima_pareto_points_std[i].tolist(), self._better_than_evaluations(minima)]
                  for i, minima in enumerate(self._minima_pareto_points)],
                 headers=['Component', 'Target values', 'Std', 'Dominates x% of evaluations']))
+
+            suggested_point = self._minima_pareto_points[
+                np.argmax([self._better_than_evaluations(minima) for minima in self._minima_pareto_points])]
             print(f"""
             I propose
-            {self._minima_pareto_points[np.argmax([self._better_than_evaluations(minima) for minima in self._minima_pareto_points])]}
-            because it dominates the most evaluations.
+            {suggested_point}
+            because it dominates the most evaluations ({self._better_than_evaluations(suggested_point)}%).
 
-            A Pareto point representing a real trade-off in all components I've found is
+            Nevertheless, here is a Pareto point representing a real trade-off in all components
             """)
             print(tabulate({'Target values': [self.maximal_pareto_point.tolist()],
                             'Std': [self.maximal_pareto_point_std.tolist()],
@@ -295,6 +308,8 @@ class Info:
             loss in the other components.
             Accordingly, I suggest that you focus on a single component and
             choose the Pareto point that minimises that component.
+            You can use the paref.Express.search_for_minima algorithm to find those Pareto points.
+
             Here are the estimated Pareto points that minimise a component
             """)
             print(tabulate([[i,
@@ -368,4 +383,11 @@ class Info:
 
     @property
     def model(self) -> GPR:
+        """The underlying model of the blackbox function
+
+        Returns
+        -------
+        GPR
+            underlying surrogate (GPR) of the blackbox function
+        """
         return self._surrogate._gpr

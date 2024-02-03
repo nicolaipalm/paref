@@ -17,23 +17,7 @@ class SequenceParetoReflections:
 
         (p_i)_{i \\in \mathbb{N}}
 
-    Documentation of an implementation of this interface should contain:
-
-    When to use
-    -----------
-    This Pareto reflection should be used if...
-
-    What it does
-    ------------
-    The Pareto points of this map are...
-
-    Mathematical formula
-    --------------------
-
-    Examples
-    --------
-
-    #TODO: this should be in a contributing.md
+    of Pareto reflections.
     """
 
     def __init_subclass__(cls):
@@ -71,6 +55,20 @@ class SequenceParetoReflections:
         return self._used_pareto_reflections
 
     def best_fits(self, points: np.ndarray) -> np.ndarray:
+        """Return the Pareto points of Pareto reflections with respect to the variable points
+
+
+        Parameters
+        ----------
+        points : np.ndarray
+            Points to which the Pareto reflections are restricted
+
+        Returns
+        -------
+        np.ndarray
+            (Pareto) points of Pareto reflections restricted to points array
+
+        """
         best_fits = []
         for pareto_reflection in self.used_pareto_reflections:
             if pareto_reflection is not None:

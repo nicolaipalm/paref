@@ -3,10 +3,9 @@ from typing import Callable
 
 import numpy as np
 from scipy.optimize import differential_evolution
-from scipy.stats import qmc
 from warnings import warn
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.moo_algorithms.paref_moo import ParefMOO, CompositionWithParetoReflection
 from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
@@ -78,12 +77,10 @@ class GPRMinimizer(ParefMOO):
     """
 
     def __init__(self,
-                 max_iter_minimizer: int = 100,
+                 max_iter_minimizer: int = 250,
                  training_iter: int = 2000,
                  learning_rate: float = 0.05,
-                 min_required_evaluations: int = 20,
-                 min_distance_to_evaluated_points: float = 2e-2,
-                 preprocess: bool = True):
+                 min_distance_to_evaluated_points: float = 2e-2, ):
         """Initialize the algorithms hyperparameters
 
         Parameters
@@ -108,8 +105,6 @@ class GPRMinimizer(ParefMOO):
         self._training_iter = training_iter
         self._learning_rate = learning_rate
         self._min_distance_to_evaluated_points = min_distance_to_evaluated_points
-        self._min_required_evaluations = min_required_evaluations
-        self.preprocess = preprocess
         self._gpr = None
 
     def apply_moo_operation(self,
@@ -128,25 +123,11 @@ class GPRMinimizer(ParefMOO):
         # TBA: control mechanism: when algo doesn't work give message about what went wrong
         # TBA: monitoring: stop time, evaluations found, if training process of gpr converged, all with hints
 
-        if not isinstance(blackbox_function.design_space, Bounds):
-            raise ValueError(f'Design space of blackbox function must be an instance of by Bounds! Design space is of'
-                             f'type {blackbox_function.design_space}.')
+        if len(blackbox_function.y) < 20:
+            raise ValueError('Blackbox function must have at least 20 evaluations! Apply the latin hypercube sampling '
+                             '(blackbox_function.perform_lhc(n=20)) first!')
 
-        if self._min_required_evaluations < 20:
-            warn(
-                'minimum number of evaluations is 20! The minimum number of evaluations is, thus, set to 20!',
-                UserWarning)
-            sleep(1)
-
-        if len(blackbox_function.evaluations) < self._min_required_evaluations:
-            [blackbox_function(x) for x in qmc.scale(
-                qmc.LatinHypercube(d=blackbox_function.dimension_design_space).random(
-                    n=self._min_required_evaluations - len(blackbox_function.evaluations)),
-                blackbox_function.design_space.lower_bounds,
-                blackbox_function.design_space.upper_bounds,
-            )]  # add samples according to latin hypercube scheme
-
-        gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate, preprocess=self.preprocess)
+        gpr = GPR(training_iter=self._training_iter, learning_rate=self._learning_rate, )
 
         base_blackbox_function = blackbox_function
 
@@ -162,6 +143,8 @@ class GPRMinimizer(ParefMOO):
         print(
             'Training...\n'
         )
+        sleep(0.1)  # ensure that the print statement is displayed before the training starts
+
         gpr.train(train_x=train_x, train_y=train_y)
         if np.any(gpr.model_convergence > 0.1):
             warn(
@@ -170,7 +153,7 @@ class GPRMinimizer(ParefMOO):
                 'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
             sleep(1)
         self._gpr = gpr
-        print('\nStarting Optimization...')
+        print('\nOptimization...')
 
         if len(pareto_reflections) != 0:
             pareto_reflection = pareto_reflections[0]
@@ -216,8 +199,8 @@ class GPRMinimizer(ParefMOO):
         if base_blackbox_function.y[-1] not in base_blackbox_function.pareto_front:
             warn(
                 'Found Point is not Pareto optimal! \n'
-                'Try more training iterations (training_iter) '
-                'and/or more evaluations of the bbf (min_required_evaluations).'
+                'Either the optimization converged or the optimization failed. Check the convergence by looking at '
+                'the difference between the last evaluations (blackbox_function.y).'
                 'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
             sleep(1)
 

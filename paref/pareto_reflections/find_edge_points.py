@@ -17,7 +17,8 @@ class FindEdgePoints(MinGParetoReflection):
 
     .. note::
 
-        In to dimensions, the edge points of the Pareto front always exist.
+        In two dimensions, the edge points of the Pareto correspond to the Pareto points which are
+        minimal in one component, i.e. to the one Pareto points.
 
     What it does
     ------------
@@ -30,16 +31,24 @@ class FindEdgePoints(MinGParetoReflection):
     .. math::
         p(x) = \sum_{i=1,...,n,i\\neq j}\\epsilon x_{i}+ x_j
 
-    where :math:`j` is the component in which the minimum is searched.
-
-    Examples
-    --------
-    # TBA: add
+    where :math:`j` is the component to which the edge corresponds.
     """
 
     def __init__(self,
                  dimension: int,
                  blackbox_function: BlackboxFunction, ):
-        self.bbf = blackbox_function
-        self._counter = 0
-        self.g = lambda x: np.sum(x)-x[dimension]
+        """
+
+        Parameters
+        ----------
+        dimension :
+            component to which the edge corresponds
+        blackbox_function :
+            blackbox function to which this reflection is applied
+        """
+        self.dimension = dimension
+        super().__init__(blackbox_function=blackbox_function)
+
+    @property
+    def g(self):
+        return lambda x: np.sum(x) - x[self.dimension]

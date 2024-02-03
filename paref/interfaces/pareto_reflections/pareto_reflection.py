@@ -13,21 +13,6 @@ class ParetoReflection:
         p: \mathbb{R}^n \\to \mathbb{R}^m
 
     with this interface.
-
-    Documentation should contain:
-
-    When to use
-    -----------
-    This sequence should be used if...
-
-    What it does
-    ------------
-    The sequence...
-
-    Examples
-    --------
-
-    TBA: into contribution
     """
 
     @abstractmethod
@@ -73,7 +58,12 @@ class ParetoReflection:
         raise NotImplementedError
 
     def best_fits(self, points: np.ndarray) -> np.ndarray:
-        """Return the Pareto points of Pareto reflection restricted to some evaluations
+        """Return the Pareto points of Pareto reflection with respect to the variable points
+
+        Parameters
+        ----------
+        points : np.ndarray
+            Points to which the Pareto reflection is restricted
 
         Returns
         -------
@@ -93,4 +83,4 @@ class ParetoReflection:
                     break
             if is_pareto:
                 pareto_points_indices.append(i)
-        return np.unique(np.array([points[i] for i in pareto_points_indices]),axis=0)
+        return np.unique(np.array([points[i] for i in pareto_points_indices]), axis=0)

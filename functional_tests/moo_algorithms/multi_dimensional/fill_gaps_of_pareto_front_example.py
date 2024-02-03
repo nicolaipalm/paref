@@ -8,7 +8,7 @@ stopping_criteria = MaxIterationsReached(max_iterations=3)
 
 input_dimensions = 2
 bench = TestingGPRBasedMOOs(input_dimensions=input_dimensions,
-                            max_iter_minimizer=100,
+                            max_iter_minimizer=250,
                             lh_evaluations=40,
                             stopping_criteria=stopping_criteria
                             )

@@ -3,7 +3,7 @@ from typing import Optional, List, Union
 
 import numpy as np
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
@@ -61,15 +61,7 @@ class ParefMOO:
     **apply** an MOO algorithm to a blackbox function and a sequence of Pareto reflections simply by
     calling its ::meth:`apply to sequence method
     <paref.interfaces.moo_algorithms.paref_moo.ParefMOO.apply_to_sequence>`.
-
-    Examples
-    --------
-    # TBA: implement algo, implement by sequence, apply to sequence
-
-
     """
-
-
 
     @abstractmethod
     def apply_moo_operation(self,
@@ -100,7 +92,6 @@ class ParefMOO:
     @property
     @abstractmethod
     def supported_codomain_dimensions(self) -> Optional[List[int]]:
-        # If None then all codomain dimensions are supported
         """Supported codomain dimensions
 
         This includes all the dimensions of the target space this MOO supports, i.e. to which this MOO can be applied.

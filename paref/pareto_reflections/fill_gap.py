@@ -16,22 +16,13 @@ class FillGap(MinGParetoReflection):
 
     .. note::
 
-        This function works best if the points are Pareto optimal.
+        This function works best if those points are Pareto optimal.
 
 
     What it does
     ------------
     The Pareto points of this map are (approximately) the Pareto points which are closest to the center of the gap.
 
-    Mathematical formula
-    --------------------
-
-    .. math::
-        TBA
-
-    Examples
-    --------
-    TBA
     """
 
     def __init__(self,
@@ -41,15 +32,12 @@ class FillGap(MinGParetoReflection):
 
         Parameters
         ----------
-        dimension_domain : np.ndarray
-            dimension of the domain of the Pareto reflection
+        blackbox_function : BlackboxFunction
+            blackbox function to which this reflection is applied
 
         gap_points : np.ndarray
-            m points of dimension m defining the gap with first dimension corresponding to the number of points
-
-        epsilon : float default 0.01
-            epsilon of underlying weighted norm
-
+            m points of dimension m defining the gap with first dimension of the numpy array
+            corresponding to the number of points
         """
         self._counter = 0
         self.bbf = blackbox_function

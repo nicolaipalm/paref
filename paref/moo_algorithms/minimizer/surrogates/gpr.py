@@ -108,20 +108,20 @@ class Gpr0Torch:
     def _train_with_attention(
             self, train_x: torch.Tensor, train_y: torch.Tensor
     ) -> dict:
-        # Initialize likelihood (with no constraints) and _model
         """
         This method is used to train _and_ track the progress of the hyperparameters,
         i.e. it stores the hyperparameters in each step and prints the values in each step.
         You can use this method to check if the training was succesfull or to debug your training.
         See example>training_with_attention for an example to visualize this progress.
         """
+        # Initialize likelihood (with no constraints) and _model
         model = ExactGP0(train_x, train_y, self._likelihood)
 
         # Set on the training mode of the models
         model.train()
         self._likelihood.train()
 
-        # Use the adam optimizer of torch
+        # Use the adam optimizer
         optimizer = torch.optim.Adam(model.parameters(), lr=self._learning_rate)
 
         # "Loss" for GPs - the marginal log likelihood
@@ -145,8 +145,8 @@ class Gpr0Torch:
             #      (i + 1, self._training_iter, loss.item(),
             #       model.covar_module.base_kernel.lengthscale.item(),
             #       model.likelihood.noise.item()))
-            # TBA_later: delete raw in hyper parameters since it is transformed
-            # Appending hyper parameter
+            # TBA_later: delete raw in hyperparameters since it is transformed
+            # Appending hyperparameters
             for name, parameter in model.named_parameters():
                 if model.constraint_for_parameter_name(name) is not None:
                     hyper_parameter[name].append(
@@ -185,31 +185,25 @@ class Gpr0Torch:
 
 
 class GPR:
-    def __init__(self, training_iter: int = 1000, learning_rate=0.05, preprocess=True):
+    def __init__(self,
+                 training_iter: int = 1000,
+                 learning_rate=0.05,):
         self._models = None
         self._training_iter = training_iter
         self._learning_rate = learning_rate
-        self._data_x = None
-        self._data_y = None
-        self.preprocess = preprocess
+        self._means = None
 
     def train(self, train_x: np.ndarray, train_y: np.ndarray):
         # prepossessing
-        if self.preprocess:
-            self._data_x = train_x
-            self._data_y = train_y
-            train_x = preprocess_x(train_x, train_x)
-            train_y = preprocess_y(train_y, train_y)
-
+        self._means = np.mean(train_y, axis=0)
         # training
         train_x = torch.Tensor(train_x)
         models = []
-        for output in train_y.T:
-            train_y = torch.Tensor(output)
+        for output in train_y.T - self._means.reshape(-1, 1):
             model = Gpr0Torch(
                 training_iter=self._training_iter, learning_rate=self._learning_rate
             )
-            model.train_torch(train_x, train_y)
+            model.train_torch(train_x, torch.Tensor(output))
             models.append(model)
         self._models = models
 
@@ -218,7 +212,7 @@ class GPR:
         losses_last = np.array([hp['loss'][int(self._training_iter * 0.5):] for hp in self.info])
 
         self._model_convergence = (np.max(losses_last, axis=1) - np.min(losses_last, axis=1)) / (
-                    np.max(losses, axis=1) - np.min(losses, axis=1))*2
+                np.max(losses, axis=1) - np.min(losses, axis=1)) * 2
         return True
 
     @property
@@ -226,35 +220,16 @@ class GPR:
         return self._model_convergence
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        # preprocess x
-        if self.preprocess:
-            x = preprocess_x(x, self._data_x)
         x = torch.Tensor([x.tolist()])
-
-        if self.preprocess:
-            return postprocess_y(np.array(
-                [model.predict_torch(x).mean.numpy()[0] for model in self._models]
-            ).T, self._data_y)  # return postprocessed y
-
-        else:
-            return np.array(
-                [model.predict_torch(x).mean.numpy()[0] for model in self._models]
-            ).T
+        return np.array(
+            [model.predict_torch(x).mean.numpy()[0] for model in self._models]
+        ).T+self._means
 
     def std(self, x: np.ndarray) -> np.ndarray:
-        if self.preprocess:
-            x = preprocess_x(x, self._data_x)
         x = torch.Tensor([x.tolist()])
-
-        if self.preprocess:
-            return postprocess_std(np.array(
-                [model.predict_torch(x).stddev.numpy()[0] for model in self._models]
-            ).T, self._data_y)  # return postprocessed std
-
-        else:
-            return np.array(
-                [model.predict_torch(x).stddev.numpy()[0] for model in self._models]
-            ).T
+        return np.array(
+            [model.predict_torch(x).stddev.numpy()[0] for model in self._models]
+        ).T
 
     @property
     def info(self):

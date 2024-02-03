@@ -27,25 +27,10 @@ class FillGapsOfParetoFrontSequence(SequenceParetoReflections):
     This sequence returns in each step the
     :py:class:`fill gap <paref.pareto_reflections.fill_gap.FillGap>`
     Pareto reflection with gap spanning points corresponding to the greatest gap in the Pareto front of the evaluations.
-
-    Examples
-    --------
-    # TBA: add
-
     """
 
     def __init__(self,
-                 epsilon: float = 0.01
                  ):
-        """Specify some utopia point
-
-        Parameters
-        ----------
-        epsilon : float default 0.01
-            epsilon for numerical stability
-
-        """
-        self.epsilon = epsilon
         warnings.warn('This sequence is still under development and might not work properly!')
 
     def next(self, blackbox_function: BlackboxFunction) -> FillGap:

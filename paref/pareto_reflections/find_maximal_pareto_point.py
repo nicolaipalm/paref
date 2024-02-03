@@ -18,10 +18,9 @@ class FindMaximalParetoPoint(ParetoReflection):
     .. warning::
 
             This Pareto reflection assumes that the minima of components was already (approximately) found.
+            Use the ``Find1ParetoPoints`` Pareto reflection to find the minima of components.
 
-    Examples
-    --------
-    # TBA: add
+
     """
 
     def __init__(self,
@@ -33,6 +32,9 @@ class FindMaximalParetoPoint(ParetoReflection):
         ----------
         blackbox_function : BlackboxFunction
             blackbox function to which this reflection is applied
+
+        potency : int
+            p rank of the underlying p-norm
 
         """
         self._dimension_domain = blackbox_function.dimension_target_space

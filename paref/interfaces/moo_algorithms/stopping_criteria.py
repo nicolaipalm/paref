@@ -11,6 +11,7 @@ class StoppingCriteria:
     Evaluated, they return true if the stopping criteria is met and false otherwise.
 
     """
+
     @abstractmethod
     def __call__(self, blackbox_function: BlackboxFunction) -> bool:
         """

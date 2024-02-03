@@ -3,7 +3,7 @@ from typing import Union
 import numpy as np
 from scipy.stats import qmc
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.moo_algorithms.paref_moo import ParefMOO
 from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached

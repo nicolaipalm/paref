@@ -1,6 +1,6 @@
 from typing import List
 
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.moo_algorithms.paref_moo import ParefMOO, CompositionWithParetoReflection
 from paref.moo_algorithms.minimizer.gpr_minimizer import DifferentialEvolution

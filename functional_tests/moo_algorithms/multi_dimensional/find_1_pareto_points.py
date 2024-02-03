@@ -5,8 +5,8 @@ from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIte
 # stopping criteria of MOO algorithm given by maximum iterations
 stopping_criteria = MaxIterationsReached(max_iterations=5)
 
-bench = TestingGPRBasedMOOs(input_dimensions=5,
-                            max_iter_minimizer=100,
+bench = TestingGPRBasedMOOs(input_dimensions=2,
+                            max_iter_minimizer=250,
                             lh_evaluations=20,
                             stopping_criteria=stopping_criteria
                             )

@@ -11,13 +11,11 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
 
     .. warning::
 
-        If the approximate Pareto front is far away from the true Pareto front, then, this algorithm might
-        tries to get closer to the true Pareto front in advance of filling the gaps.
-        In order to prevent this, it is recommended to find the
+        It is recommended to find the
         edge points of the true Pareto front in advance.
         To do so, you could use
         :py:class:`fill gap
-        <paref.pareto_reflection_sequences.two_dimension.find_edge_points_sequence_2d.FindEdgePointsSequence2D>`
+        <paref.pareto_reflection_sequences.multi_dimension.find_edge_points_sequence.FindEdgePointsSequence>`
         for example.
 
     When to use
@@ -31,11 +29,6 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
     This sequence returns in each step the
     :py:class:`fill gap <paref.pareto_reflections.fill_gap_2d.FillGap2D>`
     Pareto reflection with two points corresponding to the greatest gap in the Pareto front of the evaluations.
-
-    Examples
-    --------
-    # TBA: add
-
     """
 
     def next(self, blackbox_function: BlackboxFunction) -> FillGap:

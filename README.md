@@ -63,7 +63,7 @@ moo = FindEdgePoints()
 
 ```python
 import numpy as np
-from paref.black_box_functions.design_space.bounds import Bounds
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 
 

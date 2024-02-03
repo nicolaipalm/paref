@@ -1,3 +1,5 @@
+import numpy as np
+
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.pareto_reflections.minimize_g import MinGParetoReflection
 
@@ -27,15 +29,24 @@ class Find1ParetoPoints(MinGParetoReflection):
         p(x) = \sum_{i=1,...,n,i\\neq j}\\epsilon x_{i}+ x_j
 
     where :math:`j` is the component in which the minimum is searched.
-
-    Examples
-    --------
-    # TBA: add
     """
 
     def __init__(self,
                  dimension: int,
                  blackbox_function: BlackboxFunction, ):
-        self.bbf = blackbox_function
-        self._counter = 0
-        self.g = lambda x: x[dimension]
+        """
+
+        Parameters
+        ----------
+        dimension :
+            component in which the minimum is searched
+
+        blackbox_function :
+            blackbox function to which this reflection is applied
+        """
+        self.dimension = dimension
+        super().__init__(blackbox_function=blackbox_function)
+
+    @property
+    def g(self):
+        return lambda x: x[self.dimension]
