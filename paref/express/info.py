@@ -126,10 +126,11 @@ class Info:
         self.maximal_pareto_point_std = self._surrogate._gpr.std(self._surrogate.x[-1])
 
         # Search for closest to theoretical global optimum
-        global_optimum_pareto_point_reflection = MinimizeWeightedNormToUtopia(utopia_point=self._minima,
-                                                                              potency=2,
-                                                                              scalar=np.ones(
-                                                                                  self._surrogate.dimension_target_space))
+        global_optimum_pareto_point_reflection = (
+            MinimizeWeightedNormToUtopia(utopia_point=self._minima,
+                                         potency=2,
+                                         scalar=np.ones(
+                                             self._surrogate.dimension_target_space)))
         self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
                                           sequence_pareto_reflections=global_optimum_pareto_point_reflection,
                                           stopping_criteria=MaxIterationsReached(max_iterations=1))
@@ -183,10 +184,14 @@ class Info:
             self.global_optimum = True
 
         print("""Done! You can access the following information about your Pareto front:
-        * model fitness: how well the model approximates the bbf, how to improve it and how certain its estimation is (Info.model_fitness)
-        * topology: topological information of your Pareto front (Info.topology)
-        * suggestion: for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
-        * minima: the estimated minima of each component (Info.minima)
+        * model fitness: how well the model approximates the bbf,
+            how to improve it and how certain its estimation is (Info.model_fitness)
+        * topology:
+            topological information of your Pareto front (Info.topology)
+        * suggestion:
+            for Pareto points to evaluate, how and why (Info.suggestion_pareto_points)
+        * minima:
+            the estimated minima of each component (Info.minima)
         """)
 
     @property
@@ -210,9 +215,8 @@ class Info:
         print(
             tabulate({'(Almost) Global optimum': [self.global_optimum],
                       'Shape': [self.concave_degree_description],
-                      'Dimension Pareto front': [self.dimension_pf], }
-                     , headers='keys')
-        )
+                      'Dimension Pareto front': [self.dimension_pf]},
+                     headers='keys'))
 
     @property
     def suggestion_pareto_points(self):
@@ -320,7 +324,8 @@ class Info:
                             ], headers=['Component', 'Target values', 'Std', 'Dominates x% of evaluations']))
             print(f"""
             I propose
-            {self._minima_pareto_points[np.argmax([self._better_than_evaluations(minima) for minima in self._minima_pareto_points])]}
+            {self._minima_pareto_points[
+                np.argmax([self._better_than_evaluations(minima) for minima in self._minima_pareto_points])]}
             because it dominates the most evaluations.
             """)
 

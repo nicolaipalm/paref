@@ -1,7 +1,5 @@
 import numpy as np
 
-from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
-
 
 def preprocess_x(x: np.ndarray, data: np.ndarray):
     min_components = np.min(data, axis=0)

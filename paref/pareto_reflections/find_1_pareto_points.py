@@ -1,5 +1,3 @@
-import numpy as np
-
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.pareto_reflections.minimize_g import MinGParetoReflection
 

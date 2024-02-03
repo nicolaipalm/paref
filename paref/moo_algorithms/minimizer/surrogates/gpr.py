@@ -4,9 +4,6 @@ from matplotlib import pyplot as plt
 from tqdm import tqdm
 import numpy as np
 
-from paref.moo_algorithms.minimizer.surrogates.preprocessing import preprocess_x, preprocess_y, postprocess_y, \
-    postprocess_std
-
 
 class ExactGP0(gpytorch.models.ExactGP):
     """
@@ -187,7 +184,7 @@ class Gpr0Torch:
 class GPR:
     def __init__(self,
                  training_iter: int = 1000,
-                 learning_rate=0.05,):
+                 learning_rate=0.05, ):
         self._models = None
         self._training_iter = training_iter
         self._learning_rate = learning_rate
@@ -223,7 +220,7 @@ class GPR:
         x = torch.Tensor([x.tolist()])
         return np.array(
             [model.predict_torch(x).mean.numpy()[0] for model in self._models]
-        ).T+self._means
+        ).T + self._means
 
     def std(self, x: np.ndarray) -> np.ndarray:
         x = torch.Tensor([x.tolist()])

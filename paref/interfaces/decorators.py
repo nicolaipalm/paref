@@ -42,6 +42,7 @@ def store_pareto_reflections(func):
 
     return wrapper
 
+
 def store(func, container: List):
     def wrapper(*args, **kwargs):
         """Store output of func in container
