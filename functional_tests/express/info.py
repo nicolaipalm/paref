@@ -3,7 +3,7 @@ from paref.express.express_search import ExpressSearch
 from paref.express.info import Info
 
 bbf = ZDT1(input_dimensions=2)
-bbf.perform_lhc(20)
+bbf.perform_lhc(30)
 
 moo = ExpressSearch(bbf)
 

@@ -77,7 +77,7 @@ class GPRMinimizer(ParefMOO):
     """
 
     def __init__(self,
-                 max_iter_minimizer: int = 250,
+                 max_iter_minimizer: int = 500,
                  training_iter: int = 2000,
                  learning_rate: float = 0.05,
                  min_distance_to_evaluated_points: float = 2e-2, ):

@@ -9,7 +9,7 @@ In other words, whenever the MOO does not perform as expected, there are only tw
 Check again if the blackbox function's
 - design space dimension
 - target space dimension
-- the bounds
+- bounds
 
 are correct.
 Next, check if the blackbox function's ``__call__`` method returns reasonable values by calling the
@@ -71,12 +71,8 @@ info = Info(blackbox_function=bbf, training_iter=2000, learning_rate=0.05)  # Cr
 Info.model_fitness
 ```
 
-and have a look at the plot of the training. It should look like this:
-
-[//]: # (# TODO image)
-
-If you recognize the plot to be 'non-converging'
-try **more training iterations** (e.g. ``training_iter=5000``) and check if the optimization did succeed.
+and have a look at the plot of the training. If you recognize the plot to be 'non-converging'
+try **more training iterations** (e.g. ``training_iter=5000``) and check if the training converged:
 ```python
 info = Info(blackbox_function=bbf, training_iter=5000, learning_rate=0.05)  # Create an instance of the Paref Info class
 Info.model_fitness

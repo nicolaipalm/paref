@@ -1,5 +1,5 @@
 ================================
-Welcome to Paref's documentation
+Paref: Multi-Objective Optimization for Expensive Blackbox-Functions
 ================================
 
 .. toctree::
@@ -7,29 +7,26 @@ Welcome to Paref's documentation
    :caption: Contents:
    :hidden:
 
-      tutorials <./description/tutorials.rst>
+      basics <./description/basics.md>
+      api-reference <./api.rst>
+      FAQs <./description/faqs.md>
+      demo <>
+      trouble-shooting <./description/trouble-shooting.md>
       algorithms <./description/moo-algorithms.md>
       sequences <./description/sequences.md>
       reflections <./description/reflections.md>
-      api-reference <./api.rst>
-
-Multi-objective optimization strives to
-find the best trade-offs between conflicting objectives.
-Paref is a Python library that provides a set of tools to perform _problem-tailored_ multi-objective optimization (MOO).
-Problem-tailored, here, means that the user incorporates her preference for certain trade-offs
-into the optimization process - for example her preference for certain objectives.
-This makes Parefs' MOO algorithms as effective and efficient as possible and particularly well suited for problems that are computationally expensive.
+      paper <>
 
 
-
-Paref is a Python package for algorithmic *problem tailored* multi-objective optimization.
+Paref is a Python package for algorithmic *problem-tailored*
+multi-objective optimization for expensive blackbox-functions with mathematical guarantees.
 This package contains...
 
-* a series of ready-to-use MOO algorithms corresponding to frequently targeted properties
+* a series of ready-to-use `MOO algorithms <./description/moo-algorithms.md>` for frequently encountered problem types
 
-* a framework for you to implement and apply your problem tailored MOO algorithm
+* a framework to quickly implement and apply problem tailored MOO algorithms
 
-* generic and intuitive interfaces for MOO algorithms, black-box functions and more, so solving a MOO problem with user-defined properties with Paref requires only minimal effort
+* generic and intuitive interfaces for MOO algorithms, black-box functions and more, so solving a MOO problem with Paref requires only minimal effort
 
 The official release is available at PyPi:
 
@@ -41,14 +38,17 @@ The official release is available at PyPi:
 
 .. _cards-clickable:
 
-.. card:: Getting started
-    :link: ./notebooks/main_example_small.ipynb
-    :width: 45%
+.. card:: Getting Started
+    :link: ./notebooks/getting_started.ipynb
 
-    Get started with Paref!
+    Apply your first MOO algorithm with Paref (2 min read)
 
-.. card:: User Guide
-    :link: ./description/faqs.md
-    :width: 45%
+.. card:: The Basics
+    :link: ./description/basics.md
 
-    Check out the user guide for more information regarding Parefs functionality!
+    Learn the basics of Paref (10 min read)
+
+.. card:: Full Use-Case
+    :link: ./notebooks/main_example.ipynb
+
+    Built a use-case tailored and fully customized MOO algorithm with Paref (20 min read)
