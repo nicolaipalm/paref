@@ -10,8 +10,9 @@ from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflecti
 class MinGParetoReflection(ParetoReflection):
     """Find a Pareto point among all points minimizing some function g
 
-     When to use
+    When to use
     -----------
+
     This Pareto reflection should be used if a Pareto point is desired which is Pareto optimal
     among all points minimizing some function g.
 
@@ -33,18 +34,16 @@ class MinGParetoReflection(ParetoReflection):
 
     def __init__(self,
                  blackbox_function: BlackboxFunction,
-                 epsilon: float = 1e-3):
+                 epsilon: float = 1e-2):
         """
 
         Parameters
         ----------
-        g :
-            function which is minimized
 
-        blackbox_function :
+        blackbox_function : BlackboxFunction
             blackbox function to which Pareto reflection is applied
 
-        epsilon :
+        epsilon : float default 1e-3
             epsilon determining weight of components
         """
         self.bbf = blackbox_function
@@ -58,6 +57,8 @@ class MinGParetoReflection(ParetoReflection):
             self._k = np.min([self.g(y) for y in self.bbf.y])
             self._mg = np.min([self.g(y) for y in self.bbf.y])
             self._counter += 1
+            # TODO: doesnt work for fill gap and priority search -> 1e-3 to 1e-2
+
         return self.g(x) - self._k + np.sum(self._epsilon * (x - self._c))
 
     @property

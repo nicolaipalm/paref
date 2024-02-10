@@ -1,4 +1,4 @@
-from functional_tests.blackbox_functions.two_dimensional.zdt1 import ZDT1
+from functional_tests.blackbox_functions.zdt1 import ZDT1
 
 bbf = ZDT1(input_dimensions=3)
 bbf.perform_lhc(20)

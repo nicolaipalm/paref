@@ -13,6 +13,15 @@ Welcome to Paref's documentation
       reflections <./description/reflections.md>
       api-reference <./api.rst>
 
+Multi-objective optimization strives to
+find the best trade-offs between conflicting objectives.
+Paref is a Python library that provides a set of tools to perform _problem-tailored_ multi-objective optimization (MOO).
+Problem-tailored, here, means that the user incorporates her preference for certain trade-offs
+into the optimization process - for example her preference for certain objectives.
+This makes Parefs' MOO algorithms as effective and efficient as possible and particularly well suited for problems that are computationally expensive.
+
+
+
 Paref is a Python package for algorithmic *problem tailored* multi-objective optimization.
 This package contains...
 
@@ -34,10 +43,12 @@ The official release is available at PyPi:
 
 .. card:: Getting started
     :link: ./notebooks/main_example_small.ipynb
+    :width: 45%
 
     Get started with Paref!
 
 .. card:: User Guide
-    :link: ./description/howto.md
+    :link: ./description/faqs.md
+    :width: 45%
 
     Check out the user guide for more information regarding Parefs functionality!

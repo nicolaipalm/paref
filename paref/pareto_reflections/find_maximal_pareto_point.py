@@ -25,7 +25,7 @@ class FindMaximalParetoPoint(ParetoReflection):
 
     def __init__(self,
                  blackbox_function: BlackboxFunction,
-                 potency: int = 4,):
+                 potency: int = 4, ):
         """
 
         Parameters
@@ -39,11 +39,17 @@ class FindMaximalParetoPoint(ParetoReflection):
         """
         self._dimension_domain = blackbox_function.dimension_target_space
         self.potency = potency
-        self.normalize = lambda x: x-np.min(blackbox_function.y, axis=0)
-        # normalize such that components are (approximately) in the range [0,1]
+        self._counter = 0
+        self.bbf = blackbox_function
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        return np.linalg.norm(self.normalize(x), ord=self.potency)
+        if self._counter < 2:
+            self._counter += 1
+            if len(self.bbf.y) == 0:
+                self.m = 0
+            else:
+                self.m = np.min(self.bbf.y, axis=0)
+        return np.linalg.norm(x - self.m, ord=self.potency)
 
     @property
     def dimension_codomain(self) -> int:

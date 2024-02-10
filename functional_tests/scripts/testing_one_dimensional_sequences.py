@@ -4,8 +4,8 @@ import numpy as np
 import plotly.graph_objects as go
 from pymoo.indicators.hv import Hypervolume
 
-from functional_tests.blackbox_functions.two_dimensional.zdt1 import ZDT1
-from functional_tests.blackbox_functions.two_dimensional.zdt2 import ZDT2
+from functional_tests.blackbox_functions.zdt1 import ZDT1
+from functional_tests.blackbox_functions.zdt2 import ZDT2
 from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
 from paref.interfaces.pareto_reflections.pareto_reflection import ParetoReflection
 from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections import SequenceParetoReflections

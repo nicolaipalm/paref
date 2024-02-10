@@ -84,7 +84,6 @@ from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 class TestFunction(BlackboxFunction):
     def __call__(self, x: np.ndarray) -> np.ndarray:
         y = np.array([np.sum(x ** 2), x[0]])
-        self._evaluations.append([x, y])
         return y
 
     @property
@@ -98,7 +97,7 @@ class TestFunction(BlackboxFunction):
     @property
     def design_space(self) -> Bounds:
         return Bounds(upper_bounds=np.ones(self.dimension_design_space),
-                      lower_bounds=-np.zeros(self.dimension_design_space))
+                      lower_bounds=np.zeros(self.dimension_design_space))
 
 
 blackbox_function = TestFunction()
@@ -156,8 +155,6 @@ This requires implementing the above information:
 - the accepted design values within the ``def design_space(self) -> Union[Bounds]`` property
 - the dimension of the target space within the ``def dimension_target_space(self) -> int`` property
 - the assignment of some vector of design parameters to its corresponding target features within the `` def __call__(self, x: np.ndarray) -> np.ndarray`` method
-> ❗️ The blackbox function in Paref requires storing its evaluations in the ``self._evaluations`` variable. Every evaluation must be of the form [x,y] where
-> x is the vector of design parameters (stored in a one dimensional numpy array) and y is the vector of corresponding target features (stored in a one dimensional numpy array)!
 
 **Example:**
 Lets consider a blackbox function which has three design parameters each in a range of zero and one with two target features.
@@ -176,9 +173,7 @@ from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 
 class TestFunction(BlackboxFunction):
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        y = x[:1]
-        self._evaluations.append([x, y])  # store the evaluation
-        return y
+        return x[:1]
 
     @property
     def dimension_design_space(self) -> int:
@@ -207,7 +202,7 @@ Implementing a blackbox function into a Parefs interface allows us to
 - reduce the effort to a minimum
 - include generic error checking and handling
 - check that all needed information of the blackbox function is handed
-- include functionality such as calculating the Pareto front
+- include functionality such as calculating the Pareto front, saving and loading
 
  </details>
 
