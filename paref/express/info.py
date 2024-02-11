@@ -90,6 +90,8 @@ class Info:
 
         Call this method whenever you have evaluated the blackbox function at some design.
         """
+        if len(self._blackbox_function.y) == 0:
+            raise ValueError('You must evaluate the blackbox function at least once before obtaining information!')
 
         print('==========================================='
               '\nObtaining information about the approximate Pareto front...')

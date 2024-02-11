@@ -1,6 +1,7 @@
 # The Basics
 
-In a nutshell, [Paref's algorithms]() let you target certain user-defined properties of Pareto points making the MOO as
+In a nutshell, [Paref's algorithms]() let you target certain user-defined
+[properties of Pareto points](./faqs.md) making the MOO as
 efficient and fast as possible.
 This makes Paref ideal for optimizing expensive blackbox functions.
 
@@ -11,7 +12,8 @@ For example, in most cases the user is only interested in
 1. the Pareto points minimizing some component
 2. the 'real trade-off' closest to the theoretical global optimum (i.e. the utopia point)
 
-Evaluating other Pareto points would just waste valuable resources and an [MOO algorithm targeting only those Pareto points]()
+Evaluating other Pareto points would just waste valuable resources and
+an [MOO algorithm targeting only those Pareto points]()
 is desirable. With Paref you can do exactly that.
 
 
@@ -148,7 +150,7 @@ bbf = TestBlackboxFunction()  # Initialize the blackbox function
 </details>
 
 Everything else is handled by Paref:
-- the exploration of the target space: ``bbf.perform_lhc(n_samples)``
+- the exploration of the target space: ``bbf.perform_lhc(n_samples)`` (20 samples as a rule of thumb)
 - storing the evaluations of the blackbox function (accessed by ``bbf.evaluations``, ``bbf.x`` and ``bbf.y``)
 - saving and loading evaluations (``bbf.save(path)`` and ``bbf.load(path)``)
 - calculating the pareto front (``bbf.pareto_front``)

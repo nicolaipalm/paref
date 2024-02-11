@@ -1,5 +1,5 @@
 ================================
-Paref: Multi-Objective Optimization for Expensive Blackbox-Functions
+Multi-Objective Optimization for Expensive Blackbox-Functions
 ================================
 
 .. toctree::
@@ -8,23 +8,23 @@ Paref: Multi-Objective Optimization for Expensive Blackbox-Functions
    :hidden:
 
       basics <./description/basics.md>
+      demo <>
       api-reference <./api.rst>
       FAQs <./description/faqs.md>
-      demo <>
       trouble-shooting <./description/trouble-shooting.md>
       algorithms <./description/moo-algorithms.md>
       sequences <./description/sequences.md>
       reflections <./description/reflections.md>
-      paper <>
+      paper <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4668407>
 
 
 Paref is a Python package for algorithmic *problem-tailored*
-multi-objective optimization for expensive blackbox-functions with mathematical guarantees.
+multi-objective optimization of *expensive blackbox-functions*.
 This package contains...
 
-* a series of ready-to-use `MOO algorithms <./description/moo-algorithms.md>` for frequently encountered problem types
+* a series of ready-to-use `MOO algorithms <./description/moo-algorithms.md>`_ for frequently encountered problem types
 
-* a framework to quickly implement and apply problem tailored MOO algorithms
+* a framework to quickly implement and apply fully customized MOO algorithms
 
 * generic and intuitive interfaces for MOO algorithms, black-box functions and more, so solving a MOO problem with Paref requires only minimal effort
 
@@ -51,4 +51,4 @@ The official release is available at PyPi:
 .. card:: Full Use-Case
     :link: ./notebooks/main_example.ipynb
 
-    Built a use-case tailored and fully customized MOO algorithm with Paref (20 min read)
+    Built a fully customized MOO algorithm with Paref (20 min read)

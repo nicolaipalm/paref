@@ -62,7 +62,10 @@ html_theme_path = ['_themes', ]
 html_theme_options = {
     'github_url': 'https://github.com/nicolaipalm/paref',
     'search_bar_text': 'Search for treasure...',
-    'nosidebar': True,
+}
+
+html_sidebars = {
+  'path/to/page': [],
 }
 
 html_title = 'Paref'

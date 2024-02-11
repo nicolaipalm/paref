@@ -234,7 +234,7 @@ class BlackboxFunction:
         if isinstance(self.design_space, Bounds):
             [self(x) for x in qmc.scale(
                 qmc.LatinHypercube(d=self.dimension_design_space).random(
-                    n=n - len(self.evaluations)),
+                    n=n),
                 self.design_space.lower_bounds,
                 self.design_space.upper_bounds,
             )]  # add samples according to latin hypercube scheme
