@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def readme():
@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='paref',
-    version='0.2.2',
+    version='0.2.0',
     license='MIT',
     description='Pareto reflection based multi-objective optimization',
     long_description=readme(),
@@ -38,4 +38,7 @@ setup(
         'test': ['pytest', 'pytest-cov'],
     },
     test_suite='tests',
+    packages=find_packages(
+        exclude=['dashboard*', 'functional_tests'],  # alternatively: `exclude=['additional*']`
+    ),
 )
