@@ -1,5 +1,5 @@
 [![Python Test & Lint](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml/badge.svg)](https://github.com/nicolaipalm/paref/actions/workflows/python-test.yml)
-[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg?style=plastic)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg?style=plastic)](https://www.python.org/downloads/)
 
 [documentation](https://paref.readthedocs.io/en/latest/)//[notebooks](https://github.com/nicolaipalm/paref/tree/main/docs/notebooks)//[demo](https://huggingface.co/spaces/NicoPalm/paref-showcase)//[paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4668407)
 

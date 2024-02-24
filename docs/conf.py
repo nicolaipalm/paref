@@ -64,10 +64,6 @@ html_theme_options = {
     'search_bar_text': 'Search for treasure...',
 }
 
-html_sidebars = {
-  'path/to/page': [],
-}
-
 html_title = 'Paref'
 
 # Add any paths that contain custom static files (such as style sheets) here,
