@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='paref',
-    version='0.2.0',
+    version='0.2.1',
     license='MIT',
     description='Pareto reflection based multi-objective optimization',
     long_description=readme(),
