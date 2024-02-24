@@ -1,10 +1,17 @@
-.. currentmodule:: paref
-
-.. _api:
-
 API Reference
 =============
 This page contains the API reference for public objects and functions in ``paref``.
+
+.. autosummary::
+    :toctree: api
+    :recursive:
+
+    paref.moo_algorithms
+    paref.pareto_reflection_sequences
+    paref.pareto_reflections
+    paref.black_box_functions
+    paref.interfaces
+    paref.express
 
 
 Paref Express
