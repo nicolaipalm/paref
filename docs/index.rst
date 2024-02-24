@@ -8,11 +8,11 @@ MOO for Expensive Blackbox-Functions
    :hidden:
 
       basics <./description/basics.md>
-      demo <>
-      api-reference <./api.rst>
       FAQs <./description/faqs.md>
       trouble-shooting <./description/trouble-shooting.md>
       algorithms <./description/moo-algorithms.md>
+      demo <https://huggingface.co/spaces/NicoPalm/paref-showcase>
+      api-reference <./api.rst>
       sequences <./description/sequences.md>
       reflections <./description/reflections.md>
       theory <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4668407>

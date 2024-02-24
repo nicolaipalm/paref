@@ -39,6 +39,6 @@ setup(
     },
     test_suite='tests',
     packages=find_packages(
-        exclude=['dashboard*', 'functional_tests'],  # alternatively: `exclude=['additional*']`
+        exclude=['functional_tests'],
     ),
 )
