@@ -15,14 +15,28 @@ This is done by calling the ``apply_to_sequence`` method of some MOO algorithm (
 interface)
 to the sequence of Pareto reflections.
 
-All reflections are found within the ``paref.pareto_reflection_sequences`` module.
+```python
+from paref.moo_algorithms.minimizer.gpr_minimizer import GPRMinimizer
+from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
+from paref.pareto_reflection_sequences.multi_dimensional.find_edge_points_sequence import FindEdgePointsSequence
+
+moo = GPRMinimizer()
+reflection = FindEdgePointsSequence()
+stopping_criteria = MaxIterationsReached(max_iterations=1)
+moo.apply_to_sequence(blackbox_function=bbf,
+                      sequence_pareto_reflections=reflection,
+                      stopping_criteria=stopping_criteria)
+```
+
+All sequences are found within the ``paref.pareto_reflection_sequences`` module.
 You can access the Pareto points fitting the properties best by calling the ``best_fits`` attribute.
 Currently, Paref includes implementations of the following sequences of Pareto reflections
 (illustrated by their corresponding property):
 
-|                                     Property                                     |                                     Graphic                                     |              Sequence               | Supported target space dimension |       Note       |
-|:--------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|:-----------------------------------:|:--------------------------------:|:----------------:|
-|                           Filling gaps of Pareto front                           | ![Fill Gaps](../graphics/plots/reflections/FillGapsOfParetoFrontSequence2D.svg) | ``FillGapsOfParetoFrontSequence2D`` |                2                 |                  |
-|                    Being the edge points of the Pareto front                     |     ![Fill Gaps](../graphics/plots/reflections/FindEdgePointsSequence.svg)      |     ``FindEdgePointsSequence``      |               All                |                  |
-|                Repeating a (list of) Pareto reflections (generic)                |                                                                                 |        ``RepeatingSequence``        |               All                | Generic sequence |
-| Repeating a single Pareto reflection until a stopping criterion is met (generic) |                                                                                 |   ``NextWhenStoppingCriteriaMet``   |               All                | Generic Sequence |
+|                                                 Property                                                  |                                     Graphic                                     |              Sequence               | Supported target space dimension |       Note       |
+|:---------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|:-----------------------------------:|:--------------------------------:|:----------------:|
+|                                       Filling gaps of Pareto front                                        | ![Fill Gaps](../graphics/plots/reflections/FillGapsOfParetoFrontSequence2D.svg) | ``FillGapsOfParetoFrontSequence2D`` |                2                 |                  |
+|                                 Being the edge points of the Pareto front                                 |    ![Edge Points](../graphics/plots/reflections/FindEdgePointsSequence.svg)     |     ``FindEdgePointsSequence``      |               All                |                  |
+|                           Being minimal in some component (for all components)                            |  ![1 Pareto Points](../graphics/plots/reflections/FindEdgePointsSequence.svg)   |     ``FindEdgePointsSequence``      |               All                |                  |
+|                            Repeating a (list of) Pareto reflections (generic)                             |                                                                                 |        ``RepeatingSequence``        |               All                | Generic sequence |
+| Repeating a single Pareto reflection of a list of reflections until a stopping criterion is met (generic) |                                                                                 |   ``NextWhenStoppingCriteriaMet``   |               All                | Generic Sequence |

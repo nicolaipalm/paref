@@ -5,8 +5,7 @@ import numpy as np
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.moo_algorithms.minimizer.gpr_minimizer import GPRMinimizer
 from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
-from paref.pareto_reflection_sequences.multi_dimensional.find_1_pareto_points_for_all_components_sequence import \
-    Find1ParetoPointsForAllComponentsSequence
+from paref.pareto_reflection_sequences.multi_dimensional.find_edge_points_sequence import FindEdgePointsSequence
 from paref.pareto_reflections.find_maximal_pareto_point import FindMaximalParetoPoint
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 from paref.pareto_reflections.operations.compose_sequences import ComposeSequences
@@ -22,8 +21,8 @@ class ExpressSearch:
     designed to cover most frequently used MOOs and to provide a good starting point for further optimization.
     Those include:
 
-    * minimal search: Determine the edges and a maximal point of the Pareto front, i.e. Pareto points minimal in some
-        components for each component and some Pareto point which is a real trade-off between all components.
+    * minimal search: Determine the edges and a maximal point of the Pareto front, i.e. Pareto points laying on the
+        boundary of the Pareto front and some Pareto point which is a real trade-off between all components.
         This algorithm should always be applied prior to any other MOO algorithm.
 
     * priority search: Find Pareto points which reflect your priorities of certain components. With this algorithm you
@@ -54,7 +53,8 @@ class ExpressSearch:
         """
         self._bbf = blackbox_function
         self._constraints = constraints
-
+        self._edge_points = np.empty(
+            (blackbox_function.dimension_target_space, blackbox_function.dimension_target_space), dtype=object)
         self._one_points = np.empty(
             (blackbox_function.dimension_target_space, blackbox_function.dimension_target_space), dtype=object)
         self._max_point = None
@@ -82,6 +82,13 @@ class ExpressSearch:
         max_evaluations : int
             maximum number of allowed evaluations of the blackbox function
 
+        Examples
+        --------
+
+        >>> from paref.express.express_search import ExpressSearch
+        >>> moo = ExpressSearch(bbf,)
+        >>> moo.minimal_search(3)  # minimal search granting 3 evaluations of the blackbox function
+
         """
         if max_evaluations < self._bbf.dimension_target_space + 1:
             raise ValueError(f'You must at least grand one evaluation per component of the target space plus one '
@@ -95,7 +102,7 @@ class ExpressSearch:
 
         ############################################################################################################
         # Find Pareto points minimal in some components for each component
-        min_components_sequence = Find1ParetoPointsForAllComponentsSequence()
+        min_components_sequence = FindEdgePointsSequence()
 
         if self._constraints is not None:
             min_components_sequence = ComposeSequences(self._constraints, min_components_sequence)
@@ -105,12 +112,12 @@ class ExpressSearch:
                                             min_components_sequence,
                                             MaxIterationsReached(max_iterations=max_evals_components))
 
-        self._one_points = min_component_moo.best_fits
+        self._edge_points = min_component_moo.best_fits
 
         ############################################################################################################
         # Find some Pareto point which is a real trade-off between all components
         self.search_for_best_real_trade_off(max_evals_maximal_point)
-        print("Access the Pareto points minimizing some component by calling the attribute 'minima_components'.")
+        print("Access the edge Pareto points by calling the attribute 'edge_points'.")
 
     def search_for_minima(self, max_evaluations: int, component: int):
         """Find Pareto points minimal in some component
@@ -121,6 +128,14 @@ class ExpressSearch:
             maximum number of allowed evaluations of the blackbox function
         component : int
             component to minimize
+
+        Examples
+        --------
+
+        >>> from paref.express.express_search import ExpressSearch
+        >>> moo = ExpressSearch(bbf,)
+        >>> moo.search_for_minima(max_evaluations=3, component=0)  # search for Pareto point minimal in the 0th obj
+
         """
         min_component_reflection = Find1ParetoPointsReflection(dimension=component, blackbox_function=self._bbf, )
 
@@ -142,6 +157,13 @@ class ExpressSearch:
         ----------
         max_evaluations : int
             maximum number of allowed evaluations of the blackbox function
+
+        Examples
+        --------
+
+        >>> from paref.express.express_search import ExpressSearch
+        >>> moo = ExpressSearch(bbf,)
+        >>> moo.search_for_best_real_trade_off(3)  # determine real-trade off in all components with 3 evaluations
 
         """
         moo_max_point_reflection = FindMaximalParetoPoint(blackbox_function=self._bbf, )
@@ -170,6 +192,14 @@ class ExpressSearch:
             priority vector
         max_evaluations : int
             maximum number of allowed evaluations of the blackbox function
+
+        Examples
+        --------
+
+        >>> from paref.express.express_search import ExpressSearch
+        >>> moo = ExpressSearch(bbf,)
+        >>> moo.minimal_search(3)  # minimal search granting 3 evaluations of the blackbox function
+
         """
         reflection = PrioritySearch(blackbox_function=self._bbf, priority=priority)
         moo_g = GPRMinimizer(training_iter=self._training_iter, )
@@ -178,6 +208,18 @@ class ExpressSearch:
                                 MaxIterationsReached(max_iterations=max_evaluations))
         self._priority_points.append(moo_g.best_fits)
         print("Access the best fitting Pareto points by calling the attribute 'priority_point'.")
+
+    @property
+    def edge_points(self) -> np.ndarray:
+        """Pareto points minimal in some components
+
+        Returns
+        -------
+        np.ndarray
+            Pareto points minimal in some components where the ith entry
+            is the Pareto points minimal in the ith component
+        """
+        return self._edge_points
 
     @property
     def minima_components(self) -> np.ndarray:

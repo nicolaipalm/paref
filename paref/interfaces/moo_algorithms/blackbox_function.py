@@ -1,3 +1,4 @@
+import warnings
 from abc import abstractmethod
 from typing import Union, List
 
@@ -60,15 +61,6 @@ class BlackboxFunction:
     >>>     @property
     >>>     def dimension_target_space(self) -> int:
     >>>         return 2
-
-
-    .. note::
-
-        In most cases, the closed mathematical blackbox functions are not known. Instead,
-        it can only be evaluated at a given input. In that case "evaluating" is
-        implemented in the ``__call__(self, x: np.ndarray) -> np.ndarray``
-        method below.
-
 
     """
 
@@ -231,6 +223,7 @@ class BlackboxFunction:
             number of LHC samples
 
         """
+        previous_number_evaluations = len(self.evaluations)
         if isinstance(self.design_space, Bounds):
             [self(x) for x in qmc.scale(
                 qmc.LatinHypercube(d=self.dimension_design_space).random(
@@ -241,6 +234,11 @@ class BlackboxFunction:
 
         else:
             raise ValueError('Design space property of blackbox function must be an instance of Bounds!')
+
+        if previous_number_evaluations != len(self.evaluations) - n:
+            warnings.warn(f'It seems like you are storing too less or many evaluations. '
+                          f'Number of evaluations before LHC is {previous_number_evaluations} '
+                          f'and afterwards {len(self.evaluations)}.')
 
     def save(self, path: str) -> None:
         """Save evaluations to npy-file

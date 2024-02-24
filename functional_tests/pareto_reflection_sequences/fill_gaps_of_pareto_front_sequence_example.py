@@ -13,6 +13,7 @@ input_dimensions = 2
 stopping_criteria = MaxIterationsReached(max_iterations=4)
 
 bench = TestingOneDimensionalSequences(input_dimensions=input_dimensions,
+                                       test_function='dtlz2',
                                        stopping_criteria=stopping_criteria
                                        )
 

@@ -6,8 +6,6 @@ from paref.interfaces.sequences_pareto_reflections.sequence_pareto_reflections i
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 
 
-# todo: as method of pareto_reflections (use function..)
-
 class ComposeSequences(SequenceParetoReflections):
     """Compose two Pareto reflections and obtain a new Pareto reflection
 

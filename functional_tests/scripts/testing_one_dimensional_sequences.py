@@ -1,9 +1,8 @@
 from typing import Union, Optional, List
 
-import numpy as np
 import plotly.graph_objects as go
-from pymoo.indicators.hv import Hypervolume
 
+from functional_tests.blackbox_functions.dtlz2 import DTLZ2
 from functional_tests.blackbox_functions.zdt1 import ZDT1
 from functional_tests.blackbox_functions.zdt2 import ZDT2
 from paref.interfaces.moo_algorithms.stopping_criteria import StoppingCriteria
@@ -16,8 +15,7 @@ class TestingOneDimensionalSequences:
     def __init__(self,
                  stopping_criteria: StoppingCriteria,
                  test_function: str = 'zdt2',
-                 input_dimensions: int = 5,
-                 reference_point: np.ndarray = np.array([2, 2])):
+                 input_dimensions: int = 5,):
         self.input_dimensions = input_dimensions
         self.stopping_criteria = stopping_criteria
 
@@ -29,12 +27,13 @@ class TestingOneDimensionalSequences:
         elif test_function == 'zdt1':
             self.function = ZDT1(input_dimensions=input_dimensions)
 
+        elif test_function == 'dtlz2':
+            self.function = DTLZ2(input_dimensions=input_dimensions)
+
         else:
             raise ValueError(f'Test function must be one of {test_function_set}!')
 
         self.real_PF = self.function.return_true_pareto_front()
-        self.hypervolume_max = self.function.calculate_hypervolume_of_pareto_front(reference_point=reference_point)
-        self.metric = Hypervolume(ref_point=reference_point, normalize=False)
 
     def __call__(self,
                  sequence: Union[SequenceParetoReflections, ParetoReflection],
@@ -45,34 +44,62 @@ class TestingOneDimensionalSequences:
                               sequence_pareto_reflections=sequence,
                               stopping_criteria=self.stopping_criteria)
 
-        y = np.array([evaluation[1] for evaluation in self.function.evaluations])
+        y = self.function.y
 
-        data = [
-            go.Scatter(x=self.real_PF.T[0],
-                       y=self.real_PF.T[1],
-                       name='Real Pareto front',
-                       line=dict(width=4)
-                       ),
-            go.Scatter(x=y.T[0], y=y.T[1],
-                       mode='markers',
-                       marker=dict(size=10),
-                       name='Determined Pareto points'
-                       ),
-        ]
-        if mark_points is not None:
-            data.append(go.Scatter(x=mark_points[1].T[0], y=mark_points[1].T[1],
-                                   mode='markers',
-                                   marker=dict(size=10, symbol='x'),
-                                   name=mark_points[0],
-                                   )
-                        )
+        if self.function.dimension_target_space == 2:
+            data = [
+                go.Scatter(x=self.real_PF.T[0],
+                           y=self.real_PF.T[1],
+                           name='Real Pareto front',
+                           line=dict(width=4)
+                           ),
+                go.Scatter(x=y.T[0], y=y.T[1],
+                           mode='markers',
+                           marker=dict(size=10),
+                           name='Determined Pareto points'
+                           ),
+            ]
+            if mark_points is not None:
+                data.append(go.Scatter(x=mark_points[1].T[0], y=mark_points[1].T[1],
+                                       mode='markers',
+                                       marker=dict(size=10, symbol='x'),
+                                       name=mark_points[0],
+                                       )
+                            )
 
-        if additional_traces is not None:
-            for additional_trace in additional_traces:
-                data.append(additional_trace)
+            if additional_traces is not None:
+                for additional_trace in additional_traces:
+                    data.append(additional_trace)
 
+        elif self.function.dimension_target_space == 3:
+            pf = self.real_PF
+            data = [go.Mesh3d(x=pf.T[0],
+                              y=pf.T[1],
+                              z=pf.T[2],
+                              opacity=0.5,
+                              name='Real Pareto front',
+                              color='rgba(244,22,100,0.6)'
+                              ),
+                    go.Scatter3d(x=self.function.y.T[0],
+                                 y=self.function.y.T[1],
+                                 z=self.function.y.T[2],
+                                 name='Determined Pareto points',
+                                 mode='markers')
+                    ]
+            if mark_points is not None:
+                data.append(go.Scatter3d(x=mark_points[1].T[0],
+                                         y=mark_points[1].T[1],
+                                         z=mark_points[1].T[2],
+                                         mode='markers',
+                                         marker=dict(size=10, symbol='x'),
+                                         name=mark_points[0],
+                                         )
+                            )
+
+            if additional_traces is not None:
+                for additional_trace in additional_traces:
+                    data.append(additional_trace)
         fig1 = go.Figure(data=data)
-
         fig1.update_layout(
             width=500,
             height=500,
@@ -83,6 +110,7 @@ class TestingOneDimensionalSequences:
         )
 
         fig1.show()
+
         # fig1.write_image(f'../../docs/graphics/plots/reflections/{type(sequence).__name__}.svg')
 
         return self.function

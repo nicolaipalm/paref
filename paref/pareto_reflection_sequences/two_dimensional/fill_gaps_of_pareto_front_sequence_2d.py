@@ -20,9 +20,9 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
 
     When to use
     -----------
-    Use this sequence if you want to successively close the gaps in the approximate Pareto front (the Pareto front of
+    Use this sequence if you want to iteratively close the gaps in the approximate Pareto front (the Pareto front of
     the evaluations).
-    This means Pareto points are searched which lie in the *middle* of two Pareto points.
+    This means Pareto points are searched which lie in the *center* of two Pareto points.
 
     What it does
     ------------

@@ -68,8 +68,8 @@ the mathematical background of Pareto reflections.
 <details>
   <summary>Can I use a cyber-physical system (e.g. Matlab or Modelica model) as blackbox function?</summary>
 
-Yes. Paref is well suited for this purpose, and we have done this many times in the past.
+Yes. Paref is well suited for this purpose, and was successfully applied in the past.
 However, Paref does not currently provide a direct interface to these systems. You have to implement it yourself.
-We are currently working on providing a direct interface to these systems.
+We are currently working on that issue.
 
 </details>

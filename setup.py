@@ -30,6 +30,7 @@ setup(
         'torch',
         'matplotlib',
         'tqdm',
+        'tabulate',
     ],
     extras_require={
         'dev': ['pre-commit', 'flake8', 'flake8-print'],

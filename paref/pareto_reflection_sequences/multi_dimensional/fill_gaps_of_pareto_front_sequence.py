@@ -1,5 +1,6 @@
 import itertools
 import warnings
+import time
 
 import numpy as np
 
@@ -32,6 +33,7 @@ class FillGapsOfParetoFrontSequence(SequenceParetoReflections):
     def __init__(self,
                  ):
         warnings.warn('This sequence is still under development and might not work properly!')
+        time.sleep(0.1)
 
     def next(self, blackbox_function: BlackboxFunction) -> FillGap:
         """Return a :py:class:`fill gap <paref.pareto_reflections.fill_gap_2d.FillGap2D>` Pareto reflection

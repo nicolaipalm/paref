@@ -3,7 +3,7 @@ from typing import Callable
 import numpy as np
 import scipy as sp
 
-from paref.pareto_reflections.find_1_pareto_points import Find1ParetoPoints
+from paref.pareto_reflections.find_edge_points import FindEdgePoints
 from paref.pareto_reflections.minimize_g import MinGParetoReflection
 
 
@@ -17,8 +17,9 @@ class PrioritySearch(MinGParetoReflection):
 
     .. warning::
 
-            This Pareto reflection assumes that the minima of components was already (approximately) found.
-            Use the ``Find1ParetoPoints`` Pareto reflection to find the minima of components.
+            This Pareto reflection assumes that an edge point corresponding to each component
+            was already (approximately) found.
+            Use the ``FindEdgePointsSequence`` sequence of Pareto reflections first.
 
     """
 
@@ -28,18 +29,19 @@ class PrioritySearch(MinGParetoReflection):
             raise ValueError(f'Priority vector has dimension {len(priority)} but must have dimension'
                              f'{blackbox_function.dimension_target_space}!')
 
+        priority = -(priority - np.sum(priority))
         priority = np.array(priority) / np.sum(priority)
 
         self._minima_components_pp = []
+        # TODO: it might happen that the edge points collapse i.e. that two edge points agree. than this algo fails
         for i in range(len(priority)):
             self._minima_components_pp.append(
-                Find1ParetoPoints(dimension=i, blackbox_function=blackbox_function).best_fits(
+                FindEdgePoints(dimension=i, blackbox_function=blackbox_function).best_fits(
                     blackbox_function.y)[0])
 
         self._center = np.sum(
             [priority[i] * self._minima_components_pp[i] for i in range(blackbox_function.dimension_target_space)],
             axis=0)
-
         # calculate orthogonal basis
         span = self._minima_components_pp - self._center
         self.orthogonal_basis = sp.linalg.orth(span.T).T

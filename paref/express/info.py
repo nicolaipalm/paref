@@ -44,7 +44,7 @@ class GprBbf(BlackboxFunction):
 
 
 class Info:
-    """Obtain relevant information about the Pareto front of a blackbox function and model fitness at the current stage
+    """Obtain relevant information about the Pareto front of a blackbox function and model fitness
 
         * topology:
             the shape of your Pareto front (Info.topology)
@@ -93,8 +93,7 @@ class Info:
         if len(self._blackbox_function.y) == 0:
             raise ValueError('You must evaluate the blackbox function at least once before obtaining information!')
 
-        print('==========================================='
-              '\nObtaining information about the approximate Pareto front...')
+        print('Obtaining information about the approximate Pareto front...')
         self._surrogate = GprBbf(self._blackbox_function, self._training_iter, self._learning_rate)
 
         # mean of std
@@ -107,6 +106,7 @@ class Info:
 
         # Search for minima in components
         minima_sequence = Find1ParetoPointsForAllComponentsSequence()
+
         self._minimizer.apply_to_sequence(blackbox_function=self._surrogate,
                                           sequence_pareto_reflections=minima_sequence,
                                           stopping_criteria=MaxIterationsReached(
@@ -157,10 +157,12 @@ class Info:
         self.dimension_pf = len(basis)  # approximation of dimension of Pareto front
         projected_point = np.sum(
             np.array([np.dot(self.maximal_pareto_point - self.edge_points[0], basis_vector) * basis_vector
-                      for basis_vector in basis]), axis=0)
-        min_edges = np.min(self.edge_points, axis=0) - self.edge_points[0]
+                      for basis_vector in basis]), axis=0) + self.edge_points[0]
+        min_edges = np.min(self.edge_points, axis=0)
+
+        # TODO: this is prone to small values!
         self._concave_degree = np.linalg.norm(
-            self.maximal_pareto_point - self.edge_points[0] - min_edges) / np.linalg.norm(
+            self.maximal_pareto_point - min_edges) / np.linalg.norm(
             projected_point - min_edges)
 
         if self._concave_degree < 0.5:
@@ -181,8 +183,7 @@ class Info:
         # is there a trade-off
         # TODO: global optimum check might fail: testing on real use-cases
         self.global_optimum = False
-        if np.average([np.linalg.norm(edge_point - edge_point[0]) for edge_point in
-                       self.edge_points[1:]]) < 1e-3:
+        if self.dimension_pf == 0:
             self.global_optimum = True
 
         print("""Done! You can access the following information about your Pareto front:
@@ -235,10 +236,10 @@ class Info:
             You can use any MOO algorithm provided in Paref to find that point.
             """)
 
-        elif self._concave_degree < 0.5:
+        elif self._concave_degree < 0.7:
             print("""Your objectives appear to be conflicting, so there are real trade-offs.
             Since your Pareto front appears to be highly convex, you may be able to achieve large improvements
-            in all components while suffering relatively small losses in others.
+            in one component while suffering relatively small losses in others.
             The best trade-off I've found that minimises all components simultaneously is
             """)
             print(tabulate({'Target values': [self.global_optimum_pareto_point.tolist()],
@@ -250,20 +251,25 @@ class Info:
             {self._minima}
             """)
             print("""
-            You can use the paref.Express.search_for_best_real_trade_off algorithm to find that Pareto point.
+            You can use the search_for_best_real_trade_off algorithm provided by the paref.express.express_search
+            module to find that Pareto point.
             """)
 
         elif self._concave_degree < 0.97:
             print("""
             Your objectives appear to be conflicting, so there are real trade-offs.
-            As your Pareto front appears to be convex, you may be able to achieve improvements in all
-            components while suffering a smaller loss in others.
+            As your Pareto front appears to be convex, you may be able to achieve improvements in one
+            component while suffering a smaller loss in others.
             A Pareto point that represents a real trade-off in all components I've found is
             """)
             print(tabulate({'Target values': [self.maximal_pareto_point.tolist()],
                             'Std': [self.maximal_pareto_point_std.tolist()],
                             'Dominates x% of evaluations': [self._better_than_evaluations(self.maximal_pareto_point)]},
                            headers='keys'))
+            print("""
+            You can use the search_for_best_real_trade_off algorithm provided by the paref.express.express_search
+            module to find that Pareto point.
+            """)
 
         elif self._concave_degree < 1.03:
             print("""
@@ -273,7 +279,7 @@ class Info:
             almost equal losses in other components.
             Accordingly, all Pareto points will be (almost) equally good and it is up to you to
             decide which components are more relevant.
-            I suggest you use the paref.Express.priority_search algorithm
+            I suggest you use the priority_search algorithm provided by the paref.express.express_search module
             to take into account your preference for certain components.
             """)
 
@@ -283,7 +289,7 @@ class Info:
             Your Pareto front appears to be concave.
             This means that any improvement in one component will result in a greater loss in the other components.
             Accordingly, I suggest that you focus on a single component by using
-            the Paref.Express.search_for_minima algorithm or to use the paref.Express.priority_search algorithm
+            the search_for_minima or priority_search algorithm provided by the paref.express.express_search module
             to take into account your preference for certain components.
             Here are the estimated Pareto points that minimise a component
             """)
@@ -314,7 +320,8 @@ class Info:
             loss in the other components.
             Accordingly, I suggest that you focus on a single component and
             choose the Pareto point that minimises that component.
-            You can use the paref.Express.search_for_minima algorithm to find those Pareto points.
+            You can use the search_for_minima algorithm provided by the paref.express.express_search module
+            to find those Pareto points.
 
             Here are the estimated Pareto points that minimise a component
             """)

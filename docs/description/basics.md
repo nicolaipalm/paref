@@ -1,6 +1,6 @@
 # The Basics
 
-In a nutshell, [Paref's algorithms]() let you target certain user-defined
+In a nutshell, [Paref's algorithms](./moo-algorithms.md) let you target certain user-defined
 [properties of Pareto points](./faqs.md) making the MOO as
 efficient and fast as possible.
 This makes Paref ideal for optimizing expensive blackbox functions.
@@ -8,12 +8,12 @@ This makes Paref ideal for optimizing expensive blackbox functions.
 ## What is a property of a Pareto point?
 
 Properties are basically a-priori Pareto point rankings of the user.
-For example, in most cases the user is only interested in
+For example, the user is only interested in
 1. the Pareto points minimizing some component
 2. the 'real trade-off' closest to the theoretical global optimum (i.e. the utopia point)
 
 Evaluating other Pareto points would just waste valuable resources and
-an [MOO algorithm targeting only those Pareto points]()
+an MOO algorithm targeting only those Pareto points
 is desirable. With Paref you can do exactly that.
 
 
@@ -63,7 +63,7 @@ bbf.perform_lhc(n=20)  # exploration based on the Latin Hypercube Sampling
 
 # 3: Apply a MOO algorithm reflecting your preference
 moo = ExpressSearch(blackbox_function=bbf)  # Create an instance of the Paref Express class
-moo.minimal_search(max_evaluations=5)  # perform the MOO algorithm
+moo.minimal_search(max_evaluations=3)  # perform the MOO algorithm
 
 # 4: Analyze the output
 print(f"Pareto front of bbf:\n {bbf.pareto_front}") # have a look at the Pareto front
@@ -93,11 +93,16 @@ This requires to implement the following four methods/properties:
     def __call__(self, x: np.ndarray) -> np.ndarray:
         return (value of the blackbox function at x)
 ```
-> **❗️NOTE❗:️** In order to make the optimization process as efficient as possible, the target values should be scaled to be approximately in the same range
-> by multiplying (and subtracting) them by an appropriate **positive** constant. For example, if the
-> first component of the target values is in the range of -100 to -1000 and the second component in the range of 0.001 to 0.002,
-> this will mostly likely cause a bad optimization. Multiplying the first component by 0.001 and the second component by 1000
-> will stabilize the optimization.
+
+[//]: # (> **❗️NOTE❗:️** In order to make the optimization process as efficient as possible, the target values should be scaled to be approximately in the same range)
+
+[//]: # (> by multiplying &#40;and subtracting&#41; them by an appropriate **positive** constant. For example, if the)
+
+[//]: # (> first component of the target values is in the range of -100 to -1000 and the second component in the range of 0.001 to 0.002,)
+
+[//]: # (> this will mostly likely cause a bad optimization. Multiplying the first component by 0.001 and the second component by 1000)
+
+[//]: # (> will stabilize the optimization.)
 - the design space dimension
 ```python
     @property
@@ -163,7 +168,7 @@ Applying one of Paref's MOO algorithms is done in a single line of code:
 Simply call the respective algorithm by determining the maximum number of evaluations of the blackbox function
 
 Using the example above, the following code first explores the design space granting 20 evaluations,
-then searches for the Pareto points minimizing some component and lastly the 'real trade-off'
+then searches for the Pareto points on the edges of the Pareto front and lastly the 'real trade-off'
 closest to the theoretical global optimum granting 5 evaluations in total:
 
 ```python
@@ -192,7 +197,7 @@ Other algorithms of Paref Express are:
 
 Paref Express' Info class provides a helpful tool to answer the following questions and guiding further MOO:
 - are the target objectives conflicting?
-- is there a specific trade-off which I should prefer (and look for)? If so, why?
+- is there a specific trade-off which I should prefer (and look for)? If so, how and why?
 - what is the dimension of the Pareto front (i.e. a point, a line, a plane etc.)?
 - what is the "shape" of the Pareto front (i.e. convex, concave, linear)?
 - what minimum value in each component can I expect?

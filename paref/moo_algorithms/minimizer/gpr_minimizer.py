@@ -9,6 +9,7 @@ from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.interfaces.moo_algorithms.paref_moo import ParefMOO, CompositionWithParetoReflection
 from paref.moo_algorithms.minimizer.surrogates.gpr import GPR
+from paref.pareto_reflections.minimize_g import MinGParetoReflection
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 
 
@@ -45,6 +46,55 @@ class DifferentialEvolution:
         return self._number_evaluations_last_call
 
 
+def calculate_optimal_scaling_x(fun, blackbox_function, max_iter_minimizer: int = 500):
+    # scale each component to [0,1]
+    dim_f = len(fun(blackbox_function.design_space.upper_bounds))
+    minimizer = DifferentialEvolution()
+    x_min = np.zeros(dim_f)
+    x_max = np.zeros(dim_f)
+    for i in range(len(x_min)):
+        res_i_min = minimizer(
+            function=lambda x: fun(x)[i],
+            max_iter=max_iter_minimizer,
+            upper_bounds=blackbox_function.design_space.upper_bounds,
+            lower_bounds=blackbox_function.design_space.lower_bounds,
+        )
+        res_i_max = minimizer(
+            function=lambda x: -fun(x)[i],
+            max_iter=max_iter_minimizer,
+            upper_bounds=blackbox_function.design_space.upper_bounds,
+            lower_bounds=blackbox_function.design_space.lower_bounds,
+        )
+        x_min[i] = fun(res_i_min)[i]
+        x_max[i] = fun(res_i_max)[i]
+
+    return lambda x: (x - x_min) / (x_max - x_min)
+
+
+def calculate_optimal_scaling_g(fun, g, blackbox_function, max_iter_minimizer: int = 500):
+    # Scale g and each component to [0,1]
+    minimizer = DifferentialEvolution()
+    res_g = minimizer(
+        function=lambda x: g(fun(x)),
+        max_iter=max_iter_minimizer,
+        upper_bounds=blackbox_function.design_space.upper_bounds,
+        lower_bounds=blackbox_function.design_space.lower_bounds,
+    )
+
+    res_g_max = minimizer(
+        function=lambda x: -g(fun(x)),
+        max_iter=max_iter_minimizer,
+        upper_bounds=blackbox_function.design_space.upper_bounds,
+        lower_bounds=blackbox_function.design_space.lower_bounds,
+    )
+
+    xg_min = fun(res_g)
+    gxg_min = g(xg_min)
+    xg_max = fun(res_g_max)
+    gxg_max = g(xg_max)
+    return lambda x: (x - gxg_min) / (gxg_max - gxg_min)
+
+
 class GPRMinimizer(ParefMOO):
     """Minimize any function by approximating it with a GPR and minimize the (computationally cheap) GPR
 
@@ -59,7 +109,7 @@ class GPRMinimizer(ParefMOO):
     Then, the trained GPR is minimized by a `differential evolution algorithm
     <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html>`_.
 
-    Furthermore, if a multi-dimensional blackbox is composed with a (scalar valued) Pareto reflection, then, for
+    If a multi-dimensional blackbox is composed with a (scalar valued) Pareto reflection, then, for
     each component a GPR is trained and the composition of the trained GPRs with the Pareto reflection is minimized.
 
 
@@ -153,17 +203,42 @@ class GPRMinimizer(ParefMOO):
                 'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
             sleep(1)
         self._gpr = gpr
-        print('\nOptimization...')
 
         if len(pareto_reflections) != 0:
             pareto_reflection = pareto_reflections[0]
             for reflection in pareto_reflections[1:]:
                 pareto_reflection = ComposeReflections(reflection, pareto_reflection)
+
+            pareto_reflection = pareto_reflections[-1]
+            # calculate optimal scaling for first pareto reflection
+            if isinstance(pareto_reflections[-1], MinGParetoReflection):
+                print('\nCalculating optimal scaling...')
+                pareto_reflections[-1].scaling_x = calculate_optimal_scaling_x(lambda x: gpr(x), blackbox_function)
+                pareto_reflections[-1].scaling_g = calculate_optimal_scaling_g(lambda x: gpr(x),
+                                                                               pareto_reflections[-1].g,
+                                                                               blackbox_function)
+                pareto_reflections[-1]._epsilon = 2e-2
+            if len(pareto_reflections) > 1:
+                for i in range(1, len(pareto_reflections) + 1):
+                    # calculate optimal scaling if pareto reflection is a MinGParetoReflection
+                    if isinstance(pareto_reflections[-i], MinGParetoReflection):
+                        print('\nCalculating optimal scaling...')
+                        pareto_reflections[-i].scaling_x = calculate_optimal_scaling_x(
+                            lambda x: pareto_reflection(gpr(x)),
+                            blackbox_function)
+                        pareto_reflections[-i].scaling_g = calculate_optimal_scaling_g(
+                            lambda x: pareto_reflection(gpr(x)),
+                            pareto_reflections[-i].g,
+                            blackbox_function)
+                        pareto_reflections[-i]._epsilon = 2e-2
+                    pareto_reflection = ComposeReflections(pareto_reflection, pareto_reflections[-i])
+
             fun = lambda x: pareto_reflection(gpr(x))
 
         else:
             fun = lambda x: gpr(x)
 
+        print('\nOptimization...')
         if isinstance(blackbox_function.design_space, Bounds):
             res = self._minimizer(
                 function=fun,

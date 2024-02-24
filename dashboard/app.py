@@ -3,8 +3,9 @@ import numpy as np
 import plotly.graph_objects as go
 from scipy.stats import qmc
 
-from functional_tests.blackbox_functions.zdt1 import ZDT1
-from functional_tests.blackbox_functions.zdt2 import ZDT2
+from pymoo.problems import get_problem
+
+from paref.blackbox_functions.design_space.bounds import Bounds
 from paref.interfaces.moo_algorithms.blackbox_function import BlackboxFunction
 from paref.moo_algorithms.minimizer.differential_evolution_minimizer import DifferentialEvolutionMinimizer
 from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
@@ -13,6 +14,7 @@ from paref.pareto_reflection_sequences.two_dimensional.fill_gaps_of_pareto_front
     FillGapsOfParetoFrontSequence2D
 from paref.pareto_reflections.find_1_pareto_points import Find1ParetoPoints
 from paref.pareto_reflections.find_maximal_pareto_point import FindMaximalParetoPoint
+from paref.pareto_reflections.minimize_g import MinGParetoReflection
 from paref.pareto_reflections.operations.compose_sequences import ComposeSequences
 from paref.pareto_reflections.priority_search import PrioritySearch
 from paref.pareto_reflections.restrict_by_point import RestrictByPoint
@@ -21,6 +23,61 @@ bbf_names = [
     'ZDT2',
     'ZDT1',
 ]
+
+
+class ZDT1(BlackboxFunction):
+    def __init__(self, input_dimensions: int = 5,
+                 scaling: np.ndarray = np.array([1, 1]),
+                 shift: np.ndarray = np.array([0, 0]),
+                 ):
+        self._input_dimensions = input_dimensions
+        self.problem = get_problem('zdt1', n_var=input_dimensions)
+        self.bounds = Bounds(upper_bounds=np.ones(input_dimensions), lower_bounds=np.zeros(input_dimensions))
+        self.shift = shift
+        self.scaling = scaling
+
+    def __call__(self, x):
+        return self.problem.evaluate(x) * self.scaling + self.shift
+
+    @property
+    def dimension_design_space(self) -> int:
+        return self._input_dimensions
+
+    @property
+    def dimension_target_space(self) -> int:
+        return 2
+
+    @property
+    def design_space(self) -> Bounds:
+        return self.bounds
+
+    def return_true_pareto_front(self, ):
+        return self.problem.pareto_front() * self.scaling + self.shift
+
+
+class ZDT2(BlackboxFunction):
+    def __init__(self, input_dimensions: int = 5):
+        self._input_dimensions = input_dimensions
+        self.problem = get_problem('zdt2', n_var=input_dimensions)
+        self.bounds = Bounds(upper_bounds=np.ones(input_dimensions), lower_bounds=np.zeros(input_dimensions))
+
+    def __call__(self, x):
+        return self.problem.evaluate(x)
+
+    @property
+    def dimension_design_space(self) -> int:
+        return self._input_dimensions
+
+    @property
+    def dimension_target_space(self) -> int:
+        return 2
+
+    @property
+    def design_space(self) -> Bounds:
+        return self.bounds
+
+    def return_true_pareto_front(self, ):
+        return self.problem.pareto_front()
 
 
 class BBFs:
@@ -180,8 +237,7 @@ with gr.Blocks(css=css) as demo:
             with gr.Accordion('express.minimal_search', open=True):
                 with gr.Row(equal_height=True):
                     gr.Markdown(label='Description', value='Apply Paref Express minimal search algorithm.'
-                                                           'This algorithm yields Pareto points minimal '
-                                                           'in some component and '
+                                                           'This algorithm yields edge Pareto points and '
                                                            'a `real trade-off` between all components.')
                 btn = gr.Button(value='Run MOO')
 
@@ -225,6 +281,29 @@ with gr.Blocks(css=css) as demo:
 
                 btn = gr.Button(value='Run LHS')
                 btn.click(lambda x, y: model.lh_search(x, y), [bbf_name, number_evaluations], plot)
+                ###
+            with gr.Accordion('minimize_g', open=False):
+                with gr.Row(equal_height=True):
+                    gr.Markdown(label='Description',
+                                value='Determine a Pareto optimal solution among '
+                                      'all points minimizing some function g. (``MinGParetoReflection``)')
+                    with gr.Column():
+                        expression_g = gr.Textbox(value='np.abs(x[0] - x[1])', label='Expression g')
+
+                class MinG(MinGParetoReflection):
+                    def __init__(self, blackbox_function: BlackboxFunction, expression_g):
+                        super().__init__(blackbox_function)
+                        self.bbf = blackbox_function
+                        self.expression = expression_g
+
+                    @property
+                    def g(self):
+                        return lambda x: eval(self.expression)
+
+                btn = gr.Button(value='Run MOO')
+                btn.click(
+                    lambda x, y: model.run_moo(MinG(blackbox_function=model.bbfs[x], expression_g=y), x),
+                    [bbf_name, expression_g], plot)
 
             with gr.Accordion('find_1_pareto_points', open=False):
                 with gr.Row(equal_height=True):

@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Callable
+from typing import Callable, Union
 
 import numpy as np
 
@@ -27,14 +27,16 @@ class MinGParetoReflection(ParetoReflection):
 
     .. math::
 
-        p(x) = \sum_{i=1,...,n}\\epsilon x_{i}+g(x)
+        p(x) = \sum_{i=1,...,n}\\epsilon scaling_x(x)_{i}+scaling_g(g(x))
 
 
     """
 
     def __init__(self,
                  blackbox_function: BlackboxFunction,
-                 epsilon: float = 1e-2):
+                 epsilon: Union[float, np.ndarray] = 1e-2,
+                 scaling_g: Callable[[np.ndarray], np.ndarray] = lambda x: x,
+                 scaling_x: Callable[[np.ndarray], np.ndarray] = lambda x: x, ):
         """
 
         Parameters
@@ -43,23 +45,23 @@ class MinGParetoReflection(ParetoReflection):
         blackbox_function : BlackboxFunction
             blackbox function to which Pareto reflection is applied
 
-        epsilon : float default 1e-3
+        epsilon : Union[float, np.ndarray] default 1e-3
             epsilon determining weight of components
+
+        scaling_g : Callable[[np.ndarray], np.ndarray] default lambda x: x
+            scaling function for g
+
+        scaling_x : Callable[[np.ndarray], np.ndarray] default lambda x: x
+            scaling function for x
         """
         self.bbf = blackbox_function
         self._epsilon = epsilon
         self._counter = 0
+        self.scaling_g = scaling_g
+        self.scaling_x = scaling_x
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
-        # ensure that resulting Pareto reflection is robust against translations
-        if self._counter <= 2:
-            self._c = np.min(self.bbf.y, axis=0)
-            self._k = np.min([self.g(y) for y in self.bbf.y])
-            self._mg = np.min([self.g(y) for y in self.bbf.y])
-            self._counter += 1
-            # TODO: doesnt work for fill gap and priority search -> 1e-3 to 1e-2
-
-        return self.g(x) - self._k + np.sum(self._epsilon * (x - self._c))
+        return self.scaling_g(self.g(x)) + np.sum(self._epsilon * self.scaling_x(x))
 
     @property
     def dimension_domain(self) -> int:
@@ -71,5 +73,5 @@ class MinGParetoReflection(ParetoReflection):
 
     @property
     @abstractmethod
-    def g(self) -> Callable:
+    def g(self) -> Callable[[np.ndarray], np.ndarray]:
         raise NotImplementedError

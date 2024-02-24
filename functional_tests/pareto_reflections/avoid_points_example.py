@@ -7,10 +7,8 @@ from paref.pareto_reflections.avoid_points import AvoidPoints
 from paref.pareto_reflections.find_edge_points import FindEdgePoints
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 
-epsilon = 1e-1
-reference_point = 3 * np.ones(2)
+epsilon = 5e-2
 nadir = 10 * np.ones(2)
-utopia_point = np.zeros(2)
 
 # stopping criteria of MOO algorithm given by maximum iterations
 stopping_criteria = MaxIterationsReached(max_iterations=2)
@@ -21,8 +19,8 @@ bench = TestingOneDimensionalSequences(input_dimensions=5,
 
 # Apply MOO
 pareto_reflection = AvoidPoints(nadir=nadir,
-                                epsilon_avoiding_points=np.array([[1, 0]]),  # avoid [1,0]
+                                epsilon_avoiding_points=np.array([[1, 0]]),
                                 epsilon=epsilon)
 sequence = ComposeReflections(pareto_reflection,
-                              FindEdgePoints(dimension=0, blackbox_function=bench.function,))
+                              FindEdgePoints(dimension=0, blackbox_function=bench.function, ))
 bench(sequence)

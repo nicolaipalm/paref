@@ -3,18 +3,12 @@ from functional_tests.scripts.testing_gpr_based_moos import TestingGPRBasedMOOs
 from paref.moo_algorithms.stopping_criteria.max_iterations_reached import MaxIterationsReached
 from paref.moo_algorithms.two_dimensional.fill_gaps_of_pareto_front_2d import FillGapsOfParetoFront2D
 
-epsilon = 1e-2
-reference_point = 3 * np.ones(2)
-nadir = 10 * np.ones(2)
-utopia_point = np.zeros(2)
-
 # stopping criteria of MOO algorithm given by maximum iterations
-stopping_criteria = MaxIterationsReached(max_iterations=3)
+stopping_criteria = MaxIterationsReached(max_iterations=1)
 
-input_dimensions = 2
+input_dimensions = 4
 bench = TestingGPRBasedMOOs(input_dimensions=input_dimensions,
-                            max_iter_minimizer=100,
-                            lh_evaluations=40,
+                            lh_evaluations=30,
                             stopping_criteria=stopping_criteria
                             )
 

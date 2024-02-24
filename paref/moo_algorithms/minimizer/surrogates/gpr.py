@@ -193,10 +193,11 @@ class GPR:
     def train(self, train_x: np.ndarray, train_y: np.ndarray):
         # prepossessing
         self._means = np.mean(train_y, axis=0)
+        self._std = np.std(train_y, axis=0)
         # training
         train_x = torch.Tensor(train_x)
         models = []
-        for output in train_y.T - self._means.reshape(-1, 1):
+        for output in (train_y.T - self._means.reshape(-1, 1)) / self._std.reshape(-1, 1):
             model = Gpr0Torch(
                 training_iter=self._training_iter, learning_rate=self._learning_rate
             )
@@ -220,7 +221,7 @@ class GPR:
         x = torch.Tensor([x.tolist()])
         return np.array(
             [model.predict_torch(x).mean.numpy()[0] for model in self._models]
-        ).T + self._means
+        ).T * self._std + self._means
 
     def std(self, x: np.ndarray) -> np.ndarray:
         x = torch.Tensor([x.tolist()])
