@@ -1,5 +1,3 @@
-:html_theme.sidebar_secondary.remove:
-
 # Parefs' MOO algorithms
 
 Paref provides a series of ready to use *generic* (mainly minimization algorithms)
