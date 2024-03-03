@@ -1,9 +1,11 @@
+:html_theme.sidebar_secondary.remove:
+
 # Parefs' MOO algorithms
 
 Paref provides a series of ready to use *generic* (mainly minimization algorithms)
 and *problem tailored* (i.e. targeting certain properties) MOO algorithms implemented in the ``ParefMOO`` interface.
 
-In order to apply any MOO algorithm (except ``ExpressSearch``which only needs the maximum number of iterations)
+In order to apply any MOO algorithm (except ``ExpressSearch`` which only needs the maximum number of iterations)
 you need to initialize (or implement your own) ``StoppingCriteria``
 indicating when to stop the optimization process and call the MOO algorithm to it and
 the black-box function (bbf).

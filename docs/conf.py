@@ -63,6 +63,9 @@ html_theme_options = {
     'github_url': 'https://github.com/nicolaipalm/paref',
     'search_bar_text': 'Search for treasure...',
 }
+html_sidebars = {
+  '**': []
+}  # remove primary sidebar
 
 html_title = 'Paref'
 

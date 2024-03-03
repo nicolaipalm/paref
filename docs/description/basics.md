@@ -20,10 +20,10 @@ is desirable. With Paref you can do exactly that.
 ## Workflow
 
 The workflow of Paref is simple:
-1. [Implement a blackbox function]()
+1. Implement a blackbox function
 2. Explore the target space (by calling the blackbox function's ``perform_lhc(n)`` method)
-3. [Apply a MOO algorithm reflecting your preference]()
-4. [Analyze the output]()
+3. Apply a MOO algorithm reflecting your preference
+4. Analyze the output
 5. Repeat steps 2-4 until satisfied
 
 <details>

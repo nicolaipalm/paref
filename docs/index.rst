@@ -1,3 +1,5 @@
+:html_theme.sidebar_secondary.remove:
+
 ================================
 MOO for Expensive Blackbox-Functions
 ================================
@@ -8,7 +10,7 @@ MOO for Expensive Blackbox-Functions
    :hidden:
 
       basics <./description/basics.md>
-      FAQs <./description/faqs.md>
+      faq <./description/faqs.md>
       trouble-shooting <./description/trouble-shooting.md>
       algorithms <./description/moo-algorithms.md>
       demo <https://huggingface.co/spaces/NicoPalm/paref-showcase>
