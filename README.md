@@ -5,7 +5,7 @@
 
 [documentation](https://paref.readthedocs.io/en/latest/index.html)//[notebooks](https://github.com/nicolaipalm/paref/tree/main/docs/notebooks)//[demo](https://huggingface.co/spaces/NicoPalm/paref-showcase)//[paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4668407)
 
-# Paref - problem tailored MOO for expensive black-box functions
+# Paref: MOO for Expensive Blackbox-Functions
 
 A multi-objective optimization (MOO) problem comes with an idea of what properties the identified
 (Pareto) points must satisfy.

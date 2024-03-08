@@ -58,10 +58,12 @@ exclude_patterns = ['_build', '**.ipynb_checkpoints']
 #
 html_theme = 'pydata_sphinx_theme'
 html_theme_path = ['_themes', ]
+html_logo = './graphics/paref_shadow.svg'
 
 html_theme_options = {
     'github_url': 'https://github.com/nicolaipalm/paref',
     'search_bar_text': 'Search for treasure...',
+    'logo_only': True,
 }
 html_sidebars = {
   '**': []

@@ -1,7 +1,7 @@
 :html_theme.sidebar_secondary.remove:
 
 ================================
-MOO for Expensive Blackbox-Functions
+Paref: MOO for Expensive Blackbox-Functions
 ================================
 
 .. toctree::
