@@ -53,8 +53,12 @@ class FillGapsOfParetoFrontSequence2D(SequenceParetoReflections):
         # Sort Pareto points ascending by first component
         PF = PF[PF[:, 0].argsort()]
 
+        # Normalize Target Variables to [0, 1]
+        PF_norm = np.stack(((PF[:, 0] - np.min(PF[:, 0])) / (np.max(PF[:, 0]) - np.min(PF[:, 0])),
+                            (PF[:, 1] - np.min(PF[:, 1])) / (np.max(PF[:, 1]) - np.min(PF[:, 1]))), axis=-1)
+
         # Calculate points with maximal distance
-        max_norm_index = np.argmax(np.linalg.norm(PF[:-1] - PF[1:], axis=1))
+        max_norm_index = np.argmax(np.linalg.norm(PF_norm[:-1] - PF_norm[1:], axis=1))
 
         return FillGap(blackbox_function=blackbox_function,
                        gap_points=PF[max_norm_index:max_norm_index + 2],
