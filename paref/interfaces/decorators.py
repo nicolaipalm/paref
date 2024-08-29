@@ -16,7 +16,10 @@ def store_evaluation_bbf(func):
         """Store evaluation of the blackbox function
         """
         result = func(*args, **kwargs)
-        args[0]._evaluations.append([args[1], result])
+        if kwargs.get('batch_evaluation', False):
+            args[0]._evaluations.extend([[x, y] for x, y in zip(args[1], result)])
+        else:
+            args[0]._evaluations.append([args[1], result])
         return result
 
     return wrapper
