@@ -73,7 +73,7 @@ class BlackboxFunction:
         cls.__call__ = store_evaluation_bbf(cls.__call__)
 
     @abstractmethod
-    def __call__(self, x: np.ndarray) -> np.ndarray:
+    def __call__(self, x: Union[np.ndarray, list]) -> np.ndarray:
         """Apply blackbox function to input and store the tuple (input,output) in self._evaluations
 
         Parameters
@@ -209,6 +209,18 @@ class BlackboxFunction:
         """
         self._evaluations = []
 
+    @property
+    def allow_batch_evaluation(self) -> bool:
+        """Allow batch evaluation of blackbox function
+
+        Returns
+        -------
+        bool
+            True if batch evaluation is allowed, False otherwise
+
+        """
+        return False
+
     def perform_lhc(self, n: int) -> None:
         """Perform Latin Hypercube Sampling
 
@@ -225,12 +237,16 @@ class BlackboxFunction:
         """
         previous_number_evaluations = len(self.evaluations)
         if isinstance(self.design_space, Bounds):
-            [self(x) for x in qmc.scale(
-                qmc.LatinHypercube(d=self.dimension_design_space).random(
-                    n=n),
+            lh_samples = qmc.scale(
+                qmc.LatinHypercube(d=self.dimension_design_space).random(n=n),
                 self.design_space.lower_bounds,
                 self.design_space.upper_bounds,
-            )]  # add samples according to latin hypercube scheme
+            )  # add samples according to latin hypercube scheme
+
+            if self.allow_batch_evaluation:
+                self(lh_samples, batch_evaluation=True)
+            else:
+                [self(x) for x in lh_samples]
 
         else:
             raise ValueError('Design space property of blackbox function must be an instance of Bounds!')
