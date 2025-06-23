@@ -221,6 +221,18 @@ class BlackboxFunction:
         """
         return False
 
+    @property
+    def n_workers(self) -> int:
+        """Number of workers for parallel scaling and optimization
+
+        Returns
+        -------
+        int
+            number of workers for parallel scaling and optimization
+
+        """
+        return 1
+
     def perform_lhc(self, n: int) -> None:
         """Perform Latin Hypercube Sampling
 

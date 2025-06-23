@@ -13,6 +13,15 @@ from paref.pareto_reflections.minimize_g import MinGParetoReflection
 from paref.pareto_reflections.operations.compose_reflections import ComposeReflections
 
 
+class ScaleWrapper:
+    def __init__(self, min, max):
+        self.min = min
+        self.max = max
+
+    def __call__(self, x):
+        return (x - self.min) / (self.max - self.min)
+
+
 class DifferentialEvolution:
     def __init__(self, display=False):
         self.display = display
@@ -24,6 +33,7 @@ class DifferentialEvolution:
             upper_bounds: np.ndarray,
             lower_bounds: np.ndarray,
             max_iter: int = 300,
+            n_workers: int = 1,
     ) -> np.ndarray:
         t_initial = (upper_bounds + lower_bounds) / 2
         res = differential_evolution(
@@ -35,6 +45,7 @@ class DifferentialEvolution:
                 (lower_bounds[i], upper_bounds[i]) for i in range(len(lower_bounds))
             ],
             maxiter=max_iter,
+            workers=n_workers,
         )
 
         self.result = res
@@ -68,7 +79,8 @@ def calculate_optimal_scaling_x(fun, blackbox_function, max_iter_minimizer: int 
         x_min[i] = fun(res_i_min)[i]
         x_max[i] = fun(res_i_max)[i]
 
-    return lambda x: (x - x_min) / (x_max - x_min)
+    scaler = ScaleWrapper(x_min, x_max)
+    return scaler
 
 
 def calculate_optimal_scaling_g(fun, g, blackbox_function, max_iter_minimizer: int = 500):
@@ -92,7 +104,17 @@ def calculate_optimal_scaling_g(fun, g, blackbox_function, max_iter_minimizer: i
     gxg_min = g(xg_min)
     xg_max = fun(res_g_max)
     gxg_max = g(xg_max)
-    return lambda x: (x - gxg_min) / (gxg_max - gxg_min)
+    scaler = ScaleWrapper(gxg_min, gxg_max)
+    return scaler
+
+
+class RefWrapper:
+    def __init__(self, gpr, ref):
+        self.gpr = gpr
+        self.ref = ref
+
+    def __call__(self, x):
+        return self.ref(self.gpr(x))
 
 
 class GPRMinimizer(ParefMOO):
@@ -233,7 +255,7 @@ class GPRMinimizer(ParefMOO):
                         pareto_reflections[-i]._epsilon = 2e-2
                     pareto_reflection = ComposeReflections(pareto_reflection, pareto_reflections[-i])
 
-            fun = lambda x: pareto_reflection(gpr(x))
+            fun = RefWrapper(gpr, pareto_reflection)
 
         else:
             fun = lambda x: gpr(x)
@@ -245,6 +267,7 @@ class GPRMinimizer(ParefMOO):
                 max_iter=self._max_iter_minimizer,
                 upper_bounds=blackbox_function.design_space.upper_bounds,
                 lower_bounds=blackbox_function.design_space.lower_bounds,
+                n_workers=blackbox_function.n_workers,
             )
 
         else:
@@ -258,7 +281,7 @@ class GPRMinimizer(ParefMOO):
             warn(
                 'Optimizer did not find a Pareto point! \n'
                 'Try more minimizer iterations (max_iter_minimizer).', RuntimeWarning)
-            sleep(1)
+            sleep(0.1)
 
         # if np.all(pareto_reflection(gpr(res)) >= pareto_reflection(blackbox_function.y[0])):
         #    print('\nNo Pareto point was found. Algorithmic search stopped.')
@@ -277,7 +300,7 @@ class GPRMinimizer(ParefMOO):
                 'Either the optimization converged or the optimization failed. Check the convergence by looking at '
                 'the difference between the last evaluations (blackbox_function.y).'
                 'You can check the convergence of the training by self._gpr.plot_loss().', RuntimeWarning)
-            sleep(1)
+            sleep(0.1)
 
     @property
     def supported_codomain_dimensions(self) -> int:
